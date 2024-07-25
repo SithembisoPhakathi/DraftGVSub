@@ -1,0 +1,47 @@
+﻿@if (!string.IsNullOrEmpty(ViewBag.Results) && ViewBag.Results.Contains("PremiseID in the database already exists"))
+{
+    <div class="alert alert-danger" role="alert">
+        @*PremiseID in the database already exists.*@
+        @if (ViewBag.FailedCount > 0)
+        {
+            <p>@ViewBag.FailedCount record/s were not uploaded due to existing PremiseID</p>
+        }
+    </div>
+
+    <div class="alert alert-success" role="alert">
+        @if (ViewBag.SuccessfulCount > 0)
+        {
+            <p>@ViewBag.SuccessfulCount record/s were successfully uploaded</p>
+        }
+    </div>
+}
+else if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message == "success")
+{
+    <div class="alert alert-success" role="alert">
+        @*File Selected Successfully*@
+        <p>@ViewBag.Total</p>
+        @if (ViewBag.SuccessfulCount > 0)
+        {
+            <p>@ViewBag.SuccessfulCount record/s were successfully uploaded</p>
+        }
+    </div>
+}
+else if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message == "existingId")
+{
+    <div class="alert alert-danger" role="alert">PremiseID in the file already exists</div>
+}
+else if (!string.IsNullOrEmpty(ViewBag.Message) && ViewBag.Message == "empty")
+{
+    <div class="alert alert-warning" role="alert">No file/s were selected</div>
+}
+<form method="post" enctype="multipart/form-data">
+    <div>
+        <label for="formFileLg" class="form-label">Select Excel File</label>
+        <input class="form-control form-control-lg" id="formFileLg" type="file" name="file">
+    </div><br />
+    <div>
+        <div class="col-3">
+            <input type="submit" asp-controller="Home" asp-action="UploadExcel" class="btn btn-dark" value="Upload Excel File" />
+        </div>
+    </div>
+</form>

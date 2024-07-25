@@ -1,0 +1,281 @@
+﻿@*@model IEnumerable<GeneralValuationSubs.Models.Draft>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<head>
+    <link href=https://fonts.googleapis.com/icon?family =Material+Icons rel="stylesheet">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css" />
+
+</head>
+
+<link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
+
+<script src="~/js/jquery-3.5.1.js" asp-append-version="true"></script>
+<script src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+<script src="~/js/dataTables.buttons.min.js" asp-append-version="true"></script>
+<script src="~/js/jszip.min.js" asp-append-version="true"></script>
+<script src="~/js/pdfmake.min.js" asp-append-version="true"></script>
+<script src="~/js/vfs_fonts.js" asp-append-version="true"></script>
+<script src="~/js/buttons.html5.min.js" asp-append-version="true"></script>
+
+<body class="bg-light text-dark">
+    <style>
+        #preloader {
+            background: white no-repeat center center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+    </style>
+
+        <div class="row container">
+          
+            <div class="col-lg-3">
+
+                <select required class="form-control" id="Township" name="township">
+                    <option selected value="">Select Township</option>
+                    @{
+                        foreach (var town in ViewBag.TownshipsList)
+                        {
+                            <option value="@town.TownshipDescription">@town.TownshipDescription</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-3">
+
+                <select required class="form-control" id="SchemeName" name="SchemeName">
+                    <option selected value="">Select Scheme Name</option>
+                    @{
+                        foreach (var Scheme in ViewBag.SchemeName)
+                        {
+                            <option value="@Scheme.SchemeName">@Scheme.SchemeName</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-3">
+
+                <select required class="form-control" id="Extent" name="Extent">
+                    <option selected value="">Select Extent</option>
+                    @{
+                        foreach (var Extent in ViewBag.Extent)
+                        {
+                            <option value="@Extent.Extent">@Extent.Extent</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-lg-3">
+                <button id="search">Apply Filter</button>
+            </div>
+            
+        </div>
+
+        <br />
+        <br />
+
+        @*<div style="overflow-x:auto;"> </div>*@
+        <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+            <thead>
+                <tr>
+
+                    <th>
+                        Premise Id
+                    </th>
+                    <th>
+                        Township Desc
+                    </th>
+                    <th>
+                        Property Desc
+                    </th>
+                    <th>
+                        Valuation Type
+                    </th>
+                    <th>
+                        Valuation Type Description
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Allocated Name
+                    </th>
+                    <th>
+                        Start Date
+                    </th>
+
+                    @*<th>
+                    -------
+                    </th>*@
+                    <th>
+                        Select
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+            @if (ViewBag.BulkUploadList != null)
+                {
+                @foreach (var item in ViewBag.BulkUploadList)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.PremiseId
+                            </td>
+                            <td>
+                                @item.TownshipDescription
+                            </td>
+                            <td>
+                                @item.PropertyDescription
+                            </td>
+                            <td>
+                                @item.ValuationType
+                            </td>
+                            <td>
+                                @item.ValuationTypeDescription
+                            </td>
+
+                            <td>
+                                @item.Status
+                            </td>
+
+                            @*<td>
+                    <a class="btn" style="background-color: #E6B000;" asp-controller="Home" asp-action="ViewProperty" asp-route-id="@item.DraftId">View</a>
+                    </td>*@
+                            <td>
+                                @item.AllocatedName
+                            </td>
+
+                            <td>
+                                @(((DateTime)item.Start_Date).ToString("yyyy-MM-dd"))
+                            </td>
+
+                            <td>
+                                <input type="checkbox" name="selectedItems" value="@item.DraftId" />
+                            </td>
+
+                        </tr>
+
+                    }
+                }
+
+            </tbody>
+        </table>
+
+        <br />
+        <br />
+
+        @*<div class="row justify-content-center">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+                <div class="form-group">
+                    <select name="valuerName" required id="valuerName" class="form-select" style="font-size: 15px">
+                        <option disabled selected value="">Select Valuer</option>
+                        @if (ViewBag.ValuersList != null)
+                        {
+                            foreach (var valuer in ViewBag.ValuersList)
+                            {
+                                <option id="valuersss" value="@valuer.FirstName @valuer.Surname">@valuer.FirstName @valuer.Surname</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-center">
+                <div>
+                    <button type="submit" style="background-color: #025752; color: white">Allocate Tasks</button>
+                </div>
+            </div>
+        </div>*@
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" style="margin-left: 40%" role="document">
+                <div class="modal-content" style="margin-right: 50%">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Allocating Task</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You are about to assign task to a valuer.</script>.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Proceed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                pageLength: 5,
+                order: [[2, 'asc']],
+                rowGroup: {
+                    dataSrc: 1
+                }
+            });
+        });
+    </script>
+
+   <script>
+    $(document).ready(function () {
+        $('#search').click(function () {
+            // Get selected values
+            var township = $('#Township').val();
+            var schemeName = $('#SchemeName').val();
+            var extent = $('#Extent').val();
+
+            // Construct the URL
+            var url = "@Url.Action("Search", "Home")?Township=" + encodeURIComponent(township) + "&SchemeName=" + encodeURIComponent(schemeName) + "&Extent=" + encodeURIComponent(extent);
+
+            // Redirect to the constructed URL
+            window.location.href = url;
+        });
+    });
+</script>
+
+</body>
+

@@ -1,0 +1,268 @@
+﻿@model List<GeneralValuationSubs.Models.DraftGv>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
+
+<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/lib/datatables/css/dataTables.bootstrap4.css"/>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <link rel="stylesheet" href="~/css/fixedHeader.dataTables.min.css"/>
+</head>
+
+@*<head>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/jquery-3.5.1.js"></script>
+    <script src="~/js/~/js/dataTables.fixedHeader.min.js"></script>
+    <link rel="stylesheet" href="~/lib/datatables/css/dataTables.bootstrap4.css"/>
+    <link rel="stylesheet" href="~/css/fixedHeader.dataTables.min.css"/>
+    <link rel="stylesheet" href="~/css/jquery.dataTables.min.css"/>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>    
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+</head>*@
+
+<h1>General Valuation</h1>
+
+<body class="bg-light text-dark">
+<style>
+    #preloader {
+    background: white no-repeat center center;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;  
+    }
+</style>
+
+<div id="preloader" class="bg-light"> <img src="~/Images/Obj_Page_Loader.GIF" /></div>
+@*<div style="overflow-x:auto;"> </div>*@
+<table  id="example" class= "table table-hover table-bordered dt-responsive nowrap bg-light text-dark" style="width:100%" cellspacing="0">
+    <thead>                
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.PremiseId) *@ PremiseId
+            </th>
+            <th> 
+                @*@Html.DisplayNameFor(model => model.Gv18category)*@ Gv18category
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Gv18marketValue)*@ Gv18marketValue
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.PurchaseDate)*@ PurchaseDate
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.PurchasePrice)*@ PurchasePrice
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.ZoneCode)*@  ZoneCode
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.LISLegalArea)*@ LISLegalArea
+            </th>
+            <th>
+               @* @Html.DisplayNameFor(model => model.AdjustedWGBA)*@ AdjustedWGBA
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.DiffsGV23vsGV18)*@  DiffsGV23vsGV18
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.ValueRevised)*@  ValueRevised
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.CategoryRevised)*@  CategoryRevised
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Town)*@  Town
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Status)*@  Status
+            </th>            
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+            @{
+                if (Model != null)
+                {
+                     foreach (var Data in Model)
+                        {
+                            <tr>@Data.PremiseId</tr>
+                        }
+                }
+             }
+    @*<tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PremiseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gv18category)
+            </td>
+            <td>
+                <span id="Gv18marketValue">@Html.DisplayFor(modelItem => item.Gv18marketValue)</span>
+            </td>  
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ZoneCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LISLegalArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdjustedWGBA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiffsGV23vsGV18)
+            </td>
+            <td>
+                <span id="ValueRevised">@Html.DisplayFor(modelItem => item.ValueRevised)</span>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryRevised)
+            </td>                      
+            <td>
+                @Html.DisplayFor(modelItem => item.Town)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>*@
+
+            @*<td>
+                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color:#E6B000;"><svg xmlns=http://www.w3.org/2000/svg width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                </svg>&nbsp; Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary"><svg xmlns=http://www.w3.org/2000/svg width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                </svg>&nbsp; Details</a>
+            </td>*@
+            
+        </tr>
+        <script type="text/javascript"> 
+
+                   //Market Value
+            var mark = document.getElementById('Gv18marketValue').innerHTML;
+            //var valu = 'R '+'R '+new Intl.NumberFormat().format(mark);
+            var valu = mark.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            document.getElementById('Gv18marketValue').innerHTML = valu;
+
+                            //Market Value
+            var mark = document.getElementById('ValueRevised').innerHTML;
+            //var valu = 'R '+'R '+new Intl.NumberFormat().format(mark);
+            var valu = mark.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            document.getElementById('ValueRevised').innerHTML = valu;
+        </script>
+}
+    </tbody>
+</table>
+
+</body>
+
+<script> 
+  $(document).ready(function () {
+     $().clone()
+     $.noConflict();
+    // Setup - add a text input to each footer cell
+    $('#example thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#example thead');
+       
+        var table = $('#example').DataTable({
+       
+        "aoColumnDefs": [{
+                         "aTargets": [ 2, 3 ],
+                          "mRender": function (data, type, full) {
+                              var formmatedvalue=data.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                              ;return formmatedvalue;}
+                        }],
+
+        orderCellsTop: true,
+        fixedHeader: true,
+        responsive: true,
+            scrollX: true,
+            scrollCollapse: true,
+            scroller: true),
+        initComplete: function () {
+            var api = this.api();
+
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    if ($(api.column(colIdx).header()).index() >= 0) {
+                         $(cell).html('<input type="text" placeholder=" Search "/>');
+                    }                                      
+
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
+});
+$('#example').fadeTo(300,1);    
+</script>
+
+<script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+
+<script>
+    var loader = document.getElementById("preloader");
+    window.addEventListener("load", function () {
+        loader.style.display = "none";
+    });
+</script>

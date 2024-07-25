@@ -1,0 +1,194 @@
+﻿@*@model IEnumerable<GeneralValuationSubs.Models.Draft>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<head>
+    <link href=https://fonts.googleapis.com/icon?family=Material+Icons rel="stylesheet">
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css"
+    />
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css"
+    />
+
+</head>
+
+
+<body class="bg-light text-dark">
+<style>
+    #preloader {
+    background: white no-repeat center center;
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index: 100;  
+    }
+</style>    
+
+<form asp-controller="Home" asp-action="AllocatingTask"  method="POST">	
+
+    @*<div style="overflow-x:auto;"> </div>*@
+<table id="example" class= "table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                Premise Id
+            </th>
+            <th> 
+                Township Desc
+            </th>
+            <th>
+                Property Desc
+            </th>
+            <th>
+                Valuation Type
+            </th>
+            <th>
+                Valuation Type Description
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Start Date
+            </th>
+
+            <th>
+                Days to Complete Task
+            </th>
+
+            <th>
+                -------
+            </th>
+                @*<th>
+                    Select
+                </th>*@
+        </tr>
+    </thead>
+    <tbody>
+            @if (ViewBag.UserDataList != null)
+            {
+                @foreach (var item in ViewBag.UserDataList)
+                {
+                <tr>
+                    <td>
+                            @item.PremiseId
+                    </td>
+                    <td>
+                            @item.TownshipDescription
+                    </td>
+                    <td>
+                            @item.PropertyDescription
+                    </td>  
+                    <td>
+                            @item.ValuationType
+                    </td>
+                    <td>
+                            @item.ValuationTypeDescription
+                    </td>                    
+                    <td>
+                            @item.Status
+                    </td>      
+                    <td>
+                        @(((DateTime)item.Start_Date).ToString("yyyy-MM-dd"))
+                    </td>
+
+                    <td>
+                        @if (@item.DateDiff >= 0 && @item.DateDiff <= 10)
+                        {
+                            <span style="color: green;">
+                                @item.DateDiff
+                            </span>
+                        }
+                        else if (@item.DateDiff >= 11 && @item.DateDiff <= 20)
+                        {
+                            <span style="color: orange;">
+                                @item.DateDiff
+                            </span>
+                        }
+                        else if (@item.DateDiff >= 21)
+                        {
+                            <span style="color: red;">
+                                @item.DateDiff
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        <a class="btn" style="background-color: #E6B000;" asp-controller="Home" asp-action="ViewProperty" asp-route-id="@item.DraftId">View</a>
+                    </td>
+                    
+
+                </tr>
+                  
+                }    
+            }
+
+    </tbody>
+</table>    
+</form>
+
+<script
+    type="text/javascript"
+    charset="utf8"
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    ></script>
+
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"
+    ></script>
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"
+    ></script>
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"
+    ></script>
+
+
+    <script type="text/javascript">
+            $(document).ready(function() 
+            {
+                $('#example').DataTable( {
+                        pageLength : 5,
+                    order: [[2, 'asc']],
+                    rowGroup: {
+                        dataSrc: 1
+                    },
+
+                dom: 'Bfrtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
+            });
+        });
+    </script>
+
+</body>
+
+  
+
+

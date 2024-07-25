@@ -1,0 +1,117 @@
+﻿
+@model IEnumerable<GeneralValuationSubs.Models.DraftHistory>
+
+
+@{
+    string[] TableHeaders = new string[] {"UserName"  
+                                         ,"Premise Id"
+                                         ,"Property Description"
+                                         ,"Market Value"
+                                         ,"Category Desc" 
+                                         ,"User Activity"
+                                         //,"Status"
+                                         ,"Activity Date"};
+}
+
+<head>
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"
+    />
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css"
+    />
+
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css"
+    />
+
+</head>
+
+
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="~/lib/datatables/css/dataTables.bootstrap4.css"/>
+<script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+<script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>*@
+
+<table id="example" class="display" style="width:100%">
+        <thead> @*style="background-color: #E6B000;"*@
+            <tr>
+                @{
+                    foreach (var head in TableHeaders)
+                    {
+                        <th>
+                            @head
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                if (Model != null) //ViewBag.AllObjections
+                {
+                foreach (var Data in Model)
+                {
+                    <tr>
+                        <td>@Data.UserName</td>
+                        <td>@Data.PremiseId</td>
+                        <td>@Data.PropertyDescription</td>   
+                        <td>@Data.MarketValue</td>
+                        <td>@Data.CATDescription</td>
+                        <td>@Data.Status</td>
+                        @*<td>@Data.Status</td>*@
+                        <td>@Data.ActivityDate</td>
+                    </tr>
+                }
+                } 
+                        
+            }
+        </tbody>
+ </table>
+
+  <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://code.jquery.com/jquery-3.5.1.js"
+    ></script>
+
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"
+    ></script>
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"
+    ></script>
+
+    <script
+    type="text/javascript"
+    charset="utf8"
+    src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"
+    ></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+    $('#example').DataTable( {
+        order: [[2, 'asc']],
+        rowGroup: {
+            dataSrc: 2
+        }
+    } );
+} );
+    </script>
+

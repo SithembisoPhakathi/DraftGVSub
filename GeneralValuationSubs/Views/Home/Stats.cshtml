@@ -1,0 +1,229 @@
+﻿@model List<Draft>
+
+@{
+    ViewData["Title"] = "Home Page";
+
+    var currentUser = TempData["currentUser"];
+    TempData.Keep("currentUser");
+
+    var currentUserSurname = TempData["currentUserSurname"];
+    TempData.Keep("currentUserSurname");
+    var currentUserFirstname = TempData["currentUserFirstname"];
+    TempData.Keep("currentUserFirstname");
+
+    var username = TempData["currentUsername"];
+    var role = TempData["currentRole"];
+    var currentUserRole = TempData["currentUserRole"];
+
+    var userSector = TempData["currentUserSector"];
+    TempData.Keep("currentUserSector");
+
+    TempData.Keep("currentUserRole");
+    TempData.Keep("currentUsername");
+    TempData.Keep("currentRole");
+}
+
+<head>
+    <style>
+        /*body {
+                     background-image: url("~/assets/img/joburg.jpg");
+
+                    }*/
+    </style>
+</head>
+
+<div class="container">
+
+    <body>
+        <form asp-action="stats" method="post" id="statusForm">
+            <div class="form-group row" style="width: 800px">
+                <label class="col-sm-4 col-form-label">Status</label>
+                <div class="col-sm-8">
+                    <select name="status" class="form-select" onchange="document.getElementById('statusForm').submit();">
+                        <option value="">Select Status</option>
+                        <option value="Draft Value">Draft Value</option>
+                        <option value="Pending Approval">Pending Approval</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Pending Kill Task">Pending Kill Task</option>
+                        <option value="Approved Kill Task">Approved Kill Task</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
+       @*  <div class="text-center">
+            <form asp-action="stats" method="post">
+                <label for="StatusP">Name:</label>
+                <input type="text" id="StatusP" name="status" />
+                <button type="submit">Submit</button>
+            </form>
+
+          
+        </div> *@
+
+
+
+        @*<main id="main">*@
+        @* height="600" *@
+
+        @if (@role != null)
+        {
+            @if (@role.ToString() == "VALUATION ADMIN" || @role.ToString() == "VALUATION ADMIN SUPERVISER")
+            {
+                <div class="row">
+                    <div class="col-lg-15">
+                        <img src="~/assets/img/joburg.jpg" alt="Joburg-img" style="display: block; margin-left: auto; margin-right: auto; width: 50%;" class="center">
+                    </div>
+                </div>
+            }
+        }
+
+
+
+
+        <!-- ======= Breadcrumbs ======= -->
+        @*<section id="breadcrumbs" class="breadcrumbs">
+        <div class="container">
+
+
+        @*<ol>
+
+        <li>Valuations</li>
+        </ol>
+        <h2>Search Property</h2>
+
+        </div>
+        </section><!-- End Breadcrumbs -->*@
+
+        <!-- ======= Contact Section ======= -->
+        @*<section id="contact" class="contact">
+        <div class="container">
+
+        <input hidden type="text" value="@currentUser"/>
+        <input hidden type="text" value="@currentUserFirstname @currentUserSurname"/>
+
+        <div class="row">
+
+
+
+        </div>
+
+        </div>
+        </section><!-- End Contact Section -->*@
+
+        @*</main><!-- End #main -->*@
+    </body>
+
+
+
+    <div style="display: flex;">
+
+    <div class="container" style="display: flex; flex-wrap: wrap;">
+        <div class="left-section" style="flex: 1; padding: 20px; box-sizing: border-box;" >
+           
+           
+        </div>
+        <div class="right-section" style="flex: 1;  padding: 20px; box-sizing: border-box;">
+      
+
+
+
+        </div>
+    </div>
+    </div>
+
+
+@{
+    ViewBag.Title = "Stats";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<div style="display: flex;">
+    <div class="container" style="display: flex; flex-wrap: wrap;">
+        <div class="left-section" style="flex: 1; padding: 20px; box-sizing: border-box;">
+            <table class="table">
+                <thead>
+                    <tr>
+                         <th>Sector</th>
+                         <th>Unit Type</th>
+                         <th>Valuation Type Description</th>
+                         <th>Status</th>
+                         <th>Number of @ViewBag.Message</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var draft in Model)
+                    {
+                        <tr>
+                            <td>@userSector</td>
+                            <td>@draft.Unit_Type</td>
+                            <td>@draft.ValuationTypeDescription</td>                            
+                            <td>@ViewBag.Message</td>
+                            <td>@draft.Number_Of_Approved</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="right-section" style="flex: 1; padding: 20px; box-sizing: border-box;">
+                @if (@role != null)
+                {
+                    @if (@role.ToString() == "SENIOR MANAGER" || @role.ToString() == "AREA MANAGER" || @role.ToString() == "DEPUTY DIRECTOR" || @role.ToString() == "VALUER" || @role.ToString() == "REVIEWER" || @role.ToString() == "REVISER")
+                    {
+                        <canvas id="barChart" width="400" height="200"></canvas>
+
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            var ctx = document.getElementById('barChart').getContext('2d');
+
+                            // Serialize and prepare combined labels
+                            var combinedLabels = @Html.Raw(Json.Serialize(Model.Select(x => x.ValuationTypeDescription + " unit type: " + x.Unit_Type)));
+                            var approvedNumbers = @Html.Raw(Json.Serialize(Model.Select(x => x.Number_Of_Approved)));
+
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: combinedLabels,
+                                    datasets: [{
+                                        label: 'Number of @ViewBag.Message',
+                                        data: approvedNumbers,
+                                        backgroundColor: 'rgba(255, 100, 120, 0.2)',
+                                        borderColor: 'rgba(255, 105, 180, 1)',
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        x: {
+                                            ticks: {
+                                                autoSkip: false,
+                                                maxRotation: 90,
+                                                minRotation: 45
+                                            }
+                                        },
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    },
+                                    plugins: {
+                                        legend: {
+                                            display: true,
+                                            position: 'top'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Number of Properties that are @ViewBag.Message at Sector @userSector'
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                    }
+                }
+
+        </div>
+    </div>
+</div>

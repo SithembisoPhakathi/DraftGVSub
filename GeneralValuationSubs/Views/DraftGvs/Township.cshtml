@@ -1,0 +1,101 @@
+﻿@model IEnumerable<GeneralValuationSubs.Models.DraftGv>
+
+@{
+    ViewData["Title"] = "Township Page";    
+}
+<link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
+<script src="~/js/jquery-3.5.1.js" asp-append-version="true"></script>
+<script src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+<script src="~/js/dataTables.buttons.min.js" asp-append-version="true"></script>
+<script src="~/js/jszip.min.js" asp-append-version="true"></script>
+<script src="~/js/pdfmake.min.js" asp-append-version="true"></script>
+<script src="~/js/vfs_fonts.js" asp-append-version="true"></script>
+<script src="~/js/buttons.html5.min.js" asp-append-version="true"></script>
+<link rel="stylesheet" href="~/css/bootsWatchTheme.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<h1>Township</h1>
+
+<div class="center">
+<label for="township">Choose a township:</label>
+<select name="township" id="town_name">
+  <option value="town">--Select--</option>
+       @{
+         if (Model != null)
+            {
+               foreach (var Data in Model)
+               {
+                     if (@Data.Town != null)
+                     {
+                         <option value="@Data.Town">@Data.Town</option>
+                     }
+               }
+            }                   
+        }
+</select>  
+
+<input type="hidden" name="hidden_value" id="hidden_value" />
+<br /> <br />
+</div>
+
+<div id="divPartialView">
+    <table>
+        <thead>
+            <tr>    </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript">
+ $(document).ready(function() {
+        $('#town_name').change(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: "@Url.Action("GetRecords", "DraftGvs")",
+                    contentType: 'application/html; charset=utf-8',
+                    datatype: 'html',
+                    data:{town_name:$('#town_name').val()},
+                    success:function(data)
+                    { 
+                        $('#divPartialView').html('');
+                        $('#divPartialView').html(data);
+                    }
+                })
+            })  
+        });
+</script>
+
+@*<div>
+    <form>
+        <div>
+            
+        </div>
+        <br />
+        <div>
+            <label for="township">Choose a Category:</label>
+            <select name="category" id="category">
+                <option value="category">--Select--</option>
+                @{
+                    if (Model != null)
+                    {
+                        foreach (var Data in Model)
+                        {
+                            if (@Data.Gv18category != null)
+                            {
+                                <option value="@Data.Gv18category">@Data.Gv18category</option>
+                            }
+                        }
+                    }
+                }
+            </select>
+            &nbsp;
+            &nbsp;
+            <input type="button" id="search" style="height:30px;width:150px" value="Load Properties" />
+        </div>
+    </form>
+</div>*@

@@ -1,0 +1,16 @@
+﻿@{
+    var errorMessage = TempData["RefreshMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <script>
+        @*alert('@errorMessage');*@
+
+        var userConfirmed = confirm('@errorMessage');
+        if (userConfirmed)
+        {
+            window.history.back();
+        }
+    </script>
+}

@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    var currentUser = TempData["currentUser"];
+    TempData.Keep("currentUser");
+
+    var currentUserSurname = TempData["currentUserSurname"];
+    TempData.Keep("currentUserSurname");
+    var currentUserFirstname = TempData["currentUserFirstname"];
+    TempData.Keep("currentUserFirstname");
+}
+
+<head>
+    <style>
+        /*body {
+             background-image: url("~/assets/img/joburg.jpg");
+ 
+            }*/
+    </style>
+</head>
+
+<body>
+    @*<main id="main">*@
+         @* height="600" *@
+        <div class="row">
+            <div class="col-lg-15">
+                <img src="~/assets/img/joburg.jpg" alt="Joburg-img" style="display: block; margin-left: auto; margin-right: auto; width: 50%;" class="center">
+        </div>
+        </div>
+    <!-- ======= Breadcrumbs ======= -->
+    @*<section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+          
+
+        @*<ol>
+       
+          <li>Valuations</li>
+        </ol>
+        <h2>Search Property</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->*@
+
+    <!-- ======= Contact Section ======= -->
+    @*<section id="contact" class="contact">
+      <div class="container">
+
+          <input hidden type="text" value="@currentUser"/>
+          <input hidden type="text" value="@currentUserFirstname @currentUserSurname"/>
+
+        <div class="row">
+
+        
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->*@
+
+  @*</main><!-- End #main -->*@
+</body>
+

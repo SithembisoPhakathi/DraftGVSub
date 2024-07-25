@@ -1,0 +1,1916 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<link asp-append-version="true" href="~/css/CardDesign.css" rel="stylesheet">
+<link asp-append-version="true" href="~/css/Tabs.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+@{
+    var QUERY_Type = TempData["QUERY_Type"];
+
+    //Section1
+    var QUERY_No = TempData["QUERY_No"];
+    var OwnerName = TempData["OwnerName"];
+    var OwnerIdentity = TempData["OwnerIdentity"];
+    var OwnerCompany = TempData["OwnerCompany"];
+    var OwnerAddress1 = TempData["OwnerAddress1"];
+    var OwnerAddress2 = TempData["OwnerAddress2"];
+    var OwnerAddress3 = TempData["OwnerAddress3"];
+    var OwnerAddress4 = TempData["OwnerAddress4"];
+    var OwnerAddress5 = TempData["OwnerAddress5"];
+    var OwnerPostal1 = TempData["OwnerPostal1"];
+    var OwnerPostal2 = TempData["OwnerPostal2"];
+    var OwnerPostal3 = TempData["OwnerPostal3"];
+    var OwnerPostal4 = TempData["OwnerPostal4"];
+    var OwnerPostal5 = TempData["OwnerPostal5"];
+    var OwnerHomePhone = TempData["OwnerHomePhone"];
+    var OwnerCellPhone = TempData["OwnerCellPhone"];
+    var OwnerWorkPhone = TempData["OwnerWorkPhone"];
+    var OwnerFaxPhone = TempData["OwnerFaxPhone"];
+    var OwnerEmail = TempData["OwnerEmail"];
+    var ObjectorName = TempData["ObjectorName"];
+    var ObjectorIdentity = TempData["ObjectorIdentity"];
+    var ObjectorCompany = TempData["ObjectorCompany"];
+    var ObjectorPostal1 = TempData["ObjectorPostal1"];
+    var ObjectorPostal2 = TempData["ObjectorPostal2"];
+    var ObjectorPostal3 = TempData["ObjectorPostal3"];
+    var ObjectorPostal4 = TempData["ObjectorPostal4"];
+    var ObjectorPostal5 = TempData["ObjectorPostal5"];
+    var ObjectorHome = TempData["ObjectorHome"];
+    var ObjectorCell = TempData["ObjectorCell"];
+    var ObjectorWork = TempData["ObjectorWork"];
+    var ObjectorFax = TempData["ObjectorFax"];
+    var ObjectorEmail = TempData["ObjectorEmail"];
+    var ObjectorStatus = TempData["ObjectorStatus"];
+    var RepresentativeName = TempData["RepresentativeName"];
+    var RepPostal1 = TempData["RepPostal1"];
+    var RepPostal2 = TempData["RepPostal2"];
+    var RepPostal3 = TempData["RepPostal3"];
+    var RepPostal4 = TempData["RepPostal4"];
+    var RepPostal5 = TempData["RepPostal5"];
+    var RepHomePhone = TempData["RepHomePhone"];
+    var RepCellPhone = TempData["RepCellPhone"];
+    var RepWorkPhone = TempData["RepWorkPhone"];
+    var RepFaxPhone = TempData["RepFaxPhone"];
+    var RepEmail = TempData["RepEmail"];
+
+    TempData.Keep("QUERY_No");
+    TempData.Keep("OwnerName");
+    TempData.Keep("OwnerCompany");
+    TempData.Keep("OwnerAddress1");
+    TempData.Keep("OwnerAddress2");
+    TempData.Keep("OwnerAddress4");
+    TempData.Keep("OwnerAddress5");
+    TempData.Keep("OwnerPostal1");
+    TempData.Keep("OwnerPostal2");
+    TempData.Keep("OwnerPostal3");
+    TempData.Keep("OwnerPostal4");
+    TempData.Keep("OwnerPostal5");
+    TempData.Keep("OwnerHomePhone");
+    TempData.Keep("OwnerCellPhone");
+    TempData.Keep("OwnerWorkPhone");
+    TempData.Keep("OwnerFaxPhone");
+    TempData.Keep("OwnerEmail");
+    TempData.Keep("ObjectorIdentity");
+    TempData.Keep("ObjectorCompany");
+    TempData.Keep("ObjectorPostal1");
+    TempData.Keep("ObjectorPostal2");
+    TempData.Keep("ObjectorPostal3");
+    TempData.Keep("ObjectorPostal4");
+    TempData.Keep("ObjectorPostal5");
+    TempData.Keep("ObjectorHome");
+    TempData.Keep("ObjectorCell");
+    TempData.Keep("ObjectorWork");
+    TempData.Keep("ObjectorFax");
+    TempData.Keep("ObjectorEmail");
+    TempData.Keep("ObjectorStatus");
+    TempData.Keep("RepresentativeName");
+    TempData.Keep("RepPostal1");
+    TempData.Keep("RepPostal2");
+    TempData.Keep("RepPostal3");
+    TempData.Keep("RepPostal4");
+    TempData.Keep("RepPostal5");
+    TempData.Keep("RepHomePhone");
+    TempData.Keep("RepCellPhone");
+    TempData.Keep("RepWorkPhone");
+    TempData.Keep("RepFaxPhone");
+    TempData.Keep("RepEmail");
+
+    //Section 2
+
+    var PhysicalAddress = TempData["PhysicalAddress"];
+    var TownName = TempData["TownName"];
+    var Code = TempData["Code"];
+    var Extent = TempData["Extent"];
+    var MunicipalAccountNo = TempData["MunicipalAccountNo"];
+    var BondHolderName = TempData["BondHolderName"];
+    var RegisteredAmount = TempData["RegisteredAmount"];
+    var FullDetails = TempData["FullDetails"];
+    var ServitudeNo = TempData["ServitudeNo"];
+    var AffectedArea = TempData["AffectedArea"];
+    var PropertyFavourOf = TempData["PropertyFavourOf"];
+    var PropertyPurpose = TempData["PropertyPurpose"];
+    var CompensationPaid = TempData["CompensationPaid"];
+    var PaymentDate = TempData["PaymentDate"];
+    var CompensationAmount = TempData["CompensationAmount"];
+
+    TempData.Keep("PhysicalAddress");
+    TempData.Keep("TownName");
+    TempData.Keep("Code");
+    TempData.Keep("Extent");
+    TempData.Keep("MunicipalAccountNo");
+    TempData.Keep("BondHolderName");
+    TempData.Keep("RegisteredAmount");
+    TempData.Keep("FullDetails");
+    TempData.Keep("ServitudeNo");
+    TempData.Keep("AffectedArea");
+    TempData.Keep("PropertyFavourOf");
+    TempData.Keep("PropertyPurpose");
+    TempData.Keep("CompensationPaid");
+    TempData.Keep("PaymentDate");
+    TempData.Keep("CompensationAmount");
+
+    //Section 3
+    var BusTenantName = TempData["BusTenantName"];
+    var BusRentalLandSize = TempData["BusRentalLandSize"];
+    var BusRental = TempData["BusRental"];
+    var BusEscalation = TempData["BusEscalation"];
+    var BusOtherContribution = TempData["BusOtherContribution"];
+    var BusLeaseTerm = TempData["BusLeaseTerm"];
+    var BusStartDate = TempData["BusStartDate"];
+    var BusBuildingNo = TempData["BusBuildingNo"];
+    var BusBuildingSize = TempData["BusBuildingSize"];
+    var BusShops = TempData["BusShops"];
+    var BusBuildingCondition = TempData["BusBuildingCondition"];
+    var BusExtentLandFurtherDev = TempData["BusExtentLandFurtherDev"];
+    var BusOtherFeaturesCondition = TempData["BusOtherFeaturesCondition"];
+
+    TempData.Keep("BusTenantName");
+    TempData.Keep("BusRentalLandSize");
+    TempData.Keep("BusRental");
+    TempData.Keep("Bus_Escalation");
+    TempData.Keep("Bus_Other_contribution");
+    TempData.Keep("Bus_Lease_Term");
+    TempData.Keep("Bus_Start_Date");
+    TempData.Keep("Bus_Building_No");
+    TempData.Keep("Bus_Building_Size");
+    TempData.Keep("Bus_Shops");
+    TempData.Keep("Bus_Building_Condition");
+    TempData.Keep("Bus_Extent_Land_further_Dev");
+    TempData.Keep("Bus_Other_features_Condition");
+
+
+    //Section 4
+    var Bus4SchemeName = TempData["Bus4SchemeName"];
+    var Bus4SchemeNo = TempData["Bus4SchemeNo"];
+    var Bus4FlatNo = TempData["Bus4FlatNo"];
+    var Bus4UnitSize = TempData["Bus4UnitSize"];
+    var Bus4ManagingAgentName = TempData["Bus4ManagingAgentName"];
+    var Bus4ManagingAgentTelNo = TempData["Bus4ManagingAgentTelNo"];
+    var Bus4Shops = TempData["Bus4Shops"];
+    var Bus4Offices = TempData["Bus4Offices"];
+    var Bus4Factories = TempData["Bus4Factories"];
+    var Bus4BusSectTitleOther1Name = TempData["Bus4BusSectTitleOther1Name"];
+    var Bus4BusSectTitleOther2Name = TempData["Bus4BusSectTitleOther2Name"];
+    var Bus4BusSectTitleOther3Name = TempData["Bus4BusSectTitleOther3Name"];
+    var Bus4BusSectTitleOther1 = TempData["Bus4BusSectTitleOther1"];
+    var Bus4BusSectTitleOther2 = TempData["Bus4BusSectTitleOther2"];
+    var Bus4BusSectTitleOther3 = TempData["Bus4BusSectTitleOther3"];
+    var Bus4TenantName = TempData["Bus4TenantName"];
+    var Bus4Rental = TempData["Bus4Rental"];
+    var Bus4OtherContribution = TempData["Bus4OtherContribution"];
+    var Bus4MonthlyLevy = TempData["Bus4MonthlyLevy"];
+    var Bus4RentalLandSize = TempData["Bus4RentalLandSize"];
+    var Bus4Escalation = TempData["Bus4Escalation"];
+    var Bus4LeaseTerm = TempData["Bus4LeaseTerm"];
+    var Bus4StartDate = TempData["Bus4StartDate"];
+    var Bus4PoolSize = TempData["Bus4PoolSize"];
+    var Bus4TennisCourtSize = TempData["Bus4TennisCourtSize"];
+    var Bus4CommonPropertyOther1 = TempData["Bus4CommonPropertyOther1"];
+    var Bus4CommonPropertyOther2 = TempData["Bus4CommonPropertyOther2"];
+    var Bus4CommonPropertyOther3 = TempData["Bus4CommonPropertyOther3"];
+    var Bus4GarageSize = TempData["Bus4GarageSize"];
+    var Bus4CarportSize = TempData["Bus4CarportSize"];
+    var Bus4OpenParkingSize = TempData["Bus4OpenParkingSize"];
+    var Bus4StoreRoomSize = TempData["Bus4StoreRoomSize"];
+    var Bus4GardenSize = TempData["Bus4GardenSize"];
+    var Bus4ExclusiveOther = TempData["Bus4ExclusiveOther"];
+
+
+    TempData.Keep("Bus4SchemeName");
+    TempData.Keep("Bus4SchemeNo");
+    TempData.Keep("Bus4FlatNo");
+    TempData.Keep("Bus4UnitSize");
+    TempData.Keep("Bus4ManagingAgentName");
+    TempData.Keep("Bus4ManagingAgentTelNo");
+    TempData.Keep("Bus4Shops");
+    TempData.Keep("Bus4Offices");
+    TempData.Keep("Bus4Factories");
+    TempData.Keep("Bus4BusSectTitleOther1Name");
+    TempData.Keep("Bus4BusSectTitleOther2Name");
+    TempData.Keep("Bus4BusSectTitleOther3Name");
+    TempData.Keep("Bus4BusSectTitleOther1");
+    TempData.Keep("Bus4BusSectTitleOther2");
+    TempData.Keep("Bus4BusSectTitleOther3");
+    TempData.Keep("Bus4TenantName");
+    TempData.Keep("Bus4Rental");
+    TempData.Keep("Bus4OtherContribution");
+    TempData.Keep("Bus4MonthlyLevy");
+    TempData.Keep("Bus4RentalLandSize");
+    TempData.Keep("Bus4Escalation");
+    TempData.Keep("Bus4LeaseTerm");
+    TempData.Keep("Bus4StartDate");
+    TempData.Keep("Bus4PoolSize");
+    TempData.Keep("Bus4TennisCourtSize");
+    TempData.Keep("Bus4CommonPropertyOther1");
+    TempData.Keep("Bus4CommonPropertyOther2");
+    TempData.Keep("Bus4CommonPropertyOther3");
+    TempData.Keep("Bus4GarageSize");
+    TempData.Keep("Bus4CarportSize");
+    TempData.Keep("Bus4OpenParkingSize");
+    TempData.Keep("Bus4StoreRoomSize");
+    TempData.Keep("Bus4GardenSize");
+    TempData.Keep("Bus4ExclusiveOther");
+
+
+    //Section 5
+    var CurrentAskingPrice = TempData["CurrentAskingPrice"];
+    var PreviousAskingPrice = TempData["PreviousAskingPrice"];
+    var AgentName = TempData["AgentName"];
+    var UnitNo = TempData["UnitNo"];
+    var OtherNearbySales = TempData["OtherNearbySales"];
+    var SaleDate = TempData["SaleDate"];
+    var CurrentRecievedOffer = TempData["CurrentRecievedOffer"];
+    var PreviousRecievedOffer = TempData["PreviousRecievedOffer"];
+    var AgentTelNo = TempData["AgentTelNo"];
+    var SuburbName = TempData["SuburbName"];
+    var SellingPrice = TempData["SellingPrice"];
+
+    TempData.Keep("CurrentAskingPrice");
+    TempData.Keep("PreviousAskingPrice");
+    TempData.Keep("AgentName");
+    TempData.Keep("UnitNo");
+    TempData.Keep("OtherNearbySales");
+    TempData.Keep("SaleDate");
+    TempData.Keep("CurrentRecievedOffer");
+    TempData.Keep("PreviousRecievedOffer");
+    TempData.Keep("AgentTelNo");
+    TempData.Keep("SuburbName");
+    TempData.Keep("SellingPrice");
+
+    //Section 6
+
+    var OldPropertyDescription = TempData["OldPropertyDescription"];
+    var Old_Category = TempData["OldCategory"];
+    var OldAddress = TempData["OldAddress"];
+    var OldExtent = TempData["OldExtent"];
+    var OldMarketValue = TempData["OldMarketValue"];
+    var OldOwner = TempData["OldOwner"];
+    var NewPropertyDescription = TempData["NewPropertyDescription"];
+    var NewCategory = TempData["NewCategory"];
+    var NewAddress = TempData["NewAddress"];
+    var NewExtent = TempData["NewExtent"];
+    var NewMarketValue = TempData["NewMarketValue"];
+    var NewOwner = TempData["NewOwner"];
+    var ObjectionReasons = TempData["ObjectionReasons"];
+    var Old2Category = TempData["Old2Category"];
+    var Old2Extent = TempData["Old2Extent"];
+    var Old2MarketValue = TempData["Old2MarketValue"];
+    var New2Category = TempData["New2Category"];
+    var New2Extent = TempData["New2Extent"];
+    var New2MarketValue = TempData["New2MarketValue"];
+    var Old3Category = TempData["Old3Category"];
+    var Old3Extent = TempData["Old3Extent"];
+    var Old3MarketValue = TempData["Old3MarketValue"];
+    var New3Category = TempData["New3Category"];
+    var New3Extent = TempData["New3Extent"];
+    var New3MarketValue = TempData["New3MarketValue"];
+
+    //Section 7
+    var SignatureName = TempData["SignatureName"];
+    var SignaturePicture = TempData["SignaturePicture"];
+    var ApproverComment = TempData["ApproverComment"];
+    TempData.Keep("ApproverComment");
+
+    //Valuation
+    var currentUserSurname = TempData["currentUserSurname"];
+    TempData.Keep("currentUserSurname");
+    var currentUserFirstname = TempData["currentUserFirstname"];
+    TempData.Keep("currentUserFirstname");
+
+    var queryId = TempData["QueryId"];
+    var PremiseId = TempData["PremiseId"];
+    var PropertyDescription = TempData["PropertyDescription"];
+    var TownshipDescription = TempData["TownshipDescription"];
+    var ValuationTypeDescription = TempData["ValuationTypeDescription"];
+    var Comment = TempData["Comment"];
+    var Extents = TempData["Extent"];
+    var Dept_Dir = TempData["Dept_Dir"];
+    var Snr_Manager = TempData["Snr_Manager"];
+    var Area_Manager = TempData["Area_Manager"];
+    var Candidate_DC = TempData["Candidate_DC"];
+    var Status = TempData["Status"];
+    TempData.Keep("Status");
+
+
+
+}
+    <style>
+        #preloader {
+            background: white no-repeat center center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+
+        div.scroll {
+            /*background-color: #fed9ff;*/
+            width: 1105px;
+            height: 1050px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            text-align: left;
+            padding: 20px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <div id="preloader"> <img src="~/Images/obj_page_loader.gif" /> </div>
+    <script>
+        var loader = document.getElementById("preloader");
+        window.addEventListener("load", function () {
+            loader.style.display = "none";
+        });
+    </script>
+
+    <script>
+            function validateField1() 
+            {
+                var RevisedMarketValue = document.getElementById("RevisedMarketValue");
+                var RevisedCategory = document.getElementById("RevisedCategory");
+                var MarketValueComment = document.getElementById("Comment");                
+
+                if (RevisedMarketValue.value.length > 0) 
+                {
+                    MarketValueComment.required = true;
+                }
+                else 
+                {
+                    MarketValueComment.required = false;
+                }
+            }
+        </script>
+        <script>
+            function validateField2() 
+            {
+                var RevisedCategory = document.getElementById("RevisedCategory");
+                var CategoryComment = document.getElementById("Comment");
+
+                if (RevisedCategory.Checked = true)
+                {
+                    CategoryComment.required = true;
+                }
+                else 
+                {
+                    CategoryComment.required = false;
+                }
+            }
+        </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add event listener to a parent element
+        document.body.addEventListener("change", function(event) {
+            // Check if the target of the event is the element with ID "RevisedCategory"
+            if (event.target && event.target.id === "RevisedCategory") {
+                var selectedCategory = event.target.value;
+                if (selectedCategory === "Multiple Purposes") {
+                    document.getElementById("multipurposeFields").style.display = "block";
+                    document.getElementById("Extent").parentNode.style.display = "block";
+                    document.getElementById("Extent").required = true;
+                } else {
+                    document.getElementById("multipurposeFields").style.display = "none";
+                    document.getElementById("RevisedMarketValue").parentNode.style.display = "block";
+                    document.getElementById("Extent").parentNode.style.display = "block";
+                }
+            }
+        });
+    });
+</script>
+    
+<div style="right: 150px; padding:10px; display:flex; justify-content: center;">
+    <a class="tablinks btn" onclick="showSection1()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 1</a>
+    <a class="tablinks btn" onclick="showSection2()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 2</a>
+    <a class="tablinks btn" onclick="showSection3bus()" id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 3</a>
+    <a class="tablinks btn" onclick="showSection4bus()" id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 4</a>
+    <a class="tablinks btn" onclick="showSection5()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 5</a>
+    <a class="tablinks btn" onclick="showSection6()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 6</a>
+    <a class="tablinks btn" onclick="showSection7()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-right: 2px;" >Section 7</a>
+    <a class="tablinks btn" onclick="showEvidence()" id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-left: 50px">Evidence</a>
+    <a class="tablinks btn" onclick="showValution()" id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-left: 100px">Valuation</a>
+</div>
+<form asp-controller="Section78" asp-action="UpdateRevisedValue" method="POST" enctype="multipart/form-data" >
+<h4 style="justify-content: center; display:flex;  margin-top: 20px;">BUSINESS FORM</h4>
+
+
+    <div style="display:flex;justify-content: center;">
+
+    @*-----------------------------------------------------------------SECTION 1 -----------------------------------------------------------*@
+       
+    <div id="section1">
+
+          <div class="div1" style="margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+              <h4 style="text-align:center">SECTION 1: OBJECTOR INFORMATION</h4>
+              <div class="Div1-1">
+                <h4  style="text-align:left"id="owner_head">1.1 OBJECTOR IS THE OWNER</h4>
+
+
+                <label id="o_name_l"> REGISTERED OWNER OF PROPERTY </label>
+                <input name="owner_name" id="o_name" style="margin-top: -1px;"  maxlength="100" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@OwnerName" disabled>
+                <select hidden class="form-control mt-2" style="width:150px">
+                    <option selected value="RSA" id="O_RSA" onselect="RSA()">
+                        South African
+                    </option>
+                    <option value="foreigner" id="o_foreigner" onselect="foreigner()">
+                        Foreigner
+                    </option>
+                </select>
+
+                <label hidden id="o_pass_label"><span></span>Passport NO.</label>
+                    <input hidden id="o_pass" style="margin-top: -1px;"  class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;" disabled>
+
+                <div id="owner_details">
+                    <label > <span></span>IDENTITY NO.</label>
+                    <input style="margin-top: -1px;" id="o_id" class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerIdentity" disabled>
+                    <span id="id-status" style="color: red;"></span><br>
+
+                 <label > COMPANY OR C.C REGISTRATION NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="30"  type="text" onpaste="return false;" ondrop="return false;" value="@OwnerCompany" disabled>
+
+                 <h5 style="margin-top: 5px;"> PHYSICAL ADDRESS OF OWNER </h5>
+
+                 <label > <span></span>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerName" disabled>
+
+                <label> <span></span>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerAddress2" disabled>
+
+                <label> <span></span>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerAddress3" disabled>
+
+                <label> <span></span>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="o_st_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerAddress4" disabled>
+
+                <label > <span></span>POSTAL CODE</label>
+                    <input style="margin-top: -1px;" id="o_st_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerAddress5" disabled>
+                    <br/>
+
+                <h5 style="margin-top: 5px;">POSTAL ADDRESS OF OWNER </h5>
+                <span>
+
+                </span>
+
+
+                <label> <span></span>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerPostal1" disabled>
+
+                <label> <span></span>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerPostal2" disabled>
+
+                <label> <span></span>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerPostal3" disabled>
+
+                <label>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="o_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerPostal4" disabled>
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="o_p_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerPostal5" disabled>
+
+                </div>
+
+
+                <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+
+
+                <label ></label>
+                <input style="margin-top: -1px;" id="o_cd_1" class="form-control o_cell_no" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="tel" onpaste="return false;" ondrop="return false;" value="@OwnerHomePhone" disabled>
+
+                 <label >WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="o_cd_2" class="form-control o_cell_no" maxlength="15" onkeypress="return onlyNumberKey(event)"  type="text" onpaste="return false;" ondrop="return false;" value="@OwnerWorkPhone" disabled>
+
+                <label>CELL </label>
+                <input style="margin-top: -1px;" id="o_cd_3" class="form-control o_cell_no" maxlength="15" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerCellPhone" disabled>
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="o_cd_4" class="form-control"  maxlength="15"  onkeypress="return onlyNumberKey(event)"  type="text" onpaste="return false;" ondrop="return false;" value="@OwnerFaxPhone" disabled>
+
+                 <label>E-MAIL ADDRESS</label>
+                    <input style="margin-top: -1px;" id="o_cd_5" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@OwnerEmail" disabled>
+
+
+               </div>
+
+          <div class="Div1-2">      
+
+                <h4>1.2 OBJECTOR IS NOT THE OWNER OR MUNICIPALITY IS THE OBJECTOR</h4>
+                <label > NAME OF OBJECTOR </label>
+                    <input style="margin-top: -1px;" id="objector_name" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorName" disabled>
+
+                <label > <span></span>IDENTITY NO.</label>
+                    <input style="margin-top: -1px;" id="objector_id" class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorIdentity" disabled>
+                    <span id="obj_id_status"></span><br>
+                <label > COMPANY OR CC REGISTRATION NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="20"  type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorCompany" disabled>
+
+                <h6 style="margin-top: 5px;">POSTAL ADDRESS OF OBJECTOR </h6>
+
+                <label>OWNER NAME</label>
+                <input style="margin-top: -1px;" id="obj_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorPostal1" disabled>
+
+                <label>TREET NAME</label>
+                      <input style="margin-top: -1px;" id="obj_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorPostal2" disabled>
+
+                <label>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="obj_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorPostal3" disabled>
+
+                <label>TOWN NAME </label>
+                    <input style="margin-top: -1px;" id="obj_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorPostal4" disabled>
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="obj_p_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;"  onkeypress="return onlyNumberKey(event)" value="@ObjectorPostal5" disabled>
+
+
+               <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+
+                <label >HOME TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="obj_cd_1" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorHome" disabled>
+
+                 <label>WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="obj_cd_2" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorWork" disabled>
+
+                 <label>CELL </label>
+                    <input style="margin-top: -1px;" id="obj_cd_3" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorCell" disabled>
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="obj_cd_4" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorFax" disabled>
+
+                 <label>E-MAIL ADDRESS</label>
+                    <input style="margin-top: -1px;" id="obj_cd_5" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorEmail" disabled>
+
+                 <label>STATUS OF OBJECTOR (e.g. Tenant, Pending Purchaser, Municipality, etc)</label>
+                    <input style="margin-top: -1px;" id="objector_stat"  class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@ObjectorStatus" disabled>
+          </div>
+
+          <div class="Div1-3">  
+              <br/>
+                <h4>1.3 AUTHORISED REPRESENTATIVE OF THE OBJECTOR</h4>
+
+                <label>NAME OF REPRESENTATIVE</label>
+                    <input style="margin-top: -1px;" class="form-control" id="rep_name" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@RepresentativeName" disabled>
+
+                <h6 style="margin-top: 5px;">POSTAL ADDRESS OF REPRESENTATIVE </h6>
+
+                <label>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@RepPostal1" disabled>
+
+                 <label>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@RepPostal2" disabled>
+
+                 <label>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@RepPostal3" disabled>
+
+                <label>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="rep_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@RepPostal4" disabled>
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="rep_p_5" class="form-control" maxlength="10" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@RepPostal5" disabled>
+
+               <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+
+                <label>HOME TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="rep_cd_1" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@RepHomePhone" disabled>
+
+                <label>WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="rep_cd_2" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@RepCellPhone" disabled>
+
+                <label>CELL </label>
+                    <input style="margin-top: -1px;" id="rep_cd_3" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@RepWorkPhone" disabled>
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="rep_cd_4" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@RepFaxPhone" disabled>
+
+                 <label>E-MAIL ADDRESS</label>
+                <input style="margin-top: -1px;" id="rep_cd_5" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@RepEmail" disabled><br />
+
+                <b>IF A REPRESENTATIVE IS APPOINTED, PROOF OF AUTHORISATION MUST BE ATTACHED, TO THIS FORM </b>
+          </div>
+        </div>
+    </div> @* End of section 1*@
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+          $("#section2").hide();
+          $("#section3-bus").hide();
+          $("#section4-bus").hide();
+          $("#section5").hide();
+          $("#section6").hide();
+          $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        });
+
+        function showSection1()
+        {
+            $("#section1").show();
+            $("#section2").hide();
+            $("#section3-bus").hide();
+            $("#section4-bus").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+        function showSection2()
+        {
+            $("#section1").hide();
+            $("#section2").show();
+            $("#section3-bus").hide();
+            $("#section4-bus").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+
+         function showSection3bus()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-bus").show();
+            $("#section4-bus").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+        function showSection4bus()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-bus").hide();
+            $("#section4-bus").show();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+
+        function showSection5()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-bus").hide();
+            $("#section4-bus").hide();
+            $("#section5").show();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+
+        function showSection6()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-bus").hide();
+            $("#section4-bus").hide();
+            $("#section5").hide();
+            $("#section6").show();
+            $("#section7").hide();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+
+        function showSection7()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-bus").hide();
+            $("#section4-bus").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").show();
+            $("#section_valution").hide();
+                $("#show-evidence").hide();
+        }
+
+        function showValution() {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").show();
+            $("#show-evidence").hide();
+
+            //Bob
+        }
+
+            function showEvidence() {
+                $("#section1").hide();
+                $("#section2").hide();
+                $("#section3-res").hide();
+                $("#section4-res").hide();
+                $("#section5").hide();
+                $("#section6").hide();
+                $("#section7").hide();
+                $("#section_valution").hide();
+                $("#show-evidence").show();
+                //Bob
+            }
+
+    </script>
+
+    @*-----------------------------------------------------------------SECTION 2 -----------------------------------------------------------*@
+
+   <div id="section2" style="display:flex;justify-content: left;">
+
+
+       <div class="div2" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+          <h4 style="text-align:center">SECTION 2: PROPERTY DETAILS (FOR SECTIONAL TITLES SEE SECTION 4)</h4>
+
+
+            <h5 style="margin-top: 5px;"> PHYSICAL ADDRESS </h5>
+
+            <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@PhysicalAddress" disabled>
+
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@TownName" disabled>
+
+                <label>POSTAL CODE</label>
+            <input style="margin-top: -1px;" id="phy_c" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;" value="@Code" disabled>
+
+                <label > EXTENT OF PROPERTY (m2) </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="12" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Extent" disabled>
+
+                <label > MUNICIPAL ACCOUNT NO (if available) </label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="12" value="@MunicipalAccountNo" disabled>
+
+            <label> NAME OF BOND HOLDER </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@BondHolderName" disabled>
+
+                <label > REGISTERED AMOUNT OF BOND (if applicable)</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="12" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@RegisteredAmount" disabled>
+
+                <div>
+                    <label>PROVIDE FULL DETAILS OF ALL SERVITUDES, ROAD PROCLAMATIONS OR OTHER ENDORSEMENTS AGAINST THE PROPERTY (if applicable) </label>
+                    <textarea class="form-control" maxlength="500" style="margin-top: -1px;"  rows="4" cols="150" disabled>@FullDetails</textarea>
+                </div>
+
+                <label > SERVITUDE NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@ServitudeNo" disabled>
+
+                <label > AFFECTED AREA (m2)</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="12" step="0.01"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@AffectedArea" disabled>
+
+                <label > IN FAVOUR OF </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@PropertyFavourOf" disabled>
+
+                <div>
+                    <label>FOR WHAT PURPOSE</label>
+                    <textarea class="form-control" maxlength="250" style="margin-top: -1px;" rows="3" disabled cols="150">@PropertyPurpose</textarea>
+                </div>
+
+          <div class="d-flex">
+                <fieldset class="col-md-3 mt-3" >
+          <label style="vertical-align:middle"> WAS COMPENSATION PAID </label>
+
+        <label > IF YES, DATE OF PAYMENT </label>
+           <input style="margin-top: -1px;" class="form-control"  type="text"  value="@PaymentDate" disabled>
+
+        <label > AMOUNT R </label>
+           <input style="margin-top: -1px;" class="form-control" maxlength="12" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)"  onkeyup="reformatText(this)" value="@CompensationAmount" disabled>
+           <input id="Compensation_Amount" hidden/>
+           </fieldset>
+         </div>
+
+        </div> @* End of section 2*@
+    </div>
+
+    @*---------------------------------------------------------Section 3 Business -------------------------------------------------*@
+
+  <div id="section3-bus" style="display:flex;justify-content: left;">
+
+
+         <div class="div3_B" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+         <h4 style="text-align:center">SECTION 3: DESCRIPTION OF BUILDINGS (FOR SECTIONAL TITLES SEE SECTION 4)</h4>
+         <h6 style="margin-top: 15px;">(INFORMATION UNDER 3.1 TO 3.4 TO BE SUPPLIED BY MEANS OF ANNEXURES AS FOLLOWS)</h6>
+
+         <h5 style="margin-top: 15px;">TENANT AND RENT INFORMATION - ANNEXURE A</h5>
+
+
+            <label > NAME OF TENANT</label>
+                <input style="margin-top: -1px;" id="s3b" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusTenantName" disabled>
+
+            <label > SIZE</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@BusRentalLandSize" disabled>
+
+            <label > RENTAL (EXCL VAT)</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@BusRental" disabled>
+
+            <label > ESCALATION OF RENTAL</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusEscalation" disabled>
+
+            <label > OTHER CONTRIBUTIONS</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusOtherContribution" disabled>
+
+            <label > TERM OF LEASE</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusLeaseTerm" disabled>
+
+            <label > START DATE</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" value="@BusStartDate" disabled>
+
+
+            <h5 style="margin-top: 15px;">3.2 SCHEDULE OF EXPENSES INCLUDING: MUNICIPAL, ADMINISTRATION, INSURANCES, SECURITY ETC. - ANNEXURE B</h5>
+            <h5 style="margin-top: 15px;">3.3 STATEMENT OF INCOME &Aacute; EXPENDITURE FOR PREVIOUS FINANCIAL YEAR - ANNEXURE C</h5>
+            <h5 style="margin-top: 15px;">3.4 BUILDING SIZES - ANNEXURE D</h5>
+
+            <label > BUILDING NO.</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@BusBuildingNo" disabled>
+
+            <label > SIZE (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" step="0.01"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@BusBuildingSize" disabled>
+
+            <label > DESCRIPTION e.g. Used as a shop, office, etc</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusShops" disabled>
+
+            <label > CONDITION </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusBuildingCondition" disabled>
+
+            <h5 style="margin-top: 15px;">3.5 IF THE PROPERTY HAS NOT BEEN DEVELOPED TO ITS HIGHEST AND BEST USE, INDICATE THE EXTENT OF LAND THAT IS AVAILABLE FOR FURTHER DEVELOPMENT. (m2)</h5>
+            <input style="margin-top: -1px;" class="form-control" step="0.01" type="text" onpaste="return false;" ondrop="return false;" value="@BusExtentLandFurtherDev" disabled>
+
+            <label > OTHER FEATURES OF BUILDINGS: (PROVIDE ANNEXURE IF NECESSARY) </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" value="@BusOtherFeaturesCondition" disabled>
+
+          </div>
+
+
+        </div>  @*End of Section 3*@
+
+    @*---------------------------------------------------------Section 4 Business -------------------------------------------------*@
+
+    <div id="section4-bus" style="display:flex;justify-content: left;">
+
+
+       <div class="div4_B " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+           <h5 style="text-align:center">SECTION 4: SECTIONAL TITLE UNITS</h5>
+           <h4>4.1 SECTIONAL TITLE UNITS</h4>
+
+            <label > SCHEME NAME</label>
+            <input style="margin-top: -1px;" id="sch_name_b" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@Bus4SchemeName" disabled>
+
+           <label > SCHEME NO.</label>
+            <input style="margin-top: -1px;" id="sch_no_b" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" maxlength="5" onkeypress="return onlyNumberKey(event)" value="@Bus4SchemeNo" disabled>
+
+            <label > FLAT NO/DOOR NO.</label><label hidden> FLAT NO/UNIT NO.</label>
+            <input style="margin-top: -1px;" id="flat_no_b" class="form-control" maxlength="5"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4FlatNo" disabled>
+
+
+            <label > UNIT SIZE (m2)</label>
+            <input style="margin-top: -1px;" id="unit_size_b" class="form-control" step="0.01" maxlength="10"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4UnitSize" disabled>
+
+
+                <label > NAME OF MANAGEMENT AGENT</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@Bus4ManagingAgentName" disabled>
+
+                <label >TEL NO.</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="15" onkeypress="return onlyNumberKey(event)" value="@Bus4ManagingAgentTelNo" disabled>
+
+                <label > SHOPS (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4Shops" disabled>
+
+                <label > OFFICES (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4Offices" disabled>
+
+                <label > FACTORIES (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4Factories" disabled>
+
+
+
+            <div style=" width:48%; overflow:hidden; margin-top: 15px; border:none;">
+                <label >OTHER"1"</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4BusSectTitleOther1Name" disabled>
+                <label >OTHER"2"</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4BusSectTitleOther2Name" disabled>
+                <label >OTHER"3"</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4BusSectTitleOther3Name" disabled>
+            </div>
+
+             <div style=" width:48%; overflow:hidden; margin-top: -17.30%; margin-left: 52%; border:none;">
+                <label >OTHER"1" (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4BusSectTitleOther1" disabled>
+                <label >OTHER"2" (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4BusSectTitleOther2" disabled>
+                <label >OTHER"3" (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4BusSectTitleOther3" disabled>
+            </div>
+
+            <h6 style="margin-top: 15px;"><b>TENANT AND RENT INFORMATION - ANNEXURE A (ADD ANNEXURE FOR ADDITIONAL INFORMATION)</b></h6>
+
+             <div style=" width:48%; overflow:hidden; margin-top: 15px; border:none">
+               <label > NAME OF TENANT</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@Bus4TenantName" disabled>
+                 <label > RENTAL (EXCL VAT)</label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="10"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4Rental" disabled>
+                 <label > OTHER CONTRIBUTIONS</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;"  value="@Bus4OtherContribution" disabled>
+                <label > MONTHLY LEVY R</label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="10"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4MonthlyLevy" disabled>
+            </div>
+
+             <div style=" width:48%; overflow:hidden; margin-top: -23.30%; margin-left: 52%; border:none">
+               <label > SIZE (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="10" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4RentalLandSize" disabled>
+                <label > ESCALATION</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="30"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4Escalation" disabled>
+                <label > TERM OF LEASE</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="30"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4LeaseTerm" disabled>
+                 <label > START DATE</label>
+                <input style="margin-top: -1px;" class="form-control" type="text" value="@Bus4StartDate" disabled>
+            </div>
+
+             <div style=" width:50%; overflow:hidden; margin-top: 15px; border:none;">
+             <h6 style="margin-top: 15px;">COMMON PROPERTY CONSISTS OF:</h6>
+                <label >SWIMMING POOL</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4PoolSize" disabled>  
+
+                <label >TENNIS COURT</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4TennisCourtSize" disabled> 
+
+                <label > OTHER"1" </label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4CommonPropertyOther1" disabled>
+
+                <label > OTHER"2"  </label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" value="@Bus4CommonPropertyOther2" disabled>
+
+                <label > OTHER"3" </label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@Bus4CommonPropertyOther3" disabled>
+
+            </div>
+
+
+
+           <div style=" width:50%; overflow:hidden; margin-left: 50.5%; margin-top: -32.50%; border:none;">
+                <h6 style="margin-top: 15px;">DETAILS OF EXCLUSIVE AREAS</h6>
+                <label >GARAGE (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4GarageSize" disabled>  
+
+                <label >CARPORT (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4CarportSize" disabled> 
+
+                <label > OPEN PARKING (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4OpenParkingSize" disabled>
+
+                 <label > STORE ROOM (m2)</label>
+                 <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4StoreRoomSize" disabled>
+
+                 <label > GARDEN (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@Bus4GardenSize" disabled>
+
+                <label > OTHER"4"</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@Bus4ExclusiveOther" disabled>
+
+           </div>
+       </div>
+</div> @*End of section 4*@
+
+
+
+    @*---------------------------------------- Section 5  ---------------------------------------*@
+   <div id="section5" style="display:flex;justify-content: left;">
+
+
+        <div class="div5" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+            <h5 style="text-align:center">SECTION 5: MARKET INFORMATION</h5>
+            <div>
+                <div class="form-control" style="height:550px; width:50%; overflow:hidden; margin-top: 15px; border:none;">
+                <h6 style="margin-top: 15px;">IF YOUR PROPERTY IS CURRENTLY ON THE MARKET, WHAT IS THE ASKING PRICE?</h6>
+
+                    <label>R</label>
+                    <input style="margin-top: -1px;" id="s5" maxlength="12" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@CurrentAskingPrice" disabled>
+
+
+                <h6 style="margin-top: 15px;">IF YOUR PROPERTY HAS BEEN ON THE MARKET IN THE LAST 3 YEARS, WHAT WAS THE ASKING PRICE</h6>
+
+                    <label>R</label>
+                    <input style="margin-top: -1px;" class="form-control"  maxlength="10"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@PreviousAskingPrice" disabled>
+
+                    <label>NAME OF AGENT</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@AgentName" disabled>
+
+                    <label>SALES TRANSACTIONS(OF OTHER PROPERTIES IN THE VICINITY) USED BY OBJECTOR IN DETERMINING THE MARKET VALUES OF THE PROPERTY OBJECTED TO</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="10" value="@OtherNearbySales" disabled>
+
+                    <label> ERF/UNIT</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="5" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@UnitNo" disabled>
+
+                    <label> DATE OF SALE</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" value="@SaleDate" disabled>
+                </div>
+
+
+
+                <div class="form-control" style="height:550px; width:50%; overflow:hidden; margin-left: 50%; margin-top: -54.70%; border:none;">
+
+                    <label style="margin-top: 8.4%">OFFER RECEIVED "R"</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="12" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@CurrentRecievedOffer" disabled>
+
+                    <label style="margin-top: 10.5%;"> OFFER RECEIVED "R" </label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="12" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@PreviousRecievedOffer" disabled>
+
+                    <label> TEL NO.</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="15" onkeypress="return onlyNumberKey(event)" value="@AgentTelNo" disabled>
+
+                    <label style="margin-top: 8.5%"> SUBURB/FARM/SCHEME NAME</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="100" value="@SuburbName" disabled>
+
+                    <label> SELLING PRICE</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="10" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" value="@SellingPrice" disabled>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div> @* End of section 5*@
+
+    @*----------------------------------------Section 6  ---------------------------------------*@
+
+    <div id="section6" style="display:flex;justify-content: left;">
+
+
+           <div class="div6 " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+                   <h5 style="text-align:center">SECTION 6: OBJECTION DETAILS</h5>
+                      <div style=" width:50%; overflow:hidden; margin-top: 15px; border:none;">
+
+                            <h6 style="margin-top: 15px;">PARTICULARS AS REFLECTED IN VALUATION ROLL</h6>
+
+                            <label> DESCRIPTION OF THE PROPERTY/UNIT</label>
+                            <input style="margin-top: -1px;" id ="desc" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="@OldPropertyDescription" >
+
+                            <label> CATEGORY </label>
+                            <input style="margin-top: -1px;" id="cat" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="@Old_Category">
+
+                            <label> PHYSICAL ADDRESS/DOOR NO./FLAT NO.</label>
+                            <input style="margin-top: -1px;" id="add" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled  value="@OldAddress">
+
+                            <label> EXTENT</label>
+                            <input style="margin-top: -1px;" id="extent" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled  value="@OldExtent">
+
+                            <label> MARKET VALUE</label>
+                            <input style="margin-top: -1px;" id="Market_Value" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="@OldMarketValue">
+
+                            <label> NAME OF OWNER</label>
+                            <input style="margin-top: -1px;" id="owner" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="">
+
+                @*Submit Fields*@
+
+                    </div>
+
+
+            <div style="width:50%; overflow:hidden; margin-left: 50.5%; margin-top: -39.5%; border:none;">
+
+                <h6 style="margin-top: 15px;">CHANGES REQUESTED BY OBJECTOR</h6>
+                <label>DESCRIPTION OF THE PROPERTY/UNIT</label>
+                    <input style="margin-top: -1px;" id="desc_in" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" disabled value="@NewPropertyDescription">
+                <label>CATEGORY</label>
+                <input class="form-control" value="@NewCategory" disabled >
+
+                <label>PHYSICAL ADDRESS/DOOR NO./FLAT NO.</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" disabled value="@NewAddress">
+                <label>EXTENT</label>
+                <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" maxlength="10" onkeypress="return onlyNumberKey(event)" disabled value="@NewExtent">
+                <label>MARKET VALUE</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" maxlength="12" onkeypress="return onlyNumberKey(event)" disabled value="@NewMarketValue">
+                <label>NAME OF OWNER</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" disabled value="@NewOwner">
+
+            </div>
+            <br/>
+            <div>
+                <label>ADVERSE FEATURES AND/OR FURTHER REASONS IN SUPPORT OF THIS OBJECTION (ANNEXURE CAN BE PROVIDED)</label>
+                <textarea class="form-control" style="margin-top: -1px;" maxlength="500" rows="4" cols="150" disabled>@ObjectionReasons</textarea>
+            </div>
+
+        </div>
+    </div>
+
+
+    @* End of section 6*@
+
+    @*----------------------------------------Section 7  ---------------------------------------*@
+
+    <div id="section7" style="display:flex;justify-content: left; margin-bottom: 2%">
+
+
+        <div class="div7 " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+                    <h5 style="text-align:center" >SECTION 7: DECLARATION</h5>
+            <div style="overflow:hidden; margin-top: 15px; border:none;">
+
+
+                <h6 style="margin-top: 15px;margin-bottom:2%">
+                ATTENTION IS HEREBY DRAWN TO SECTION 42(2) OF THE ACT WHICH STATES THAT WHERE ANY DOCUMENT, INFORMATION OR 
+                PARTICULARS WERE NOT PROVIDED WHEN REQUIRED IN TERMS OF SUBSECTION 42(1) OF THE ACT AND THE OWNER CONCERNED 
+                RELIES ON SUCH DOCUMENT, INFORMATION OR PARTICULARS IN AN APPEAL TO AN APPEAL BOARD, THE APPEAL BOARD MAY MAKE 
+                AN ORDER AS TO COSTS IN TERMS OF SECTION 70 OF THE ACT IF THE APPEAL BOARD IS OF THE VIEW THAT THE FAILURE TO SO 
+                HAVE PROVIDED ANY SUCH DOCUMENT, INFORMATION OR PARTICULARS HAS PLACED AN UNNECESSARY BURDEN ON THE FUNCTIONS OF 
+                THE MUNICIPAL VALUER OR THE APPEAL BOARD.</h6>
+
+                I/WE <input style="margin-top: -1px;" id="sign_obj" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" value="@SignatureName" disabled> HEREBY DECLARE THAT THE INFORMATION AND PARTICULARS SUPPLIED ARE TRUE AND CORRECT.
+                <br/>
+                <label hidden style="margin-top:1%"><span></span>DATE</label>
+                <input hidden style="margin-top: -1px;" class="form-control" id="signDate" type="datetime-local">
+                <br>
+
+
+                <script>
+                    var date = new Date();
+                    var currentDate = date.toISOString().slice(0,16);
+
+                    document.getElementById('signDate').value = currentDate;
+                </script>
+
+
+                <h5 style="margin-left:2%">SIGNATURE</h5>
+
+               <p>
+                    <canvas width="500" height="200" id="signature" hidden="hidden"
+                            style="border:2px solid black; background-color:white;"></canvas>
+                    <img width="500" height="200" id="savetarget" 
+                            style="border:2px solid black; background-color:white;" src="@SignaturePicture"><br>
+                            <span style="width: 1%"></span>
+
+                    <input type="text" onpaste="return false;" ondrop="return false;"  id="SignatureDataUrl" hidden="hidden" >
+                </p>
+
+
+            </div>
+
+         </div>
+
+    </div>@* End of section 7*@
+
+       @*----------------------------------------Evidence---------------------------------------------------*@
+
+
+<div id="show-evidence">
+
+    <div class="div1" style="margin-top: 12px; border-radius: 25px; border: 2px solid #E6B000; padding: 20px; width: 997px;">
+        <h3 style="display:flex;justify-content: center;">
+            Evidence Package
+        </h3>
+                @foreach (var item in ViewBag.links)
+                {
+
+                    @if (item.Evidence_count > 1)
+                    {
+                        <h4 style="display:flex;justify-content: center; margin-top: 40px">
+                            @item.Evidence_count Files Uploaded By Objector
+                        </h4>
+                    }
+                    else
+                    {
+
+                        <h4 style="display:flex;justify-content: center; margin-top: 40px">
+                            @item.Evidence_count File Uploaded By Objector
+                        </h4>
+
+                    }
+                }
+        <div style="overflow-x: auto; margin-top: 20px">
+
+            <table>
+                <tr style="background-color: #E6B000">
+                    @*<th>Count</th>*@
+                    <th>File Name</th>
+                    <th>Evidence Type</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in ViewBag.links)
+                {
+                    @if (@item.Files1 != "")
+                {
+                    <tr id="Files1">
+                        <td>@item.Files1</td>
+                        <td>@QUERY_Type</td>
+                        <td><a style="background-color: grey; color: white" class="btn" href="@item.Files1_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files2 != "")
+                {
+                    <tr id="Files2">
+
+                        <td>@item.Files2</td>
+                            <td>@QUERY_Type</td>
+                            <td><a style="background-color: grey; color: white" class="btn" href="@item.Files2_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files3 != "")
+                {
+                    <tr id="Files3">
+
+                        <td>@item.Files3</td>
+                            <td>@QUERY_Type</td>
+                            <td><a style="background-color: grey; color: white" class="btn" href="@item.Files3_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files4 != "")
+                {
+                    <tr id="Files4">
+
+                        <td>@item.Files4</td>
+                            <td>@QUERY_Type</td>
+                            <td><a style="background-color: grey; color: white" class="btn" href="@item.Files4_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files5 != "")
+                {
+                    <tr id="Files5">
+
+                        <td>@item.Files5</td>
+                            <td>@QUERY_Type</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files5_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files6 != "")
+                {
+                    <tr id="Files6">
+
+                        <td>@item.Files6</td>
+                            <td>@QUERY_Type</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files6_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+                @if (@item.Files7 != "")
+                {
+                    <tr id="Files7">
+
+                        <td>@item.Files7</td>
+                        <td>@QUERY_Type</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files7_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Files8 != "")
+                {
+                    <tr id="Files8">
+
+                        <td>@item.Files8</td>
+                            <td>@QUERY_Type</td>
+
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files8_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+
+                @if (@item.Files9 != "")
+                {
+                    <tr id="Files9">
+
+                        <td>@item.Files9</td>
+                            <td>@QUERY_Type</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files9_path" target="_blank" download>Download</a></td>
+
+                    </tr>
+                }
+
+                @if (@item.Files10 != "")
+                {
+                    <tr id="Files10">
+
+
+                        <td>@item.Files10</td>
+                            <td>@QUERY_Type</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Files10_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+                @if (@item.Acknowledgement != "")
+                {
+                    <tr id="ack">
+
+                        <td>@item.Acknowledgement</td>
+                        <td>COJ</td>
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.Acknowledgement_path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+                @if (@item.RepLetter != "")
+                {
+                    <tr id="rep_let">
+
+                        <td>@item.RepLetter</td>
+                            <td>@QUERY_Type</td>
+
+                                    <td><a style="background-color: grey; color: white" class="btn" href="@item.RepLetter_Path" target="_blank" download>Download</a></td>
+                    </tr>
+                }
+
+               @*  @if (ViewBag.valuerEvidenceList != null)
+                {
+                    @foreach (var evidence in ViewBag.valuerEvidenceList)
+                    {
+                        @if (evidence != "")
+                        {
+                            var folder = "/ValuerEvidence/";
+                            var evidencePath = "http://168.89.201.36:80/Data/";
+
+                            <tr id="rep_let">
+                                <td>@evidence</td>
+                                <td>Valuer</td>
+                                <td><a style="background-color: grey; color: white" class="btn" href="@evidencePath@item.ObjectionNo@folder@evidence" target="_blank">Download</a></td>
+                            </tr>
+                        }
+
+                    }
+
+                }
+                @if (ViewBag.MVDApproverEvidenceList != null)
+                {
+                    @foreach (var evidence in ViewBag.MVDApproverEvidenceList)
+                    {
+                        @if (evidence != "")
+                        {
+                            var folder = "/MVDapproverEvidenceFinalized/";
+                            var evidencePath = "http://168.89.201.36:80/Data/";
+
+                            <tr id="rep_let">
+                                <td>@evidence</td>
+                                <td>MVD Approver Evidence</td>
+                                <td><a style="background-color: grey; color: white" class="btn" href="@evidencePath@item.ObjectionNo@folder@evidence" target="_blank">Download</a></td>
+                            </tr>
+                        }
+
+                    }
+
+                }
+                @if (ViewBag.ReviseMVDEvidenceList != null)
+                {
+                    @foreach (var evidence in ViewBag.ReviseMVDEvidenceList)
+                    {
+                        @if (evidence != "")
+                        {
+                            var folder = "/ReviserEvidence/";
+                            var evidencePath = "http://168.89.201.36:80/Data/";
+
+                            <tr id="rep_let">
+                                <td>@evidence</td>
+                                <td>MVD Reviser Evidence</td>
+                                <td><a style="background-color: grey; color: white" class="btn" href="@evidencePath@item.ObjectionNo@folder@evidence" target="_blank">Download</a></td>
+                            </tr>
+                        }
+
+                    }
+
+                }
+                @if (ViewBag.ReviseMVDApproverList != null)
+                {
+                    @foreach (var evidence in ViewBag.ReviseMVDApproverList)
+                    {
+                        @if (evidence != "")
+                        {
+                            var folder = "/ReviseMVDAppoverEvidence/";
+                            var evidencePath = "http://168.89.201.36:80/Data/";
+
+                            <tr id="rep_let">
+                                <td>@evidence</td>
+                                <td>Revised MVD Approver Evidence</td>
+                                <td><a style="background-color: grey; color: white" class="btn" href="@evidencePath@item.ObjectionNo@folder@evidence" target="_blank">Download</a></td>
+                            </tr>
+                        }
+
+                    }
+
+                } *@
+            }
+
+
+            </table>
+        </div>
+    </div>
+
+
+
+</div>
+
+    @*----------------------------------------------------Valuation---------------------------------------------------------------------------------*@
+
+    <input hidden type="text" name="userName" value="@currentUserFirstname @currentUserSurname" />
+
+
+    <div id="section_valution" style="display:flex;justify-content: left;">
+
+        <div class="container div7" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+
+            @*--------------------------------------------------------------------------------------------------------------------------------------*@
+            <input hidden type="text" name="userName" value="@currentUserFirstname @currentUserSurname" />
+
+
+            <section id="contact" class="contact">
+                <div class="container">
+
+                    <div class="row justify-content-center aos-init aos-animate php-email-form" data-aos="fade-up" data-aos-delay="300">
+                        <div class="col-xl-9 col-lg-12 mt-4">
+
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var item in ViewBag.OneValuation)
+                                    {
+                                        <input hidden type="text" name="QueryId" value="@item.QueryId" />
+
+                                        <div class="row my-3">
+                                            <div class="col-mt-3 form-group">
+                                                <label for="PropertyDescription">Property Description</label>
+                                                <input class="form-control" id="PropertyDescription" name="PropertyDescription" Value="@item.PropertyDescription" disabled />
+                                                <input hidden class="form-control" id="MarketValueComment" name="PropertyDescription" Value="@item.PropertyDescription" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row my-3">
+                                            <div class="col-md-6 form-group">
+                                                <label for="PremiseId">Premise Id</label>
+                                                <input class="form-control" id="PremiseId" name="PremiseId" Value="@item.PremiseId" disabled />
+                                                <input class="form-control" hidden id="PremiseId" name="PremiseId" Value="@item.PremiseId" />
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label for="TownNameDesc">Town Name Description</label>
+                                                <input class="form-control" id="TownNameDesc" name="TownNameDesc" Value="@item.TownshipDescription" disabled />
+                                            </div>
+
+                                            @section Scripts
+                                    {
+                                        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                                        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                                        <script>
+                                            $(function () {
+                                                $("#datepicker").datepicker({
+                                                    dateFormat: 'yy-mm-dd',
+                                                    minDate: new Date('2023-07-01')
+                                                });
+                                            });
+                                        </script>
+                                            }
+                                        </div>
+
+                                        <div class="row my-3">
+                                            <div class="col-md-6 form-group">
+                                                <label for="ValuationType">Valuation Type</label>
+                                                <input class="form-control" id="ValuationType" name="ValuationType" Value="@item.ValuationType" disabled />
+                                            </div>
+
+                                            <div class="col-md-6 form-group">
+                                                <label for="ValuationTypeDescription">Valuation Type Description</label>
+                                                <input class="form-control" id="ValuationTypeDescription" name="ValuationTypeDescription" Value="@item.ValuationTypeDescription" disabled />
+                                            </div>
+                                        </div>
+                                            <hr style="height:2px;border-width:0;color:red;background-color:red">
+                                        @*<div class="row">
+                            <div class="form-group mt-3">
+                            <input class="form-control" id="TownNameDesc" name="TownNameDesc" Value="@item.TownshipDescription" disabled />
+                            </div>
+                            </div>*@
+
+                                        @*<div class="row">
+                            <div class="form-group mt-3">
+                            <input class="form-control" id="PropertyDesc" name="PropertyDesc" Value="@item.PropertyDescription" disabled />
+                            </div>
+                            </div>*@
+
+                                        <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Proposed Extent</label>
+                                                    <input class="form-control" Value="@NewExtent" disabled />
+                                                </div>
+                                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                    <label for="Extent">Extent</label>
+                                                    <input class="form-control" id="Extent" name="Extent" value="" required />
+                                                </div>
+                                            @*<div class="col-md-6 form-group">
+                                <input class="form-control" id="MarketValue" name="MarketValue" Value="@item.MarketValue" disabled/>
+                                </div>
+                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <input class="form-control" id="MarketCategory" name="MarketCategory" Value="@item.MarketCategory" disabled/>
+                                </div>*@
+                                        </div>
+
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Proposed Market Value</label>
+                                                    <input class="form-control" disabled value="@NewMarketValue" />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="RevisedMarketValue">Market Value</label>
+                                                    <input class="form-control" id="Market_Value" name="MarketValue" Value="@item.MarketValue" onkeypress="return onlyNumberKey(event)"
+                                                           min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                           pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" required />
+                                                </div>
+
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Proposed Category</label>
+                                                    <input class="form-control" disabled value="@NewCategory" />
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="RevisedCategory">Category</label>
+                                                    <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                    <select class="form-control" id="RevisedCategory" name="CATDescription" value="@item.CATDescription" onblur="validateField2()"
+                                                            style="height:43px;" required>
+
+                                                        @{
+                                                            if (@item.CATDescription != "")
+                                                            {
+                                                                <option selected value="@item.CATDescription">@item.CATDescription</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option selected disabled value="">Category E.g. Residential</option>
+                                                            }
+                                                        }
+
+                                                        @{
+                                                            if (ViewBag.CategoriesList != null)
+                                                            {
+                                                                foreach (var cat in ViewBag.CategoriesList)
+                                                                {
+                                                                    <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group custom-margin" style="margin-left: 50%;">
+                                                    <label for="datepicker">With Effect Date</label>
+                                                    <input class="form-control" id="datepicker" name="WEF_DATE" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                                </div>
+                                            </div>
+                                                     <div id="multipurposeFields" style="display: none;">
+                                                     <hr style="height:2px;border-width:0;color:red;background-color:red">
+                                                       <div class="row my-3">
+                                                        <div class="col-md-6 form-group">
+                                                           <label for="RevisedMarketValue">Old Market Value</label>
+                                                           <input class="form-control" id="RevisedMarketValue" name="MarketValue1" Value="@item.MarketValue1" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                             pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                         </div>
+                                                         <div class="col-md-6 form-group">
+                                                            <label for="RevisedMarketValue">New Market Value</label>
+                                                            <input class="form-control" id="RevisedMarketValue" name="MarketValue1" Value="@item.MarketValue1" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;"
+                                                              ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()"  />
+                                                         </div>
+                                                        </div> <!-- End First Row -->
+                                                     <div class="row my-3">
+                                                      <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Old Category</label>
+                                                            <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategory" name="CATDescription1" value="@item.CATDescription1" onblur="validateField2()"style="height:43px;" disabled>
+                                                            @{
+                                                                if (@item.CATDescription1 != "")
+                                                                {
+                                                                              <option selected value="@item.CATDescription1">@item.CATDescription1</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                              <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                      <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                             </select>
+                                                       </div>
+                                                       <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategoryM">New Category</label>
+                                                            <input id="RevisedCategoryM" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategoryM" name="CATDescription1" value="@item.CATDescription1" onblur="validateField2()"style="height:43px;" >
+                                                            @{
+                                                                if (@item.CATDescription1 != "")
+                                                                {
+                                                                              <option selected value="@item.CATDescription1">@item.CATDescription1</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                              <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                             </select>
+                                                       </div>
+                                                     </div> <!-- End Third Row -->
+                                                     <div class="row my-3">
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                         <label for="Extent1">Old Extent</label>
+                                                         <input class="form-control" id="Extent1" name="Extent1" Value="@item.Extent1" disabled />
+                                                      </div>
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                          <label for="Extent1">New Extent</label>
+                                                         <input class="form-control" id="Extent1" name="Extent1" Value="@item.Extent1" />
+                                                      </div>
+                                                     </div>
+                                                       <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                                 <div class="row my-3">
+                                                                    <div class="col-md-6 form-group">
+                                                                       <label for="RevisedMarketValue">Old Market Value</label>
+                                                                       <input class="form-control" id="RevisedMarketValue" name="MarketValue2" Value="@item.MarketValue2" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                                         pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                                     </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                     <label for="RevisedMarketValue">New Market Value</label>
+                                                                     <input class="form-control" id="RevisedMarketValue" name="MarketValue2" value="@item.MarketValue2" onkeypress="return onlyNumberKey(event)" min="0"
+                                                                            onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                                     </div>
+                                                                    </div> <!-- End First Row -->
+
+                                                                 <div class="row my-3">
+                                                                  <div class="col-md-6 form-group">
+                                                                    <label for="RevisedCategory">Old Category</label>
+                                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                                        <select class="form-control" id="RevisedCategory" name="CATDescription2" value="@item.CATDescription2" onblur="validateField2()"style="height:43px;" disabled>
+                                                            @{
+                                                                if (@item.CATDescription2 != "")
+                                                                {
+                                                                             <option selected value="@item.CATDescription2">@item.CATDescription2</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                                         </select>
+                                                                   </div>
+                                                                   <div class="col-md-6 form-group">
+                                                                    <label for="RevisedCategoryM">New Category</label>
+                                                                        <input id="RevisedCategoryM" name="RevisedCategoryM" hidden>
+                                                                        <select class="form-control" id="RevisedCategoryM" name="CATDescription2" value="@item.CATDescription2" onblur="validateField2()"style="height:43px;" >
+                                                            @{
+                                                                if (@item.CATDescription2 != "")
+                                                                {
+                                                                             <option selected value="@item.CATDescription2">@item.CATDescription2</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                                         </select>
+                                                                   </div>
+                                                                 </div> <!-- End Third Row -->
+                                                                 <div class="row my-3">
+                                                                 <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                                     <label for="Extent2">Old Extent</label>
+                                                                     <input class="form-control" id="Extent2" name="Extent2" Value="@item.Extent2" disabled />
+                                                                  </div>
+                                                                 <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                                      <label for="Extent2">New Extent</label>
+                                                                                 <input class="form-control" id="Extent2" name="Extent2" Value="@item.Extent2" />
+                                                                  </div>
+                                                                 </div>
+                                                    <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                     <div class="row my-3">
+                                                        <div class="col-md-6 form-group">
+                                                           <label for="RevisedMarketValue">Old Market Value</label>
+                                                           <input class="form-control" id="RevisedMarketValue" name="MarketValue3" Value="@item.MarketValue3" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                             pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                         </div>  
+                                                        <div class="col-md-6 form-group">
+                                                         <label for="RevisedMarketValue">New Market Value</label>
+                                                         <input class="form-control" id="RevisedMarketValue" name="MarketValue3" value="@item.MarketValue3" onkeypress="return onlyNumberKey(event)" min="0"
+                                                            onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                         </div>
+                                                        </div> <!-- End First Row -->
+
+                                                     <div class="row my-3">
+                                                      <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Old Category</label>
+                                                            <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategory" name="CATDescription3" value="@item.CATDescription3" onblur="validateField2()"style="height:43px;" disabled>
+                                                            @{
+                                                                if (@item.CATDescription3 != "")
+                                                                {
+                                                                             <option selected value="@item.CATDescription3">@item.CATDescription3</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                             </select>
+                                                       </div>
+                                                       <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategoryM">New Category</label>
+                                                            <input id="RevisedCategoryM" name="RevisedCategoryM" hidden>
+                                                            <select class="form-control" id="RevisedCategoryM" name="CATDescription3" value="@item.CATDescription3" onblur="validateField2()"style="height:43px;">
+                                                            @{
+                                                                if (@item.CATDescription3 != "")
+                                                                {
+                                                                             <option selected value="@item.CATDescription3">@item.CATDescription3</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                                                }
+                                                            }
+                                                            @{
+                                                                if (ViewBag.CategoriesList != null)
+                                                                {
+                                                                    foreach (var cat in ViewBag.CategoriesList)
+                                                                    {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                                    }
+                                                                }
+                                                            }
+                                                             </select>
+                                                       </div>
+                                                     </div> <!-- End Third Row -->
+                                                     <div class="row my-3">
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                         <label for="Extent3">Old Extent</label>
+                                                         <input class="form-control" id="Extent3" name="Extent3" Value="@item.Extent3" disabled />
+                                                      </div>
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                          <label for="Extent3">New Extent</label>
+                                                         <input class="form-control" id="Extent3" name="Extent3" Value="@item.Extent3" />
+                                                      </div>
+                                                     </div>
+                                                     </div>   <!-- MultipurposeFields -->
+                                            @if (@item.Status == "Rejected")
+                                            {
+                                                <div class="row my-3">
+                                                    <div class="form-group mt-3">
+                                                        <label for="Comment"> Approver Comment</label>
+                                                        <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" disabled> @item.ApproverComment </textarea>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        <div class="row my-3">
+                                            <div class="form-group mt-3">
+                                                <label for="Comment">Comment</label>
+                                                <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment" required></textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <label for="evidence"> Evidence Upload </label>
+                                        <span style="color:red;">(Only 30MB File Allowed)</span>
+                                        <div class="row my-3">
+                                            <input id="evidence" type="file" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data*@
+                                        </div>
+                                        //<button type="submit">Upload File</button>
+
+                                        @if (ViewBag.Message != null)
+                                        {
+                                            <div class="alert" style="margin-top:20px">
+                                                @ViewBag.Message
+                                            </div>
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+
+                            <div class="my-3">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your message has been sent. Thank you!</div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn" style="background-color:#006570;">Update</button>
+
+                                    <button type="submit" asp-controller="Section78" asp-action="KillTask" asp-route-userName="@currentUserFirstname @currentUserSurname"
+                                    class="btn" style="background-color: #4CAF50;"
+                                    onclick="return confirm('Are you sure you want to kill the task?');">
+                                    Kill Task
+                                    </button>
+
+                                <a type="button" class="btn btn-secondary"
+                                   asp-controller="Section78" asp-action="PropPerUser" asp-route-userName="@currentUserFirstname @currentUserSurname"
+                                   style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px">
+                                    Back
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- End of tiles -->
+        </div>
+    </div>
+    <!-- End of tiles -->
+    <!-- Update Modal -->
+    <div class="m-4">
+        <div id="updateModal" class="modal fade" data-bs-backdrop="static" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to update the draft, do you want to proceed?</p>
+                        @*<p class="text-secondary"><small>If you don't save, your changes will be lost.</small></p>*@
+                    </div>
+                    <div class="modal-footer" style="display: flex; justify-content: center;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn" style="background-color: #E6B000;">Proceed</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var canvas = document.getElementById("signature");
+        var ctx = canvas.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillText("", 10, 50);
+    </script>
+</div>
+
+</form>

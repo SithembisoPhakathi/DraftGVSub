@@ -1,0 +1,157 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = GeneralValuationSubs
+build_property.RootNamespace = GeneralValuationSubs
+build_property.ProjectDir = C:\Users\10107892\source\repos\GeneralValuationSubs\GeneralValuationSubs\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\10107892\source\repos\GeneralValuationSubs\GeneralValuationSubs
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/Township.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcVG93bnNoaXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/DraftGvs/_Gridview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHJhZnRHdnNcX0dyaWR2aWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/AuditTrail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBdWRpdFRyYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/BulkUploadTownshipView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxCdWxrVXBsb2FkVG93bnNoaXBWaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/DraftApprovalList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxEcmFmdEFwcHJvdmFsTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/LAB.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMQUIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/PropPerUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9wUGVyVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/Testing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZXN0aW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/ViewPendingDraft.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWaWV3UGVuZGluZ0RyYWZ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/ViewProperty.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxWaWV3UHJvcGVydHkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/_DraftApprovalSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfRHJhZnRBcHByb3ZhbFN1Y2Nlc3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Home/_UpdateRevisedValueSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfVXBkYXRlUmV2aXNlZFZhbHVlU3VjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Role/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Role/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Search/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhcmNoXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Search/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhcmNoXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Search/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhcmNoXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Search/_Gridview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VhcmNoXF9Hcmlkdmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/_AuditTrail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BdWRpdFRyYWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/_DraftApproval.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9EcmFmdEFwcHJvdmFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/_DraftView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9EcmFmdFZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Township/Township.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93bnNoaXBcVG93bnNoaXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Township/_Gridview.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVG93bnNoaXBcX0dyaWR2aWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107892/source/repos/GeneralValuationSubs/GeneralValuationSubs/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-9km0g90769

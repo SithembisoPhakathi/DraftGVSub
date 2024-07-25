@@ -1,0 +1,2229 @@
+﻿
+<link asp-append-version="true" href="~/css/CardDesign.css" rel="stylesheet">
+<link asp-append-version="true" href="~/css/Tabs.css" rel="stylesheet">
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        #preloader {
+            background: white no-repeat center center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+    </style>
+    <div id="preloader"> <img src="~/Images/obj_page_loader.gif" /> </div>
+    <script>
+        var loader = document.getElementById("preloader");
+        window.addEventListener("load", function () {
+            loader.style.display = "none";
+        });
+    </script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <script>
+            function validateField1() 
+            {
+                var RevisedMarketValue = document.getElementById("RevisedMarketValue");
+                var RevisedCategory = document.getElementById("RevisedCategory");
+                var MarketValueComment = document.getElementById("Comment");                
+
+                if (RevisedMarketValue.value.length > 0) 
+                {
+                    MarketValueComment.required = true;
+                }
+                else 
+                {
+                    MarketValueComment.required = false;
+                }
+            }
+        </script>
+        <script>
+            function validateField2() 
+            {
+                var RevisedCategory = document.getElementById("RevisedCategory");
+                var CategoryComment = document.getElementById("Comment");
+
+                if (RevisedCategory.Checked = true)
+                {
+                    CategoryComment.required = true;
+                }
+                else 
+                {
+                    CategoryComment.required = false;
+                }
+            }
+        </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Add event listener to a parent element
+        document.body.addEventListener("change", function(event) {
+            // Check if the target of the event is the element with ID "RevisedCategory"
+            if (event.target && event.target.id === "RevisedCategory") {
+                var selectedCategory = event.target.value;
+                if (selectedCategory === "Multiple Purposes") {
+                    document.getElementById("multipurposeFields").style.display = "block";
+                    document.getElementById("Extent").parentNode.style.display = "block";
+                    document.getElementById("Extent").required = true;
+                } else {
+                    document.getElementById("multipurposeFields").style.display = "none";
+                    document.getElementById("RevisedMarketValue").parentNode.style.display = "block";
+                    document.getElementById("Extent").parentNode.style.display = "block";
+                }
+            }
+        });
+    });
+</script>
+
+    
+<div style="margin-left: 250px; padding:10px; position: center; right: 100px">
+    <a class="tablinks btn" onclick="showSection1()"    id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 1</a>
+    <a class="tablinks btn" onclick="showSection2()"    id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 2</a>
+    <a class="tablinks btn" onclick="showSection3res()" id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 3</a>
+    <a class="tablinks btn" onclick="showSection4res()" id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 4</a>
+    <a class="tablinks btn" onclick="showSection5()"    id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 5</a>
+    <a class="tablinks btn" onclick="showSection6()"    id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 6</a>
+    <a class="tablinks btn" onclick="showSection7()"    id="all-areas" style="text-decoration: none; background-color: #E6B000;" >Section 7</a>
+    <a class="tablinks btn" onclick="showEvidence()"    id="all-areas" style="text-decoration: none; background-color: #E6B000">Evidence</a>
+    <a class="tablinks btn" onclick="showValution()"    id="all-areas" style="text-decoration: none; background-color: #E6B000; margin-left: 100px" >Valuation</a>
+</div>
+
+<div style="display:flex;justify-content: center;">
+
+       @*-----------------------------------------------------------------SECTION 1 -----------------------------------------------------------*@
+
+    <div id="section1" style="display:flex;justify-content: left;">
+
+       <div class="div1" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+              <h4 style="text-align:center">SECTION 1: OBJECTOR INFORMATION</h4>
+              <div class="Div1-1">
+                <h4 id="owner_head">1.1 OBJECTOR IS THE OWNER</h4>
+
+                
+                <label id="o_name_l"> REGISTERED OWNER OF PROPERTY </label>
+                <input name="owner_name" id="o_name" style="margin-top: -1px;"  maxlength="100" class="form-control"  type="text" onpaste="return false;" ondrop="return false;">
+                <select hidden class="form-control mt-2" style="width:150px">
+                    <option selected value="RSA" id="O_RSA" onselect="RSA()">
+                        South African
+                    </option>
+                    <option value="foreigner" id="o_foreigner" onselect="foreigner()">
+                        Foreigner
+                    </option>
+                </select>
+
+                <label hidden id="o_pass_label"><span></span>Passport NO.</label>
+                    <input hidden id="o_pass" style="margin-top: -1px;"  class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;" >
+
+                <div id="owner_details">
+                    <label > <span></span>IDENTITY NO.</label>
+                    <input style="margin-top: -1px;" id="o_id" class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;" >
+                    <span id="id-status" style="color: red;"></span><br>
+
+                 <label > COMPANY OR C.C REGISTRATION NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="30"  type="text" onpaste="return false;" ondrop="return false;">
+
+                 <h5 style="margin-top: 5px;"> PHYSICAL ADDRESS OF OWNER </h5>
+
+                 <label > <span></span>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label> <span></span>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label> <span></span>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="o_st_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label> <span></span>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="o_st_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label > <span></span>POSTAL CODE</label>
+                    <input style="margin-top: -1px;" id="o_st_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;">
+
+                <h5 style="margin-top: 5px;">POSTAL ADDRESS OF OWNER </h5>
+                <p style="color:black;">
+                    <label>Postal Address is the same as Physical Address? &nbsp;</label>
+                    <span>
+                        <label>No</label>
+                        <input type="radio" name="add_pos" value="No" onclick="pos_no()" checked/>
+                        <label>Yes</label>
+                        <input type="radio" name="add_pos" onclick="pos_yes()" value="Yes"/>
+                    </span>
+                </p>
+  
+
+                <label> <span></span>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label> <span></span>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label> <span></span>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="o_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="o_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="o_p_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;">
+
+                </div>
+
+
+                <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+            
+
+                <label ></label>
+                <input style="margin-top: -1px;" id="o_cd_1" class="form-control o_cell_no" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="tel" onpaste="return false;" ondrop="return false;">
+
+                 <label >WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="o_cd_2" class="form-control o_cell_no" maxlength="15" onkeypress="return onlyNumberKey(event)"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>CELL </label>
+                <input style="margin-top: -1px;" id="o_cd_3" class="form-control o_cell_no" maxlength="15" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="o_cd_4" class="form-control"  maxlength="15"  onkeypress="return onlyNumberKey(event)"  type="text" onpaste="return false;" ondrop="return false;">
+ 
+                 <label>E-MAIL ADDRESS</label>
+                    <input style="margin-top: -1px;" id="o_cd_5" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+            
+               </div>
+            
+          <div class="Div1-2">      
+       
+                <h4>1.2 OBJECTOR IS NOT THE OWNER OR MUNICIPALITY IS THE OBJECTOR</h4>
+                <label > NAME OF OBJECTOR </label>
+                    <input style="margin-top: -1px;" id="objector_name" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label > <span></span>IDENTITY NO.</label>
+                    <input style="margin-top: -1px;" id="objector_id" class="form-control" maxlength="13" type="text" onpaste="return false;" ondrop="return false;">
+                    <span id="obj_id_status"></span><br>
+                <label > COMPANY OR CC REGISTRATION NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="20"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <h6 style="margin-top: 5px;">POSTAL ADDRESS OF OBJECTOR </h6>
+            
+                <label>OWNER NAME</label>
+                <input style="margin-top: -1px;" id="obj_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>TREET NAME</label>
+                      <input style="margin-top: -1px;" id="obj_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="obj_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>TOWN NAME </label>
+                    <input style="margin-top: -1px;" id="obj_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="obj_p_5" class="form-control" maxlength="10" type="text" onpaste="return false;" ondrop="return false;"  onkeypress="return onlyNumberKey(event)">
+
+
+               <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+
+                <label >HOME TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="obj_cd_1" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label>WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="obj_cd_2" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label>CELL </label>
+                    <input style="margin-top: -1px;" id="obj_cd_3" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="obj_cd_4" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+ 
+                 <label>E-MAIL ADDRESS</label>
+                    <input style="margin-top: -1px;" id="obj_cd_5" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label>STATUS OF OBJECTOR (e.g. Tenant, Pending Purchaser, Municipality, etc)</label>
+                    <input style="margin-top: -1px;" id="objector_stat"  class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+          </div>
+
+          <div class="Div1-3">  
+              <br/>
+                <h4>1.3 AUTHORISED REPRESENTATIVE OF THE OBJECTOR</h4>
+
+                <label>NAME OF REPRESENTATIVE</label>
+                    <input style="margin-top: -1px;" class="form-control" id="rep_name" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <h6 style="margin-top: 5px;">POSTAL ADDRESS OF REPRESENTATIVE </h6>
+
+                <label>OWNER NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_1" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label>STREET NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_2" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label>SUBURB NAME</label>
+                      <input style="margin-top: -1px;" id="rep_p_3" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>TOWN NAME</label>
+                    <input style="margin-top: -1px;" id="rep_p_4" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>POSTAL CODE</label>
+                <input style="margin-top: -1px;" id="rep_p_5" class="form-control" maxlength="10" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+               <h5 style="margin-top: 15px;">CONTACT DETAILS</h5>
+
+                <label>HOME TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="rep_cd_1" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>WORK TELEPHONE</label>
+                    <input style="margin-top: -1px;" id="rep_cd_2" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label>CELL </label>
+                    <input style="margin-top: -1px;" id="rep_cd_3" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                 <label > FAX </label>
+                    <input style="margin-top: -1px;" id="rep_cd_4" class="form-control" maxlength="15"  onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+ 
+                 <label>E-MAIL ADDRESS</label>
+                <input style="margin-top: -1px;" id="rep_cd_5" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;"><br />
+
+                <b>IF A REPRESENTATIVE IS APPOINTED, PROOF OF AUTHORISATION MUST BE ATTACHED, TO THIS FORM </b>
+          </div>
+        </div>
+    </div> @* End of section 1*@
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+          $("#section2").hide();
+          $("#section3-res").hide();
+          $("#section4-res").hide();
+          $("#section5").hide();
+          $("#section6").hide();
+          $("#section7").hide();
+          $("#section_valution").hide();
+            $("#show-evidence").hide();
+        });
+
+        function showSection1()
+        {
+            $("#section1").show();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+        function showSection2()
+        {
+            $("#section1").hide();
+            $("#section2").show();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+         function showSection3res()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").show();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+        function showSection4res()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").show();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+        function showSection5()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").show();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+        
+        function showSection6()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").show();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+        function showSection7()
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").show();
+            $("#section_valution").hide();
+            $("#show-evidence").hide();
+        }
+
+        function showValution() 
+        {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").show();
+            $("#show-evidence").hide();
+            
+            //Bob
+        }
+
+        function showEvidence() {
+            $("#section1").hide();
+            $("#section2").hide();
+            $("#section3-res").hide();
+            $("#section4-res").hide();
+            $("#section5").hide();
+            $("#section6").hide();
+            $("#section7").hide();
+            $("#section_valution").hide();
+            $("#show-evidence").show();
+            //Bob
+        }
+        
+    </script>
+
+    @*-----------------------------------------------------------------SECTION 2 -----------------------------------------------------------*@
+   
+   <div id="section2" style="display:flex;justify-content: left;">
+
+
+       <div class="div2" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+          <h4 style="text-align:center">SECTION 2: PROPERTY DETAILS (FOR SECTIONAL TITLES SEE SECTION 4)</h4>
+       
+
+            <h5 style="margin-top: 5px;"> PHYSICAL ADDRESS </h5>
+
+            <input style="margin-top: -1px;" class="form-control" value="" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+               
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100" value="" type="text" onpaste="return false;" ondrop="return false;">
+              
+                <label>POSTAL CODE</label>
+            <input style="margin-top: -1px;" id="phy_c" class="form-control" maxlength="4" onkeypress="return onlyNumberKey(event)" type="text" onpaste="return false;" ondrop="return false;">
+
+                <label > EXTENT OF PROPERTY (m2) </label>
+                    <input style="margin-top: -1px;" class="form-control" value="" maxlength="12" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+
+                <label > MUNICIPAL ACCOUNT NO (if available) </label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="12">
+
+            <label> NAME OF BOND HOLDER </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <label > REGISTERED AMOUNT OF BOND (if applicable)</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="12" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+               
+                <div>
+                    <label>PROVIDE FULL DETAILS OF ALL SERVITUDES, ROAD PROCLAMATIONS OR OTHER ENDORSEMENTS AGAINST THE PROPERTY (if applicable) </label>
+                    <textarea class="form-control" maxlength="500" style="margin-top: -1px;"  rows="4" cols="150" disabled></textarea>
+                </div>
+
+                <label > SERVITUDE NO. </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <label > AFFECTED AREA (m2)</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="12" step="0.01"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+
+                <label > IN FAVOUR OF </label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;">
+
+                <div>
+                    <label>FOR WHAT PURPOSE</label>
+                <textarea class="form-control" maxlength="250" style="margin-top: -1px;" rows="3" cols="150" disabled></textarea>
+                </div>
+
+          <div class="d-flex">
+                <fieldset class="col-md-3 mt-3" >
+          <label style="vertical-align:middle"> WAS COMPENSATION PAID </label>
+          <span>
+            <label class="btn" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Yes"   style="accent-color: green;">
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="No" style="accent-color: green;" >
+              No
+            </label>
+          </span>
+        </fieldset>
+          </div>
+
+        <label > IF YES, DATE OF PAYMENT </label>
+           <input style="margin-top: -1px;" class="form-control"  type="date">
+
+        <label > AMOUNT R </label>
+           <input style="margin-top: -1px;" class="form-control" maxlength="12" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)"  onkeyup="reformatText(this)" >
+           <input id="Compensation_Amount" hidden/>
+           
+         </div>
+
+    </div> @* End of section 2*@
+
+    @*-----------------------------------------------------------------SECTION 3 RESIDENTIAL-----------------------------------------------------------*@
+
+       <div id="section3-res" style="display:flex;justify-content: left;">
+        
+
+           <div class="div3_R " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+           <h4 style="text-align:center">SECTION 3: DESCRIPTION OF RESIDENTIAL DWELLING (FOR SECTIONAL TITLES SEE SECTION 4)</h4>
+               <h5>3.1 MAIN DWELLING</h5>
+
+                <label> NO. OF BEDROOMS </label>
+                 <input style="margin-top: -1px;" disabled id="s3r" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="3"">
+           
+                <label > NO. OF BATHROOMS</label>
+                <input style="margin-top: -1px;" disabled class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="3">
+
+           <h6 class="mt-3">STATE YES OR NO (IF YES INDICATE NUMBER OF ROOMS)</h6>
+     <div class="d-flex">
+                <fieldset class="col-md-4" >
+          <label> KITCHEN </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="k_res" class="form-check-input" onclick="show_res_kitchins()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="k_res" class="form-check-input" onclick="hide_res_kitchins()" value="No"  >
+              No
+            </label>
+            </span>
+            <div id="res_kitchins">
+            
+                <select asp-for="Res_Kitchen">
+
+                <option id="kitchen_one" selected>
+                    
+                </option>
+                <option id="kitchen_two">
+                    
+                </option>
+                <option id="kitchen_three">
+                 
+                </option>
+                 <option id="kitchen_four">
+                   
+                </option>
+                <option id="kitchen_five">
+                    
+                </option>
+                </select>
+            </div>
+            
+        </fieldset>
+
+           <fieldset class="col-md-4 px-3">
+          <label style="vertical-align:middle"> LOUNGE </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="l_res" class="form-check-input" onclick="show_res_lounge()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="l_res" class="form-check-input" onclick="hide_res_lounge()" value="No" >
+              No
+            </label>
+            </span>
+
+            <div id="res_lounges">
+             
+                <select asp-for="Res_Lounge" >
+
+                 
+                <option id="lounge_one" selected>
+                    
+                </option>
+                <option id="lounge_two">
+                    
+                </option>
+                <option id="lounge_three">
+                 
+                </option>
+                 <option id="lounge_four">
+                   
+                </option>
+                <option id="lounge_five">
+                    
+                </option>
+                </select>
+            </div>
+
+        </fieldset>
+
+           
+                 <fieldset class="col-md-4 px-0">
+          <label style="vertical-align:middle"> DINING ROOM </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="d_res" class="form-check-input" onclick="show_res_dining_room()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="d_res" class="form-check-input" onclick="hide_res_dining_room()" asp-for="Res_Dinning_Room" value="No">
+              No
+            </label>
+            </span>
+
+            <div id="res_dining_room">
+              
+                <select asp-for="Res_Dinning_Room">
+
+                 
+                <option id="dining_room_one" selected>
+                    
+                </option>
+                <option id="dining_room_two">
+                    
+                </option>
+                <option id="dining_room_three">
+                 
+                </option>
+                 <option id="dining_room_four">
+                   
+                </option>
+                <option id="dining_room_five">
+                    
+                </option>
+                </select>
+            </div>
+        </fieldset>
+
+     </div>
+
+     <div class="d-flex">
+          <fieldset class="col-md-4 mt-3">
+          <label style="vertical-align:middle"> LAUNDRY</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="la_res" class="form-check-input" onclick="show_res_laundry()"    >
+              Yes
+            </label>
+          </span>
+          <span  @*style="margin-left: 11.2%; margin-top: -7.3%"*@>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="la_res" class="form-check-input" onclick="hide_res_laundry()" value="No" >
+              No
+            </label>
+            </span>
+
+            <div id="res_laundry">
+               
+                <select asp-for="Res_Laundry">
+                     
+                    <option id="laundry_one" selected>
+                    
+                    </option>
+                    <option id="laundry_two">
+                    
+                    </option>
+                    <option id="laundry_three">
+                 
+                    </option>
+                     <option id="laundry_four">
+                   
+                    </option>
+                    <option id="laundry_five">
+                    
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+
+
+           <fieldset class="col-md-4 mt-3 px-3" @*style="margin-left: 60%; margin-top: -6.70%"*@ >
+          <label style="vertical-align:middle"> STUDY</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="s_res" class="form-check-input" onclick="show_res_study()" >
+              Yes
+            </label>
+          </span>
+          <span  @*style="margin-left: 15.5%; margin-top: -10%"*@>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="s_res" class="form-check-input" onclick="hide_res_study()" value="No" >
+              No
+            </label>
+            </span>
+            <div id="res_study">
+               
+                <select asp-for="Res_Study">
+                     
+                    <option id="study_one" selected>
+                    
+                    </option>
+                    <option id="study_two">
+                    
+                    </option>
+                    <option id="study_three">
+                 
+                    </option>
+                     <option id="study_four">
+                   
+                    </option>
+                    <option id="study_five">
+                    
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="col-md-4 mt-3 px-0">
+      <label style="vertical-align:middle"> PLAYROOM</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="p_res" class="form-check-input" onclick="show_res_playroom()"   >
+          Yes
+        </label>
+      </span>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="p_res" class="form-check-input" onclick="hide_res_playroom()" value="No" >
+          No
+        </label>
+        </span>
+
+        <div id="res_playroom">
+               
+                <select asp-for="Res_Play_Room">
+                    
+                    <option id="playroom_one" selected>
+                    
+                    </option>
+                    <option id="playroom_two">
+                    
+                    </option>
+                    <option id="playroom_three">
+                 
+                    </option>
+                     <option id="playroom_four">
+                   
+                    </option>
+                    <option id="playroom_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+
+        
+     </div>
+
+    <div class="d-flex">
+        <fieldset class="col-md-4 mt-3" >
+      <label style="vertical-align:middle;"> TV ROOM</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="tv_res" class="form-check-input" onclick="show_res_television()" >
+          Yes
+        </label>
+      </span>
+      <span>
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="tv_res" class="form-check-input" onclick="hide_res_television()" value="No"  >
+          No
+        </label>
+        </span>
+
+        <div id="res_television">
+               
+                <select asp-for="Res_Television">
+                    
+                    <option id="television_one" selected>
+                    
+                    </option>
+                    <option id="television_two">
+                    
+                    </option>
+                    <option id="television_three">
+                 
+                    </option>
+                     <option id="television_four">
+                   
+                    </option>
+                    <option id="television_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+   
+
+
+        <fieldset class="col-md-4 mt-3 mb-3 px-3">
+      <label style="vertical-align:middle"> SEPARATE TOILET</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="st_res" class="form-check-input" onclick="show_res_separate_toilets()"  >
+          Yes
+        </label>
+      </span>
+      <span  >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="st_res" class="form-check-input" onclick="hide_res_separate_toilets()" value="No"  >
+          No
+        </label>
+        </span>
+
+        <div id="res_separate_toilets">
+               
+                <select asp-for="Res_Seperate_Toilet">
+                    
+                    <option id="separate_toilets_one" selected>
+                    
+                    </option>
+                    <option id="separate_toilets_two">
+                    
+                    </option>
+                    <option id="separate_toilets_three">
+                 
+                    </option>
+                     <option id="separate_toilets_four">
+                   
+                    </option>
+                    <option id="separate_toilets_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+
+     <fieldset class="col-md-5 mt-3" >
+      <label style="vertical-align:middle"> LOUNGE WITH DINING ROOM </label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio"  name="ld_res" class="form-check-input" onclick="show_res_lounge_dining_room()" >
+          Yes
+        </label>
+      </span>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off"  >
+          <input type="radio" name="ld_res" class="form-check-input" onclick="hide_res_lounge_dining_room()" value="No">
+          No
+        </label>
+        </span>
+
+        <div id="res_lounge_dining_room">
+               
+                <select asp-for="Res_Lounge_Dining_Room">
+                    
+                    <option id="lounge_dining_room_one" selected>
+                    
+                    </option>
+                    <option id="lounge_dining_room_two">
+                    
+                    </option>
+                    <option id="lounge_dining_room_three">
+                 
+                    </option>
+                     <option id="lounge_dining_room_four">
+                   
+                    </option>
+                    <option id="lounge_dining_room_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+    </div>
+
+
+    
+
+            <label > OTHER"1" </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+
+            <label > OTHER"2"  </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+
+            <label > OTHER"3" </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+
+            <label >OTHER"4" </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+
+            <h5 style="margin-top: 15px;">3.2 OUTBUILDING</h5>
+
+            <label > NO. OF GARAGES </label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="3">
+
+           <label > GRANNY FLAT/ROOMS </label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+          
+            <label > OTHER</label>
+                <input style="margin-top: -1px;" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+          
+            <label > SIZE OF MAIN DWELLING (m2)</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="6" step="0.01" >
+       
+            <label > SIZE OF OUTBUILDING (m2)</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="6" step="0.01">
+        
+            <label > SIZE OF OTHER BUILDING (m2)</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="6" step="0.01">
+            
+                <label > TOTAL SIZE OF ALL BUILDING BUILDINGS (m2)</label>
+                <input style="margin-top: -1px;" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" maxlength="6" step="0.01">
+
+
+            <h5 style="margin-top: 15px;">3.3 OTHER BUILDINGS (ATTACH ANNEXURE)</h5>
+ 
+   
+            <div class="d-flex">
+                          <fieldset class="col-md-4 mt-3" >
+          <label style="vertical-align:middle">SWIMMING POOL</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Yes"  >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="No" >
+              No
+            </label>
+            </span>
+        </fieldset>
+
+        <fieldset class="col-md-3 mt-3" >
+          <label style="vertical-align:middle">BORE HOLE</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Yes" >
+              Yes
+            </label>
+          </span>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="No" >
+              No
+            </label>
+            </span>
+        </fieldset>
+
+
+        <fieldset class="col-md-4 mt-3" >
+          <label style="vertical-align:middle">TENNIS COURT</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Yes" >
+              Yes
+            </label>
+          </span>
+          <span  >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="No" >
+              No
+            </label>
+            </span>
+        </fieldset>
+            </div>
+
+            <div class="d-flex">
+                         <fieldset class="col-md-5 mb-3 mt-3" >
+          <label style="vertical-align:middle">GARDEN</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Good" >
+              GOOD
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Average" >
+              AVERAGE
+            </label>
+            </span>
+
+            <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Poor" >
+              POOR
+            </label>
+            </span>
+        </fieldset>
+            </div>
+        
+        <label > OTHER"1" </label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+        <label > OTHER"2" </label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;">
+
+
+            <div class="d-flex">
+                <fieldset class="col-md-3 mt-3" >
+          <label style="vertical-align:middle">FENCING</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Yes">
+              Yes
+            </label>
+          </span>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="No" >
+              No
+            </label>
+            </span>
+        </fieldset>
+            </div>
+
+       <div id="fence_table">
+            <table class="table table-bordered table-hover" >
+                <thead  class="thead-light">
+                    <tr>
+                        <th scope="col" class="col-1">
+                            FENCING&nbsp;&nbsp;
+                        </th>
+                        <th scope="col" class="col-1">
+                            FRONT
+                        </th>
+                        <th scope="col" class="col-1">
+                            BACK
+                        </th>
+                        <th scope="col" class="col-1">
+                            SIDE 1
+                        </th>
+                            <th scope="col" class="col-1">
+                            SIDE 2
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">
+                            Type
+                        </th>
+                        <td >
+                            <input style="border:none;" placeholder="e.g. Wood, Masonry" maxlength="30" onpaste="return false;" ondrop="return false;"/>
+                        </td>
+                        <td >
+                            <input style="border:none;" placeholder="e.g. Wood, Masonry" maxlength="30" onpaste="return false;" ondrop="return false;"/>
+                        </td>
+                        <td >
+                            <input style="border:none;" placeholder="e.g. Wood, Masonry" maxlength="30" onpaste="return false;" ondrop="return false;"/>
+                        </td>
+                        <td >
+                                <input style="border:none;" placeholder="e.g. Wood, Masonry" maxlength="30" onpaste="return false;" ondrop="return false;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            Height (CM)
+                        </th>
+                        <td >
+                            <input style="border:none;"  onpaste="return false;" maxlength="4" ondrop="return false;" onkeypress="return onlyNumberKey(event)" />
+                        </td>
+                        <td >
+                            <input style="border:none;" onpaste="return false;" maxlength="4" ondrop="return false;" onkeypress="return onlyNumberKey(event)" />
+                        </td>
+                        <td >
+                            <input style="border:none;" onpaste="return false;" maxlength="4" ondrop="return false;" onkeypress="return onlyNumberKey(event)" />
+                        </td>
+                        <td >
+                            <input style="border:none;" onpaste="return false;" maxlength="4" ondrop="return false;" onkeypress="return onlyNumberKey(event)" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+       </div>
+
+             <label >  DRIVEAWAY (e.g. Bricks, pavers) </label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="50" type="text" onpaste="return false;" ondrop="return false;">
+
+                <div class="d-flex mb-3">
+                              <fieldset class="col-md-6 mt-3" >
+          <label style="vertical-align:middle">IS YOUR PROPERTY SITUATED IN A BOOMED AREA OR SECURITY</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off">
+              <input type="radio" class="form-check-input" value="Yes" >
+              Yes
+            </label>
+          </span>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off">
+              <input type="radio" class="form-check-input"  value="No" >
+              No
+            </label>
+            </span>
+        </fieldset>
+                </div>
+
+         <label > OTHER FEATURES: </label>
+                <input style="margin-top: -1px;" maxlength="100" class="form-control"  type="text" onpaste="return false;" ondrop="return false;">
+
+            <div class="d-flex">
+            <div class="d-flex col-md-4">
+            <fieldset class="col-md-12 mb-3 mt-3" >
+              <label style="vertical-align:middle">OTHER FEATURE CONDITION </label>
+              <br/>
+              <span >
+                <label class="btn px-0 py-2" autocomplete="off" >
+                  <input type="radio" class="form-check-input" value="Good" >
+                  GOOD
+                </label>
+              </span>
+              <span >
+                <label class="btn px-0 py-2" autocomplete="off" >
+                  <input type="radio" class="form-check-input" value="Average" >
+                  AVERAGE
+                </label>
+                </span>
+
+                <span  >
+                <label class="btn px-0 py-2" autocomplete="off" >
+                  <input type="radio" class="form-check-input" value="Poor" >
+                  POOR
+                </label>
+                </span>
+            </fieldset>
+        </div>
+        <div class="d-flex  col-md-6">
+         <fieldset class="col-md-12 mb-3 mt-3" >
+          <label style="vertical-align:middle">GENERAL CONDITION OF PROPERTY </label>
+          <br/>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Good"  >
+              GOOD
+            </label>
+          </span>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Average" >
+              AVERAGE
+            </label>
+            </span>
+
+            <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" class="form-check-input" value="Poor" >
+              POOR
+            </label>
+            </span>
+        </fieldset>
+        </div>
+            </div>
+    </div>
+
+
+        </div> @* End of section 3*@
+
+ @*-----------------------------------------------------------------SECTION 4 RESIDENTIAL-----------------------------------------------------------*@
+
+  <div id="section4-res" style="display:flex;justify-content: left;">
+     <div class="div4_R " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+         <h5 style="text-align:center">SECTION 4: SECTIONAL TITLE UNITS</h5>
+           <h5>4.1 SECTIONAL TITLE UNITS</h5>
+
+           <label > SCHEME NAME</label>
+           <input style="margin-top: -1px;" id="sch_name" maxlength="100" class="form-control"  type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Scheme_Name">
+
+           <label > SCHEME NO.</label>
+           <input style="margin-top: -1px;" id="sch_no" maxlength="8" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Scheme_No">
+
+           <label hidden > FLAT NO/DOOR NO.</label><label> FLAT NO/UNIT NO.</label>
+           <input style="margin-top: -1px;" id="flat_no" class="form-control" maxlength="8" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Flat_No">
+
+           
+           <label > UNIT SIZE (m2)</label>
+           <input style="margin-top: -1px;" id="unit_size" class="form-control" maxlength="8" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Unit_Size">
+
+           <label > NAME OF MANAGEMENT AGENT</label>
+           <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Managing_Agent_Name">
+
+           <label >TEL NO.</label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="15" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Managing_Agent_Tel_No">
+
+
+           <label> NO OF BEDROOMS </label>
+           <input style="margin-top: -1px;" class="form-control" maxlength="5" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_No_of_Bedroom">
+           
+           <label > NO OF BATHROOMS</label>
+           <input style="margin-top: -1px;" class="form-control" maxlength="5" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_No_of_BathRoom">
+
+           <label > Monthly Levy</label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="8" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Monthly_Levy_Res">
+
+
+            <div class="d-flex">
+                <fieldset class="col-md-4 mt-3" >
+          <label> KITCHEN </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="k_res2" class="form-check-input" onclick="show_res_st_kitchins()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="k_res2" class="form-check-input" onclick="hide_res_st_kitchins()" asp-for="Res4_Kitchen" value="No">
+              No
+            </label>
+            </span>
+            <div id="res_st_kitchins">
+             
+                <select asp-for="Res4_Kitchen">
+
+                 
+                <option id="kitchen_st_one" selected>
+                    
+                </option>
+                <option id="kitchen_st_two">
+                    
+                </option>
+                <option id="kitchen_st_three">
+                 
+                </option>
+                 <option id="kitchen_st_four">
+                   
+                </option>
+                <option id="kitchen_st_five">
+                    
+                </option>
+                </select>
+            </div>
+            
+        </fieldset>
+
+           <fieldset class="col-md-4 mt-3 px-3">
+          <label style="vertical-align:middle"> LOUNGE </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio"name="l_res2" class="form-check-input" onclick="show_res_st_lounge()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio"name="l_res2" class="form-check-input" onclick="hide_res_st_lounge()" asp-for="Res4_Lounge" value="No" >
+              No
+            </label>
+            </span>
+
+            <div id="res_st_lounges">
+             
+                <select asp-for="Res4_Lounge" >
+
+                
+                <option id="lounge_st_one" selected>
+                    
+                </option>
+                <option id="lounge_st_two">
+                    
+                </option>
+                <option id="lounge_st_three">
+                 
+                </option>
+                 <option id="lounge_st_four">
+                   
+                </option>
+                <option id="lounge_st_five">
+                    
+                </option>
+                </select>
+            </div>
+
+        </fieldset>
+
+           
+                 <fieldset class="col-md-4 mt-3 px-0">
+          <label style="vertical-align:middle"> DINING ROOM </label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio"name="d_res2" class="form-check-input" onclick="show_res_st_dining_room()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio"name="d_res2" class="form-check-input" onclick="hide_res_st_dining_room()" asp-for="Res4_Dinning_Room" value="No">
+              No
+            </label>
+            </span>
+
+            <div id="res_st_dining_room">
+              
+                <select asp-for="Res4_Dinning_Room">
+
+                
+                <option id="dining_room_st_one" selected>
+                    
+                </option>
+                <option id="dining_room_st_two">
+                    
+                </option>
+                <option id="dining_room_st_three">
+                 
+                </option>
+                 <option id="dining_room_st_four">
+                   
+                </option>
+                <option id="dining_room_st_five">
+                    
+                </option>
+                </select>
+            </div>
+        </fieldset>
+
+     </div>
+
+
+
+     <div class="d-flex">
+          <fieldset class="col-md-4 mt-3">
+          <label style="vertical-align:middle"> LAUNDRY</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="la_res2" class="form-check-input" onclick="show_res_st_laundry()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="la_res2" class="form-check-input" onclick="hide_res_st_laundry()" asp-for="Res4_Laundry" value="No" >
+              No
+            </label>
+            </span>
+
+            <div id="res_st_laundry">
+               
+                <select asp-for="Res4_Laundry">
+                    
+                    <option id="laundry_st_one" selected>
+                    
+                    </option>
+                    <option id="laundry_st_two">
+                    
+                    </option>
+                    <option id="laundry_st_three">
+                 
+                    </option>
+                     <option id="laundry_st_four">
+                   
+                    </option>
+                    <option id="laundry_st_five">
+                    
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+
+
+           <fieldset class="col-md-4 mt-3 px-3">
+          <label style="vertical-align:middle"> STUDY</label>
+          <span >
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="s_res2" class="form-check-input" onclick="show_res_st_study()" >
+              Yes
+            </label>
+          </span>
+          <span>
+            <label class="btn px-0 py-2" autocomplete="off" >
+              <input type="radio" name="s_res2" class="form-check-input" onclick="hide_res_st_study()" asp-for="Res4_Study" value="No" >
+              No
+            </label>
+            </span>
+            <div id="res_st_study">
+               
+                <select asp-for="Res4_Study">
+                     
+                    <option id="study_st_one" selected>
+                    
+                    </option>
+                    <option id="study_st_two">
+                    
+                    </option>
+                    <option id="study_st_three">
+                 
+                    </option>
+                     <option id="study_st_four">
+                   
+                    </option>
+                    <option id="study_st_five">
+                    
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset class="col-md-4 mt-3 px-0">
+      <label style="vertical-align:middle"> PLAYROOM</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="p_res2" class="form-check-input" onclick="show_res_st_playroom()"  >
+          Yes
+        </label>
+      </span>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="p_res2" class="form-check-input" onclick="hide_res_st_playroom()" asp-for="Res4_Play_Room" value="No" >
+          No
+        </label>
+        </span>
+
+        <div id="res_st_playroom">
+               
+                <select asp-for="Res4_Play_Room">
+                     
+                    <option id="playroom_st_one" selected>
+                    
+                    </option>
+                    <option id="playroom_st_two">
+                    
+                    </option>
+                    <option id="playroom_st_three">
+                 
+                    </option>
+                     <option id="playroom_st_four">
+                   
+                    </option>
+                    <option id="playroom_st_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>   
+    </div>
+
+    <div class="d-flex">
+        <fieldset class="col-md-4 mt-3" >
+      <label style="vertical-align:middle;"> TV ROOM</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="tv_res2" class="form-check-input" onclick="show_res_st_television()">
+          Yes
+        </label>
+      </span>
+      <span>
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="tv_res2" class="form-check-input" onclick="hide_res_st_television()" asp-for="Res4_Television" value="No"  >
+          No
+        </label>
+        </span>
+
+        <div id="res_st_television">
+               
+                <select asp-for="Res4_Television">
+                     
+                    <option id="television_st_one" selected>
+                    
+                    </option>
+                    <option id="television_st_two">
+                    
+                    </option>
+                    <option id="television_st_three">
+                 
+                    </option>
+                     <option id="television_st_four">
+                   
+                    </option>
+                    <option id="television_st_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+   
+
+
+        <fieldset class="col-md-4 mt-3 mb-3 px-3">
+      <label style="vertical-align:middle"> SEPARATE TOILET</label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="st_res2" class="form-check-input" onclick="show_res_st_separate_toilets()" >
+          Yes
+        </label>
+      </span>
+      <span  >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="st_res2" class="form-check-input" onclick="hide_res_st_separate_toilets()" asp-for="Res4_Seperate_Toilet" value="No"  >
+          No
+        </label>
+        </span>
+
+        <div id="res_st_separate_toilets">
+               
+                <select asp-for="Res4_Seperate_Toilet">
+                     
+                    <option id="separate_toilets_st_one" selected>
+                    
+                    </option>
+                    <option id="separate_toilets_st_two">
+                    
+                    </option>
+                    <option id="separate_toilets_st_three">
+                 
+                    </option>
+                     <option id="separate_toilets_st_four">
+                   
+                    </option>
+                    <option id="separate_toilets_st_five">
+                    
+                    </option>
+                </select>
+            </div>
+    </fieldset>
+
+     <fieldset class="col-md-5 mt-3" >
+      <label style="vertical-align:middle"> LOUNGE WITH DINING ROOM </label>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off" >
+          <input type="radio" name="ld_res2" class="form-check-input" onclick="show_res_st_lounge_dining_room()">
+          Yes
+        </label>
+      </span>
+      <span >
+        <label class="btn px-0 py-2" autocomplete="off"  >
+          <input type="radio" name="ld_res2" class="form-check-input" onclick="hide_res_st_lounge_dining_room()" asp-for="Res4_Lounge_Dining_Room" value="No">
+          No
+        </label>
+        </span>
+
+        <div id="res_st_lounge_dining_room">
+               
+                        <select asp-for="Res4_Lounge_Dining_Room">
+                     
+                            <option id="lounge_dining_room_st_one" selected>
+                    
+                            </option>
+                            <option id="lounge_dining_room_st_two">
+                    
+                            </option>
+                            <option id="lounge_dining_room_st_three">
+                 
+                            </option>
+                             <option id="lounge_dining_room_st_four">
+                   
+                            </option>
+                            <option id="lounge_dining_room_st_five">
+                    
+                            </option>
+                        </select>
+                    </div>
+            </fieldset>
+            </div>
+
+        <div>
+
+           <label style="margin-top: 15px"> OTHER"1" </label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Dwell_Other1">
+
+            <label > OTHER"2"  </label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Dwell_Other2">
+
+            <label > OTHER"3" </label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Dwell_Other3">
+
+            <label >OTHER"4" </label>
+                <input style="margin-top: -1px;" class="form-control"  maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Dwell_Other4">
+       </div>
+
+       <div style=" width:50%; overflow:hidden; margin-top: 15px; border:none;">
+            <h6 style="margin-top: 15px;">COMMON PROPERTY CONSISTS OF:</h6>
+            <label >SWIMMING POOL</label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Pool_Size">  
+
+            <label >TENNIS COURT</label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Tennis_Court_Size"> 
+
+            <label > OTHER"1" </label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Common_Property_Other_1">
+
+            <label > OTHER"2"  </label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Common_Property_Other_2">
+
+            <label > OTHER"3" </label>
+            <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Common_Property_Other_3">
+
+        </div>
+
+        <div style="  width:50%; overflow:hidden; margin-left: 50.5%; margin-top: -32.67%; border:none;">
+                <h6 style="margin-top: 15px;">DETAILS OF EXCLUSIVE AREAS</h6>
+                <label >GARAGE (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Garage_Size">  
+
+                <label >CARPORT (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Carport_Size"> 
+
+                <label > OPEN PARKING (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Open_Parking_Size">
+
+                 <label > STORE ROOM (m2)</label>
+                 <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Store_Room_Size">
+
+                 <label > GARDEN (m2)</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="5" step="0.01" min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Res4_Garden_Size">
+
+                <label > OTHER"4"</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100"  type="text" onpaste="return false;" ondrop="return false;" asp-for="Res4_Exclusive_Other">
+
+            </div>
+
+   </div>
+  </div>@* End of section 4*@
+
+
+      @*----------------------------------------Section 5  ---------------------------------------*@
+   <div id="section5" style="display:flex;justify-content: left;">
+
+
+        <div class="div5" style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+            <h5 style="text-align:center">SECTION 5: MARKET INFORMATION</h5>
+            <div>
+                <div class="form-control" style="height:550px; width:50%; overflow:hidden; margin-top: 15px; border:none;">
+                <h6 style="margin-top: 15px;">IF YOUR PROPERTY IS CURRENTLY ON THE MARKET, WHAT IS THE ASKING PRICE?</h6>
+
+                    <label>R</label>
+                    <input style="margin-top: -1px;" id="s5" maxlength="12" class="form-control"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Current_Asking_price">
+        
+                
+                <h6 style="margin-top: 15px;">IF YOUR PROPERTY HAS BEEN ON THE MARKET IN THE LAST 3 YEARS, WHAT WAS THE ASKING PRICE</h6>
+                
+                    <label>R</label>
+                    <input style="margin-top: -1px;" class="form-control"  maxlength="10"  min="0" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Previous_Asking_price">
+
+                    <label>NAME OF AGENT</label>
+                    <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Agent_Name">
+
+                    <label>SALES TRANSACTIONS(OF OTHER PROPERTIES IN THE VICINITY) USED BY OBJECTOR IN DETERMINING THE MARKET VALUES OF THE PROPERTY OBJECTED TO</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="10" asp-for="Other_Nearby_Sales">
+
+                    <label> ERF/UNIT</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="5" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)" asp-for="Unit_No">
+
+                    <label> DATE OF SALE</label>
+                    <input style="margin-top: -1px;" class="form-control"  type="date" name="StartDate2" asp-for="Sale_Date">
+                </div>
+
+
+    
+                <div class="form-control" style="height:550px; width:50%; overflow:hidden; margin-left: 50%; margin-top: -54.70%; border:none;">
+
+                    <label style="margin-top: 8.4%">OFFER RECEIVED "R"</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="12" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+
+                    <label style="margin-top: 10.5%;"> OFFER RECEIVED "R" </label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="12" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+
+                    <label> TEL NO.</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="15" onkeypress="return onlyNumberKey(event)">
+
+                    <label style="margin-top: 8.5%"> SUBURB/FARM/SCHEME NAME</label>
+                    <input style="margin-top: -1px;" class="form-control" type="text" onpaste="return false;" ondrop="return false;" maxlength="100">
+
+                    <label> SELLING PRICE</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" maxlength="10" type="text" onpaste="return false;" ondrop="return false;" onkeypress="return onlyNumberKey(event)">
+
+                </div>
+            </div>
+         
+        </div>
+
+    </div> @* End of section 5*@
+
+    @*----------------------------------------Section 6  ---------------------------------------*@
+    <div id="section6" style="display:flex;justify-content: left;">
+
+           <div class="div6 " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+                   <h5 style="text-align:center">SECTION 6: OBJECTION DETAILS</h5>
+                      <div style=" width:50%; overflow:hidden; margin-top: 15px; border:none;">
+
+                            <h6 style="margin-top: 15px;">PARTICULARS AS REFLECTED IN VALUATION ROLL</h6>
+
+                            <label> DESCRIPTION OF THE PROPERTY/UNIT</label>
+                            <input style="margin-top: -1px;" id ="desc" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="" >
+                    
+                            <label> CATEGORY </label>
+                            <input style="margin-top: -1px;" id="cat" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="">
+
+                            <label> PHYSICAL ADDRESS/DOOR NO./FLAT NO.</label>
+                            <input style="margin-top: -1px;" id="add" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled  value="">
+
+                            <label> EXTENT</label>
+                            <input style="margin-top: -1px;" id="extent" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled  value="">
+
+                            <label> MARKET VALUE</label>
+                            <input style="margin-top: -1px;" id="Market_Value" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="">
+
+                            <label> NAME OF OWNER</label>
+                            <input style="margin-top: -1px;" id="owner" class="form-control" type="text" onpaste="return false;" ondrop="return false;" disabled value="">
+                    
+                            @*Submit Fields*@
+
+                    </div>
+
+    
+            <div style="width:50%; overflow:hidden; margin-left: 50.5%; margin-top: -40.7%; border:none;">
+
+                <h6 style="margin-top: 15px;">CHANGES REQUESTED BY OBJECTOR</h6>
+                <label>DESCRIPTION OF THE PROPERTY/UNIT</label>
+                    <input style="margin-top: -1px;" id="desc_in" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="New_Property_Description">
+                <label>CATEGORY</label>
+                <select asp-for="New_Category" class="form-control" >
+                    <option value="Agricultural">Agricultural </option>
+                    <option value="Agricultural Business">Agricultural Business</option>
+                    <option value="Agricultural Residential">Agricultural Residential </option>
+                    <option value="Business & Commercial (Including Sect. Title units)">Business & Commercial (Including Sect. Title units) </option>
+                    <option value="Consent Use">Consent Use </option>
+                    <option value="Education">Education</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Mining">Mining </option>
+                    <option value="Multiple Purpose">Multiple Purpose </option>
+                    <option value="Municipal">Municipal</option>
+                    <option value="Public Benefit Organisations">Public Benefit Organisations </option>
+                    <option value="Public Service Infrastructure">Public Service Infrastructure </option>
+                    <option value="Public Service Infrastructure Private">Public Service Infrastructure Private </option>
+                    <option value="Public Service Purpose">Public Service Purpose </option>
+                    <option value="Public Open Space">Public Open Space</option>
+                    <option value="Private Open Space">Private Open Space</option>
+                    <option value="R.E. of Township">R.E. of Township</option>
+                    <option value="Religious">Religious</option>
+                    <option value="Residential (Including Sect. Title units)">Residential (Including Sect. Title units)</option>
+                    <option value="Sectional Title Other">Sectional Title Other</option>
+                    <option value="State">State</option>
+                    <option value="Township Establishment">Township Establishment </option>
+                    <option value="Vacant Land">Vacant Land </option>
+                    <option selected></option>
+
+                </select>
+
+                <label>PHYSICAL ADDRESS/DOOR NO./FLAT NO.</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="New_Address">
+                <label>EXTENT</label>
+                <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" maxlength="10" onkeypress="return onlyNumberKey(event)" asp-for="New_Extent">
+                <label>MARKET VALUE</label>
+                    <input style="margin-top: -1px;" class="form-control" min="0" type="text" onpaste="return false;" ondrop="return false;" maxlength="12" onkeypress="return onlyNumberKey(event)" asp-for="New_Market_Value">
+                <label>NAME OF OWNER</label>
+                <input style="margin-top: -1px;" class="form-control" maxlength="100" type="text" onpaste="return false;" ondrop="return false;" asp-for="Owner_Name">
+    
+            </div>
+            <br/>
+            <div>
+                <label>ADVERSE FEATURES AND/OR FURTHER REASONS IN SUPPORT OF THIS OBJECTION (ANNEXURE CAN BE PROVIDED)</label>
+                <textarea class="form-control" style="margin-top: -1px;" maxlength="500" asp-for="Objection_Reasons" rows="4" cols="150"></textarea>
+            </div>
+
+        </div>
+    </div>
+   </div>@* End of section 6*@
+
+   @*----------------------------------------Section 7  ---------------------------------------*@
+
+   <div  id="section7" style="display:flex;justify-content: left;">
+
+           <div class="container" class="div7 " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+
+                    <h5 style="text-align:center" >SECTION 7: DECLARATION</h5>
+                    <div style=" width:50%; overflow:hidden; margin-top: 15px; border:none;">
+
+                    <h6 style="margin-top: 15px;">
+                ATTENTION IS HEREBY DRAWN TO SECTION 42(2) OF THE ACT WHICH STATES THAT WHERE ANY DOCUMENT, INFORMATION OR 
+                PARTICULARS WERE NOT PROVIDED WHEN REQUIRED IN TERMS OF SUBSECTION 42(1) OF THE ACT AND THE OWNER CONCERNED 
+                RELIES ON SUCH DOCUMENT, INFORMATION OR PARTICULARS IN AN APPEAL TO AN APPEAL BOARD, THE APPEAL BOARD MAY MAKE 
+                AN ORDER AS TO COSTS IN TERMS OF SECTION 70 OF THE ACT IF THE APPEAL BOARD IS OF THE VIEW THAT THE FAILURE TO SO 
+                HAVE PROVIDED ANY SUCH DOCUMENT, INFORMATION OR PARTICULARS HAS PLACED AN UNNECESSARY BURDEN ON THE FUNCTIONS OF 
+                THE MUNICIPAL VALUER OR THE APPEAL BOARD.</h6>
+
+                I/WE <input style="margin-top: -1px;" id="sign_obj" maxlength="100" asp-for="Signature_Name" type="text" onpaste="return false;" ondrop="return false;"> HEREBY DECLARE THAT THE INFORMATION AND PARTICULARS SUPPLIED ARE TRUE AND CORRECT.
+                <br/>
+                <label hidden style="margin-top:1%"><span></span>DATE</label>
+                <input hidden style="margin-top: -1px;" class="form-control" id="signDate" type="datetime-local" asp-for="Declaration_Date" >
+                <br>
+                <script>
+                    var date = new Date();
+                    var currentDate = date.toISOString().slice(0,16);
+
+                    document.getElementById('signDate').value = currentDate;
+                </script>
+
+
+                <h5 style="margin-left:2%">SIGNATURE</h5>
+
+               <p>
+                    <canvas width="500" height="200" id="signature" 
+                            style="border:2px solid black; background-color:white;">BX Maluleque</canvas>
+                    <img width="500" height="200" id="savetarget" 
+                            style="border:1px solid black" hidden="hidden"><br>
+                            <span style="width: 1%"></span>
+                           
+                    <input type="text" onpaste="return false;" ondrop="return false;"  id="SignatureDataUrl" asp-for="Signature_Picture" hidden="hidden" >
+                </p>
+                                
+            </div>            
+         </div>       
+    </div>@* Valution Section*@
+
+    @*----------------------------------------Evidence---------------------------------------------------*@
+
+@* <div id="show-evidence" class="row">
+            @foreach (var photoPath in Model.Where(p => p.UserId == currentUserId))
+            {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="@Url.Content(photoPath)" class="card-img-top" alt="Uploaded Photo">
+                <div class="card-body">
+                    <!-- You can add additional information or actions related to the photo here -->
+                </div>
+            </div>
+        </div>
+            }
+
+            @if (!Model.Any(p => p.UserId == currentUserId))
+            {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="default-photo.jpg" class="card-img-top" alt="Default Photo">
+                <div class="card-body">
+                    <p>No photo uploaded</p>
+                </div>
+            </div>
+        </div>
+            }
+</div> *@
+
+    @*--------------------------------------End Evidence------------------------------------------------------------------------------------------------*@
+    
+
+    <div id="section_valution" style="display:flex;justify-content: left;">
+        <div class="container" class="div7 " style=" margin-top: 12px; border-radius: 25px; border: 2px solid #C69E63; padding: 20px; width: 1050px;">
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="row justify-content-center aos-init aos-animate php-email-form" data-aos="fade-up" data-aos-delay="300">
+                    <div class="col-xl-9 col-lg-12 mt-4">
+                         @{
+                            if (Model != null)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <input hidden type="text" name="QueryId"/>
+                                    <div class="row my-3">
+                                        <div class="col-mt-3 form-group">
+                                            <label for="PropertyDescription">Property Description</label>
+                                            <input class="form-control" id="PropertyDescription" name="PropertyDescription" disabled />
+                                            <input hidden class="form-control" id="MarketValueComment" name="PropertyDescription" />
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-6 form-group">
+                                            <label for="PremiseId">Premise Id</label>
+                                            <input class="form-control" id="PremiseId" name="PremiseId" disabled />
+                                            <input class="form-control" hidden id="PremiseId" name="PremiseId" />
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="TownNameDesc">Town Name Description</label>
+                                            <input class="form-control" id="TownNameDesc" name="TownNameDesc"  disabled />
+                                        </div>
+                            @section Scripts
+                                {
+                                    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                                    <script>
+                                        $(function () {
+                                            $("#datepicker").datepicker({
+                                                dateFormat: 'yy-mm-dd',
+                                                minDate: new Date('2023-07-01')
+                                            });
+                                        });
+                                    </script>
+                                }
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-md-6 form-group">
+                                            <label for="ValuationType">Valuation Type</label>
+                                            <input class="form-control" id="ValuationType" name="ValuationType" Value="@item.ValuationType" disabled />
+                                        </div>
+
+                                        <div class="col-md-6 form-group">
+                                            <label for="ValuationTypeDescription">Valuation Type Description</label>
+                                            <input class="form-control" id="ValuationTypeDescription" name="ValuationTypeDescription" Value="@item.ValuationTypeDescription" disabled />
+                                        </div>
+                                    </div>
+
+                                             <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="datepicker">With Effect Date</label>
+                                                                <input class="form-control" id="datepicker" name="WEF_DATE" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                                            </div>
+                                                            <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                      <input id="RevisedCategoryHidden" name="RevisedCategory" hidden>
+                                        <select class="form-control" id="RevisedCategory" name="CATDescription" value="@item.CATDescription" onblur="validateField2()"style="height:43px;" >
+                                                @{
+                                                    if (@item.CATDescription != "")
+                                                    {
+                                                                            <option selected value="@item.CATDescription">@item.CATDescription</option>
+                                                    }
+                                                    else
+                                                    {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                    }
+                                                }
+                                                @{
+                                                    if (ViewBag.CategoriesList != null)
+                                                    {
+                                                        foreach (var cat in ViewBag.CategoriesList)
+                                                        {
+                                                          <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                        }
+                                                    }
+                                                }
+                                                 </select>
+                                                </div>
+                                               </div>
+
+                                                 <div class="row my-3"> 
+                                                 <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent">Extent</label>
+                                                                <input class="form-control" id="Extent" name="Extent" Value="@item.Extent" disabled />
+                                                 </div>
+                                                   <div class="col-md-6 form-group">
+                                                   <label for="RevisedMarketValue">Market Value</label>
+                                                   <input class="form-control" id="RevisedMarketValue" name="MarketValue" Value="@item.MarketValue" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" 
+                                                                       placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                                 </div>
+                                              </div>
+
+                                                   <div id="multipurposeFields" style="display: none;">
+                                                     <hr style="height:2px;border-width:0;color:red;background-color:red">
+                                                       <div class="row my-3">
+                                                        <div class="col-md-6 form-group">
+                                                           <label for="RevisedMarketValue">Old Market Value</label>
+                                                           <input class="form-control" id="RevisedMarketValue" name="MarketValue1" Value="@item.MarketValue1" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                             pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                         </div>
+                                                         <div class="col-md-6 form-group">
+                                                            <label for="RevisedMarketValue">New Market Value</label>
+                                                            <input class="form-control" id="RevisedMarketValue" name="MarketValue1" Value="@item.MarketValue1" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;"
+                                                              ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()"  />
+                                                         </div>
+                                                        </div> <!-- End First Row -->
+                                                     <div class="row my-3">
+                                                      <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Old Category</label>
+                                                            <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategory" name="CATDescription1" value="@item.CATDescription1" onblur="validateField2()"style="height:43px;" disabled>
+                                        @{
+                                            if (@item.CATDescription1 != "")
+                                            {
+                                                                              <option selected value="@item.CATDescription1">@item.CATDescription1</option>
+                                            }
+                                            else
+                                            {
+                                                                              <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                      <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                             </select>
+                                                       </div>
+                                                       <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategoryM">New Category</label>
+                                                            <input id="RevisedCategoryM" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategoryM" name="CATDescription1" value="@item.CATDescription1" onblur="validateField2()"style="height:43px;" >
+                                        @{
+                                            if (@item.CATDescription1 != "")
+                                            {
+                                                                              <option selected value="@item.CATDescription1">@item.CATDescription1</option>
+                                            }
+                                            else
+                                            {
+                                                                              <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                             </select>
+                                                       </div>
+                                                     </div> <!-- End Third Row -->
+                                                     <div class="row my-3">
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                         <label for="Extent1">Old Extent</label>
+                                                         <input class="form-control" id="Extent1" name="Extent1" Value="@item.Extent1" disabled />
+                                                      </div>
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                          <label for="Extent1">New Extent</label>
+                                                         <input class="form-control" id="Extent1" name="Extent1" Value="@item.Extent1" />
+                                                      </div>
+                                                     </div>
+                                                       <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                                 <div class="row my-3">
+                                                                    <div class="col-md-6 form-group">
+                                                                       <label for="RevisedMarketValue">Old Market Value</label>
+                                                                       <input class="form-control" id="RevisedMarketValue" name="MarketValue2" Value="@item.MarketValue2" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                                         pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                                     </div>
+                                                                    <div class="col-md-6 form-group">
+                                                                     <label for="RevisedMarketValue">New Market Value</label>
+                                                                     <input class="form-control" id="RevisedMarketValue" name="MarketValue2" value="@item.MarketValue2" onkeypress="return onlyNumberKey(event)" min="0"
+                                                                            onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                                     </div>
+                                                                    </div> <!-- End First Row -->
+
+                                                                 <div class="row my-3">
+                                                                  <div class="col-md-6 form-group">
+                                                                    <label for="RevisedCategory">Old Category</label>
+                                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                                        <select class="form-control" id="RevisedCategory" name="CATDescription2" value="@item.CATDescription2" onblur="validateField2()"style="height:43px;" disabled>
+                                        @{
+                                            if (@item.CATDescription2 != "")
+                                            {
+                                                                             <option selected value="@item.CATDescription2">@item.CATDescription2</option>
+                                            }
+                                            else
+                                            {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                                         </select>
+                                                                   </div>
+                                                                   <div class="col-md-6 form-group">
+                                                                    <label for="RevisedCategoryM">New Category</label>
+                                                                        <input id="RevisedCategoryM" name="RevisedCategoryM" hidden>
+                                                                        <select class="form-control" id="RevisedCategoryM" name="CATDescription2" value="@item.CATDescription2" onblur="validateField2()"style="height:43px;" >
+                                        @{
+                                            if (@item.CATDescription2 != "")
+                                            {
+                                                                             <option selected value="@item.CATDescription2">@item.CATDescription2</option>
+                                            }
+                                            else
+                                            {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                                         </select>
+                                                                   </div>
+                                                                 </div> <!-- End Third Row -->
+                                                                 <div class="row my-3">
+                                                                 <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                                     <label for="Extent2">Old Extent</label>
+                                                                     <input class="form-control" id="Extent2" name="Extent2" Value="@item.Extent2" disabled />
+                                                                  </div>
+                                                                 <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                                      <label for="Extent2">New Extent</label>
+                                                                                 <input class="form-control" id="Extent2" name="Extent2" Value="@item.Extent2" />
+                                                                  </div>
+                                                                 </div>
+                                                    <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                     <div class="row my-3">
+                                                        <div class="col-md-6 form-group">
+                                                           <label for="RevisedMarketValue">Old Market Value</label>
+                                                           <input class="form-control" id="RevisedMarketValue" name="MarketValue3" Value="@item.MarketValue3" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                             pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled/>
+                                                         </div>  
+                                                        <div class="col-md-6 form-group">
+                                                         <label for="RevisedMarketValue">New Market Value</label>
+                                                         <input class="form-control" id="RevisedMarketValue" name="MarketValue3" value="@item.MarketValue3" onkeypress="return onlyNumberKey(event)" min="0"
+                                                            onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                         </div>
+                                                        </div> <!-- End First Row -->
+
+                                                     <div class="row my-3">
+                                                      <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Old Category</label>
+                                                            <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                            <select class="form-control" id="RevisedCategory" name="CATDescription3" value="@item.CATDescription3" onblur="validateField2()"style="height:43px;" disabled>
+                                        @{
+                                            if (@item.CATDescription3 != "")
+                                            {
+                                                                             <option selected value="@item.CATDescription3">@item.CATDescription3</option>
+                                            }
+                                            else
+                                            {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                             </select>
+                                                       </div>
+                                                       <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategoryM">New Category</label>
+                                                            <input id="RevisedCategoryM" name="RevisedCategoryM" hidden>
+                                                            <select class="form-control" id="RevisedCategoryM" name="CATDescription3" value="@item.CATDescription3" onblur="validateField2()"style="height:43px;">
+                                        @{
+                                            if (@item.CATDescription3 != "")
+                                            {
+                                                                             <option selected value="@item.CATDescription3">@item.CATDescription3</option>
+                                            }
+                                            else
+                                            {
+                                                                             <option selected disabled value="">Category E.g. Residential</option>
+                                            }
+                                        }
+                                        @{
+                                            if (ViewBag.CategoriesList != null)
+                                            {
+                                                foreach (var cat in ViewBag.CategoriesList)
+                                                {
+                                                                                     <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                }
+                                            }
+                                        }
+                                                             </select>
+                                                       </div>
+                                                     </div> <!-- End Third Row -->
+                                                     <div class="row my-3">
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                         <label for="Extent3">Old Extent</label>
+                                                         <input class="form-control" id="Extent3" name="Extent3" Value="@item.Extent3" disabled />
+                                                      </div>
+                                                     <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                          <label for="Extent3">New Extent</label>
+                                                         <input class="form-control" id="Extent3" name="Extent3" Value="@item.Extent3" />
+                                                      </div>
+                                                     </div>
+                                                     </div>   <!-- MultipurposeFields -->
+                                    <div class="row my-3">
+                                        <div class="form-group mt-3">
+                                            <label for="Comment">Comment</label>
+                                            <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment"  placeholder="Comment" required></textarea>
+                                        </div>
+                                    </div>
+                                    <label for="evidence"> Evidence Upload </label>
+                                    <span style="color:red;">(Only 30MB File Allowed)</span>
+                                    <div class="row my-3">
+                                        <input disabled id="evidence" type="file" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data*@
+                                    </div>   
+                                     @if (ViewBag.Message != null)
+                                                {
+                                                    <div class="alert" style="margin-top:20px">
+                                                        @ViewBag.Message
+                                                    </div>
+                                                }
+                                }
+                            }
+                            
+                        }                        
+                               <div class="my-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn" style="background-color:#006570;">Update</button>
+                            <a type="button" class="btn btn-secondary"
+                               asp-controller="Section78" asp-action="PropPerUser"
+                               style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px">
+                                Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <!-- End of tiles -->
+    </div>
+</div>
+
+
+
+<!-- Update Modal -->
+<div class="m-4">
+    <div id="updateModal" class="modal fade" data-bs-backdrop="static" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are about to update the draft, do you want to proceed?</p>
+
+                </div>
+                <div class="modal-footer" style="display: flex; justify-content: center;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn" style="background-color: #E6B000;">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+         </div><!-- Button trigger modal -->
+        </div>
+    </div>
+</div>

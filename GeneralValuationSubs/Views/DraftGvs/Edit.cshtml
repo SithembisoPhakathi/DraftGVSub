@@ -1,0 +1,262 @@
+﻿@model GeneralValuationSubs.Models.DraftGv
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<body onload="setValue()">
+    
+<h1>Update Record</h1>
+
+<h4>DraftGv</h4>
+<hr />
+
+  
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for=" Id" />
+            <input type="hidden" asp-for=" DateTime" />  
+            <input type="hidden" asp-for=" Ddarea" />  
+            <input type="hidden" asp-for=" ValuersValue" />
+            <input type="hidden" asp-for=" DraftValue" />
+            <input type="hidden" asp-for=" PurchaseDate" />
+            <input type="hidden" asp-for=" PurchasePrice" />
+            <input type="hidden" asp-for=" ZoneCode" />
+            <input type="hidden" asp-for=" LislegalArea" />
+            <input type="hidden" asp-for=" AdjustedWgba" />
+            <input type="hidden" asp-for=" DiffsGv23vsGv18" />
+            <input type="hidden" asp-for=" Gv18marketValue" />           
+            <input type="hidden" asp-for=" PnCproperty" />
+            <input type="hidden" asp-for=" ParentPremiseId" />
+            <input type="hidden" asp-for=" DateTime" />
+            <input type="hidden" asp-for=" UserName" />
+            <input type="hidden" asp-for=" Town" />
+            <input type="hidden" asp-for=" CalculatedValue" />
+            <input type="hidden" asp-for=" DeputyDirector" />
+            <input type="hidden" asp-for=" SeniorManager" />
+            <input type="hidden" asp-for=" AreaManager" />
+            <input type="hidden" asp-for=" Valuer" />
+            @*<input type="hidden" asp-for="Reviewed" />*@                               
+
+            <div class="form-group">
+                <input asp-for=" PremiseId" class="form-control" hidden/>
+                <label asp-for=" PremiseId" class="control-label"></label>
+                <input asp-for=" PremiseId" class="form-control" disabled/>
+                <span asp-validation-for=" PremiseId" class="text-danger"></span>
+            </div>        
+
+            <div class="form-group">
+                <input asp-for=" Gv18category" class="form-control" hidden/>
+                <label asp-for=" Gv18category" class="control-label"></label>
+                <input asp-for=" Gv18category" class="form-control" disabled/>
+                <span asp-validation-for=" Gv18category" class="text-danger"></span>
+            </div> 
+
+            <div class="form-group">
+                <input asp-for=" Gv18marketValue" class="form-control" hidden/>
+                <label asp-for=" Gv18marketValue" class="control-label"></label>
+                <input asp-for=" Gv18marketValue" class="form-control" disabled/>
+                <span asp-validation-for=" Gv18marketValue" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Do you want to Override Market Value?</label><br />
+                <label>No</label>
+                <input type="radio" name="edit" value="false" onclick="disableBtn()" checked/>
+                <label>Yes</label>
+                <input type="radio" name="edit" value="true" onclick="enableBtn()"/>
+                <input asp-for=" ValueOverride" id="status" hidden class="form-control" />
+                <span asp-validation-for=" ValueOverride" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="val_group">
+                <label asp-for=" ValueRevised" class="control-label"></label>
+                <input onkeyup="reformatText(this)" id="mValueView" onkeypress="return onlyNumberKey(event)" class="form-control" type="text" required/>
+                <input asp-for=" ValueRevised" id="mValue" hidden type="number" class="form-control" required/>
+                @*<span asp-validation-for="ValueRevised" class="text-danger"></span>*@
+            </div>
+
+            <script>
+                    function onlyNumberKey(evt) {
+          
+                        // Only ASCII character in that range allowed
+                        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+                        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                            return false;
+                        return true;
+                }
+            </script>
+
+            <script type="text/javascript">
+
+                String.prototype.reverse = function () {
+                    return this.split("").reverse().join("");
+                }
+
+                function reformatText(input) {        
+                    var x = input.value;
+                    x = x.replace(/ /g, ""); // Strip out all commas
+                    x = x.reverse();
+                    x = x.replace(/.../g, function (e) {
+                        return e + " ";
+                    }); // Insert new commas
+                    x = x.reverse();
+                    x = x.toString().replace(/^ /g, ""); // Remove leading comma
+                    //y = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    input.value = x;
+                    document.getElementById('mValue').value = Number(parseFloat(x.replace(/ /g, '')));
+ 
+                }
+            </script>
+            <div class="form-group" id="val_group2">
+                <label asp-for=" CommentValue" class="control-label"></label>
+                <input asp-for=" CommentValue" id="mvComment_main" class="form-control" required/>
+                <span asp-validation-for=" CommentValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Do you want to Override Category?</label><br />
+                <label>No</label>
+                <input type="radio" name="edit_cat" value="false" onclick="disable_Cat()" checked/>
+                <label>Yes</label>
+                <input type="radio" name="edit_cat" value="true" onclick="enable_Cat()"/>
+                <input asp-for=" CategoryOverride"  hidden class="form-control"/>
+                <span asp-validation-for=" CategoryOverride" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" id="cat_group">
+                <label asp-for=" CategoryRevised" class="control-label"></label>
+
+                <select class="form-control" id="cat_revised_drop" required onchange="cat_drop()">
+                    <option value="Business & Commercial (Including Sect. Title units)">Business & Commercial (Including Sect. Title units) </option>
+                    <option value="Public Service Infrastructure">Public Service Infrastructure </option>
+                    <option value="Agricultural">Agricultural </option>
+                    <option value="Vacant Land">Vacant Land </option>
+                    <option value="Mining">Mining </option>
+                    <option value="Consent Use">Consent Use </option>
+                    <option value="Public Benefit Organisations">Public Benefit Organisations </option>
+                    <option value="Multiple Purpose">Multiple Purpose </option>
+                    <option value="Public Service Infrastructure Private">Public Service Infrastructure Private </option>
+                    <option value="Private Open Space">Private Open Space</option>
+                    <option value="Municipal">Municipal</option>
+                    <option value="Religious">Religious</option>
+                    <option value="Residential (Including Sect. Title units)">Residential (Including Sect. Title units)</option>
+                    <option value="Public Open Space">Public Open Space</option>
+                    <option value="Industrial">Industrial</option>
+                    <option value="Township Establishment">Township Establishment </option>
+                    <option value="Public Service Purpose">Public Service Purpose </option>
+                    <option value="Agricultural Business">Agricultural Business</option>
+                    <option value="Agricultural Residential">Agricultural Residential </option>
+                    <option value="Education">Education</option>
+                    <option value="R.E. of Township">R.E. of Township</option>
+                    <option value="Sectional Title Other">Sectional Title Other</option>
+                    <option value="State">State</option>
+                </select>
+                <span asp-validation-for=" CategoryRevised" class="text-danger"></span>
+                <input asp-for=" CategoryRevised" class="form-control" id="cat_revised" hidden required/>
+            </div>
+
+            <div class="form-group" id="cat_group2">
+                <label asp-for=" CommentCategory" class="control-label"></label>
+                <input asp-for=" CommentCategory" id="cat_comment_main" class="form-control" required/>
+                <span asp-validation-for=" CommentCategory" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Do you want to Flag for Delete?</label><br />
+                <label>No</label>
+                <input type="radio" asp-for=" FlagDelete" name="edit_del" value="false" onclick="disable_delete()" checked/>
+                <label>Yes</label>
+                <input type="radio" asp-for=" FlagDelete" name="edit_del" value="true" onclick="enable_delete()"/>
+                <input asp-for="FlagDelete" id="status_delete" hidden class="form-control"/>
+            </div>
+
+            <div class="form-group" id="del_group">
+                <label asp-for=" CommentDelete" class="control-label"></label>
+                <input asp-for=" CommentDelete" id="edit_delete_Main" class="form-control" required/>
+                <span asp-validation-for="CommentDelete" class="text-danger"></span>
+            </div>  
+
+            <div class="form-group" id="status_drop">
+                <label asp-for=" Status" class="control-label"></label>
+                    <select class="form-control" id="status_is_drop" required asp-for="Status">
+                        <option value="Draft Value "> Draft Value </option>
+                        <option value="Reviewed"> Reviewed </option>
+                        <option value="Approved"> Approved </option>
+                        <option value="FlaggedForDelete"> Flagged For Delete </option>
+                        <option value="FlaggedForReview"> Flagged For Review </option>
+                    </select>
+                    <span asp-validation-for=" Status" class="text-danger"></span>
+                    @*<input asp-for=" Status" class="form-control" id="status_view" required/> *@                
+            </div>
+
+         
+
+            <br />
+            <div class="form-group">
+                <input type="submit" style="font-weight:bold;" value="Save" class="btn btn-primary" />  | <a asp-action="Index"><input type="button" value="Back to list" class="btn btn-primary"/></a>  @*id="Save"*@
+            </div> 
+            <br />
+        </form>
+    </div>
+</div>
+
+
+@*<div style="align-content:right">
+    <a asp-action="Index">Back to List</a>
+</div>*@
+
+</body>
+
+<script>
+        document.getElementById("Save").setAttribute('disabled', '');
+        document.getElementById("Save").setAttribute('disabled', '');
+        document.getElementById("Save").style.color = "White";
+        document.getElementById("Save").style.backgroundColor = "#6c757d";
+        document.getElementById("Save").style.borderColor = "#6c757d";
+        function reviewNo(){
+            document.getElementById("Save").setAttribute('disabled', '');
+            document.getElementById("Save").style.color = "White";
+            document.getElementById("Save").style.backgroundColor = "#6c757d";
+            document.getElementById("Save").style.borderColor = "#6c757d";
+        }
+        function reviewYes(){
+            document.getElementById("Save").removeAttribute('disabled');
+            document.getElementById("Save").style.color = "White";
+            document.getElementById("Save").style.backgroundColor = "#E6B000";
+            document.getElementById("Save").style.borderColor = "#E6B000";
+
+        }
+
+        function setValue(){
+            var p_value = document.getElementById("mValue").value;
+            document.getElementById("mValueView").value = p_value;
+
+            var p_cat = document.getElementById("cat_revised").value;
+            document.getElementById("cat_revised_drop").value = p_cat;
+
+            //var p_status = document.getElementById("status_view").value;
+            //document.getElementById("status_is_drop").value = p_status;
+
+             var mark = document.getElementById('marketValue').innerHTML;
+            //var valu = 'R '+'R '+new Intl.NumberFormat().format(mark);
+            var valu = mark.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+            document.getElementById('marketValue').innerHTML = valu;
+        }
+
+        function cat_drop(){
+            var p_cat_main = document.getElementById("cat_revised_drop").value;
+            document.getElementById("cat_revised").value = p_cat_main;
+        }
+</script>
+
+<script type="text/javascript" src="~/js/edit.js"></script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@*<script>
+    function checkBox_valueChanged(data) {
+        $("#disabled").dxCheckBox("instance").option("value", data.value);
+    }
+</script>*@
