@@ -13,7 +13,7 @@
 
         public string? TOWN_NAME_DESC { get; set; }
         public string? PREMISE_ID { get; set; }
-
+         
         public string? LIS_RV_MARKET_VALUE { get; set; }
 
         public string? LIS_RV_CATEGORY { get; set; } 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GeneralValuationSubs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2a0c3ebae11e700c625e0a0df08e557f47f06aec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+00b21cbefb8479874a2a9c9d6022a2393bb13ae9")]
 [assembly: System.Reflection.AssemblyProductAttribute("GeneralValuationSubs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GeneralValuationSubs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

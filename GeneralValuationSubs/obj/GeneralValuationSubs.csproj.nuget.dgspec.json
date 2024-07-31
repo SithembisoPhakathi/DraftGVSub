@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\GeneralValuationSubs.csproj": {}
+    "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\GeneralValuationSubs.csproj": {}
   },
   "projects": {
-    "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\GeneralValuationSubs.csproj": {
+    "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\GeneralValuationSubs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\GeneralValuationSubs.csproj",
+        "projectUniqueName": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\GeneralValuationSubs.csproj",
         "projectName": "GeneralValuationSubs",
-        "projectPath": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\GeneralValuationSubs.csproj",
+        "projectPath": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\GeneralValuationSubs.csproj",
         "packagesPath": "C:\\Users\\10107037\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\obj\\",
+        "outputPath": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
