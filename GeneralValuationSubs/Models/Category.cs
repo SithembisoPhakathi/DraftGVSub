@@ -11,6 +11,10 @@ public partial class Category
 
     public string? CatDescName { get; set; }
 
+    public decimal Threshold { get; set; } 
+
+    public decimal Rates_Tariff { get; set; }
+
     public DateTime? CatStartDate { get; set; }
 
     public DateTime? CatEndDate { get; set; }
