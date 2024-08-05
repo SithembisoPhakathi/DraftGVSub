@@ -40,6 +40,10 @@
             <thead>
                 <tr>
                     <th>
+                        -------
+                    </th>
+
+                    <th>
                         Premise Id
                     </th>
                     <th>
@@ -75,9 +79,7 @@
                         Allocated Name
                     </th>
 
-                    <th>
-                        -------
-                    </th>
+                    
                     @*<th>
                     Select
                     </th>*@
@@ -89,6 +91,10 @@
                     @foreach (var item in ViewBag.UserDataList)
                     {
                         <tr>
+                            <td>
+                                <a class="btn" style="background-color: #E6B000;" asp-controller="Journals" asp-action="ViewProperty" asp-route-id="@item.Journal_Id">View</a>
+                            </td>
+
                             <td>
                                 @item.Premise_ID
                             </td>
@@ -126,12 +132,7 @@
 
                             <td>
                                 @item.Allocated_Name
-                            </td>
-
-                            <td>
-                                <a class="btn" style="background-color: #E6B000;" asp-controller="Journals" asp-action="ViewProperty" asp-route-id="@item.Journal_Id">View</a>
-                            </td>
-
+                            </td>                          
 
                         </tr>
 
@@ -163,18 +164,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
-                pageLength: 5,
-                order: [[2, 'asc']],
-                rowGroup: {
-                    dataSrc: 1
-                },
 
-                dom: 'Bfrtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5'
-                ]
             });
         });
     </script>

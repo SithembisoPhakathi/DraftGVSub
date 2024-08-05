@@ -1,6 +1,7 @@
 ﻿using GeneralValuationSubs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json.Linq;
 using System.Drawing;
 
 namespace GeneralValuationSubs.Controllers
@@ -237,10 +238,7 @@ namespace GeneralValuationSubs.Controllers
                 throw ex;
             }
 
-            if (journals.Count > 0)
-            {
-                journals.Clear();
-            }
+            categories.Clear();
 
             try
             {
@@ -266,10 +264,7 @@ namespace GeneralValuationSubs.Controllers
                 throw ex;
             }
 
-            if (journals.Count > 0)
-            {
-                journals.Clear();
-            }
+            categories.Clear();
 
             try
             {
@@ -351,16 +346,17 @@ namespace GeneralValuationSubs.Controllers
                             Premise_ID = dr["Premise ID"].ToString(),
                             Account_Number = dr["Account Number"].ToString(),
                             Installation = dr["Installation"].ToString(),
-                            //Market_Value = dr["Market Value"].ToString(),
-                            //Category = dr["Category"].ToString(),
-                            //Valuation_Date = dr["Valuation Date"].ToString(),
-                            //WEF = dr["WEF"].ToString(),
-                            //Net_Accrual = dr["Net Accrual"].ToString(),
-                            //File_Name = dr["File Name"].ToString(),
-                            //Status = dr["Status"].ToString(),
-                            //Allocated_Name = dr["Allocated Name"].ToString(),
-                            //Journal_Id = dr["Journal_Id"].ToString(),
-                            //ValuationDate = dr["Valuation Date"].ToString()
+                            Market_Value = dr["Market_Value"].ToString(),
+                            Category = dr["Category"].ToString(),
+                            BillingFrom = (DateTime)dr["BillingFrom"],
+                            BillingTo  = (DateTime)dr["BillingTo"],
+                            BillingDays = dr["BillingDays"].ToString(),
+                            Threshold = dr["Threshold"].ToString(),
+                            RatableValue = dr["RatableValue"].ToString(),
+                            RatesTariff = dr["RatesTariff"].ToString(),
+                            RebateType = dr["RebateType"].ToString(),
+                            calculatedRate = dr["calculatedRate"].ToString(),
+                            UserName = dr["UserName"].ToString()
                         });
                     }
                 }
@@ -378,8 +374,10 @@ namespace GeneralValuationSubs.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string?
-            Account_Number, string? Installation, string? MarketValue1, string? MarketValue2, string? MarketValue3,
+        public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
+            string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? Threshold,
+            string? RatableValue, float? RatesTariff, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
+            string? MarketValue1, string? MarketValue2, string? MarketValue3,
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"];
@@ -472,7 +470,7 @@ namespace GeneralValuationSubs.Controllers
 
             //    //string fileNameAttachValue = (files != null && files.FileName != null) ? Path.GetFileName(files.FileName) : null;
 
-            //    com.CommandText =  "UPDATE [UpdatedGVTool].[dbo].[NotValued] SET [Market Value1] = '" + MarketValue1 + "', [Market Value2] = '" + MarketValue2 + "', [Market Value3] = '" + MarketValue3 + "', [CAT Description] = '" + CATDescription + "', " + "[CAT Description1] = '" + CATDescription1 + "', [CAT Description2] = '" + CATDescription2 + "', [CAT Description3] = '" + CATDescription3 + "', Comment = '" + Comment + "', WEF_DATE = '" + WEF_DATE + "', Activity_Date = getdate(), " +
+            //    com.CommandText = "UPDATE [UpdatedGVTool].[dbo].[NotValued] SET [Market Value1] = '" + MarketValue1 + "', [Market Value2] = '" + MarketValue2 + "', [Market Value3] = '" + MarketValue3 + "', [CAT Description] = '" + CATDescription + "', " + "[CAT Description1] = '" + CATDescription1 + "', [CAT Description2] = '" + CATDescription2 + "', [CAT Description3] = '" + CATDescription3 + "', Comment = '" + Comment + "', WEF_DATE = '" + WEF_DATE + "', Activity_Date = getdate(), " +
             //                        "FileNameAttach = '" + save_files + "', Status = (SELECT Status_Description FROM [UpdatedGVTool].[dbo].[Status] WHERE Status_ID = 2) WHERE DraftId = '" + Journal_Id + "'";
 
             //    dr = com.ExecuteReader();
@@ -500,13 +498,13 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "')";
+                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate]) " +
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + Threshold + "', '" + RatableValue + "', '" + RatesTariff + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
                 //    {
-                        
+
                 //    });
                 //}
                 //con.Close();
@@ -519,8 +517,8 @@ namespace GeneralValuationSubs.Controllers
             }
 
             return RedirectToAction("ViewProperty", new { id = Journal_Id });
-        }
 
+        }
 
         public IActionResult Index()
         {

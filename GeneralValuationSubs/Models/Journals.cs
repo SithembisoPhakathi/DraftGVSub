@@ -14,8 +14,18 @@
         public string? Journal_Id { get; set; }
         public string? Status { get; set; }
         public string? Allocated_Name { get; set; }
-        public string? ApproverComment { get; set; } 
+        public string? ApproverComment { get; set; }
         public string? Comment { get; set; }
         public string? ValuationDate { get; set; }
+        public DateTime? BillingFrom { get; set; }
+        public DateTime? BillingTo { get; set; }
+        public string? BillingDays { get; set; }
+        public string? Threshold { get; set; }
+        public string? RatableValue { get; set; }
+        public string? RatesTariff { get; set; }
+        public string? RebateType { get; set; }
+        public string? RebateAmount { get; set; }
+        public string? calculatedRate { get; set; }
+        public string? UserName { get; set; }
     }
 }

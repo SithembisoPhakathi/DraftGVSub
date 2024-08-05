@@ -57,9 +57,6 @@
                         Account Number
                     </th>
                     <th>
-                        Installation
-                    </th>
-                    <th>
                         Market Value
                     </th>
                     <th>
@@ -104,9 +101,6 @@
                             </td>
                             <td>
                                 @item.Account_Number
-                            </td>
-                            <td>
-                                @item.Installation
                             </td>
                             <td>
                                 @item.Market_Value
@@ -219,11 +213,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
-                pageLength: 5,
-                order: [[2, 'asc']],
-                rowGroup: {
-                    dataSrc: 1
-                }
+
             });
         });
     </script>

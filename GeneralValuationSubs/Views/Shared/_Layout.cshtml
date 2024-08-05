@@ -437,7 +437,7 @@
                                         {
                                             @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
                                             {
-                                                <li><a asp-controller="Home" asp-action="PropPerUser" asp-route-userName="@currentUserFirstname @currentUserSurname" class=" text-dark">Check Journal</a></li>
+                                                <li><a asp-controller="Journals" asp-action="PropPerUser" asp-route-userName="@currentUserFirstname @currentUserSurname" class=" text-dark">Check Journal</a></li>
                                             }
                                         }
 
