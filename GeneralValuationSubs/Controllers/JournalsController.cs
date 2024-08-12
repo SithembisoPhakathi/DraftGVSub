@@ -1,6 +1,7 @@
 ﻿using GeneralValuationSubs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
 
@@ -244,19 +245,19 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT DISTINCT [Residential Threshold] FROM [Journals].[dbo].[Tariffs table] WHERE [Residential Threshold] IS NOT NULL ORDER BY [Residential Threshold]";
+                com.CommandText = "SELECT DISTINCT Financial_Year FROM [Journals].[dbo].[Tariffs table] ORDER BY Financial_Year";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
                     categories.Add(new Category
                     {
-                        Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
+                        Financial_Year = dr["Financial_Year"].ToString(),
                     });
                 }
                 con.Close();
 
-                ViewBag.Threshold = categories.ToList();
+                ViewBag.FinancialYearList = categories.ToList();
 
             }
             catch (Exception ex)
@@ -270,24 +271,52 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT DISTINCT [Rates_Tariff] FROM [Journals].[dbo].[Tariffs table] ORDER BY [Rates_Tariff]";
+                com.CommandText = "SELECT DISTINCT [Residential Threshold], [Rates_Tariff] FROM [Journals].[dbo].[Tariffs table] WHERE [Residential Threshold] IS NOT NULL ORDER BY [Residential Threshold]";
+
                 dr = com.ExecuteReader();
-                while (dr.Read()) 
+                while (dr.Read())
                 {
                     categories.Add(new Category
                     {
+                        Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
                         Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"]),
                     });
                 }
                 con.Close();
 
-                ViewBag.Rates_Tariff = categories.ToList();
+                //ViewBag.Threshold = categories.ToList();
+                ViewBag.ThresholdRates_Tariff = JsonConvert.SerializeObject(categories);
 
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+
+            categories.Clear();
+
+            //try
+            //{
+            //    con.Open();
+            //    com.Connection = con;
+            //    com.CommandText = "SELECT DISTINCT [Rates_Tariff] FROM [Journals].[dbo].[Tariffs table] ORDER BY [Rates_Tariff]";
+            //    dr = com.ExecuteReader();
+            //    while (dr.Read()) 
+            //    {
+            //        categories.Add(new Category
+            //        {
+            //            Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"]),
+            //        });
+            //    }
+            //    con.Close();
+
+            //    ViewBag.Rates_Tariff = categories.ToList();
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
 
             if (journals.Count > 0)
             {
@@ -356,6 +385,7 @@ namespace GeneralValuationSubs.Controllers
                             RatesTariff = dr["RatesTariff"].ToString(),
                             RebateType = dr["RebateType"].ToString(),
                             calculatedRate = dr["calculatedRate"].ToString(),
+                            RebateAmount = dr["RebateAmount"].ToString(),
                             UserName = dr["UserName"].ToString()
                         });
                     }
@@ -372,12 +402,46 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);
         }
 
+        public JsonResult FetchRatesThreshold(string financialYear, string CATDescription)
+        {
+            try
+            { 
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [LIS CAT], Financial_Year, Rates_Tariff, [Residential Threshold] FROM [Journals].[dbo].[Tariffs table] WHERE Financial_Year = @FinancialYear AND [LIS CAT] = @LISCAT";
+                com.Parameters.AddWithValue("@FinancialYear", financialYear);
+                com.Parameters.AddWithValue("@LISCAT", CATDescription);
+
+                using (var dr = com.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        categories.Add(new Category
+                        {
+                            CatDescName = dr["LIS CAT"].ToString(),
+                            Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
+                            Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"])
+
+                        });
+                    }
+                }
+                con.Close();
+            }
+            catch (Exception ex)
+            {
+                //Handle the exception
+                throw;
+            }
+
+            return Json(categories);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? Threshold,
             string? RatableValue, float? RatesTariff, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
-            string? MarketValue1, string? MarketValue2, string? MarketValue3,
+            string? MarketValue1, string? MarketValue2, string? MarketValue3, 
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"];

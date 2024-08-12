@@ -1,0 +1,21 @@
+[
+  { "CatDescName": "Agricultural" },
+  { "CatDescName": "Business and commercial" },
+  { "CatDescName": "Industrial" },
+  { "CatDescName": "Mining" },
+  { "CatDescName": "Multiple Purposes" },
+  { "CatDescName": "Municipal" },
+  { "CatDescName": "Private Open Space" },
+  { "CatDescName": "Public Benefit Organisation" },
+  { "CatDescName": "Public Open Space" },
+  { "CatDescName": "Public Service Infrastructure" },
+  { "CatDescName": "Public Service Infrastructure - Private" },
+  { "CatDescName": "Public Service Purposes" },
+  { "CatDescName": "Religious" },
+  { "CatDescName": "Residential" },
+  { "CatDescName": "Residential with Consent Use" },
+  { "CatDescName": "Township Development" },
+  { "CatDescName": "Unauthorised Use" },
+  { "CatDescName": "Vacant Land" }
+
+]

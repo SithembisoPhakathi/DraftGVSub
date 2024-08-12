@@ -9,6 +9,10 @@
       "PackagePath": "staticwebassets\\Loading GIF.gif"
     },
     {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\RatesThreshold\\RatesThreshold.json",
+      "PackagePath": "staticwebassets\\RatesThreshold\\RatesThreshold.json"
+    },
+    {
       "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\Uploads\\Kwazi.xlsx",
       "PackagePath": "staticwebassets\\Uploads\\Kwazi.xlsx"
     },
@@ -607,6 +611,58 @@
     {
       "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\css\\style.css",
       "PackagePath": "staticwebassets\\css\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2013_2014_categories.json",
+      "PackagePath": "staticwebassets\\data\\2013_2014_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2014_2015_categories.json",
+      "PackagePath": "staticwebassets\\data\\2014_2015_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2015_2016_categories.json",
+      "PackagePath": "staticwebassets\\data\\2015_2016_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2016_2017_categories.json",
+      "PackagePath": "staticwebassets\\data\\2016_2017_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2017_2018_categories.json",
+      "PackagePath": "staticwebassets\\data\\2017_2018_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2018_2019_categories.json",
+      "PackagePath": "staticwebassets\\data\\2018_2019_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2019_2020_categories.json",
+      "PackagePath": "staticwebassets\\data\\2019_2020_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2020_2021_categories.json",
+      "PackagePath": "staticwebassets\\data\\2020_2021_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2021_2022_categories.json",
+      "PackagePath": "staticwebassets\\data\\2021_2022_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2022_2023_categories.json",
+      "PackagePath": "staticwebassets\\data\\2022_2023_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2023_2024_categories.json",
+      "PackagePath": "staticwebassets\\data\\2023_2024_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2024-2025_categories.json",
+      "PackagePath": "staticwebassets\\data\\2024-2025_categories.json"
+    },
+    {
+      "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\data\\2024_2025_categories.json",
+      "PackagePath": "staticwebassets\\data\\2024_2025_categories.json"
     },
     {
       "Id": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\favicon.ico",

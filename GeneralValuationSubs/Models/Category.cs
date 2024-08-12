@@ -11,6 +11,7 @@ public partial class Category
 
     public string? CatDescName { get; set; }
 
+    public string? Financial_Year { get; set; }
     public decimal Threshold { get; set; } 
 
     public decimal Rates_Tariff { get; set; }

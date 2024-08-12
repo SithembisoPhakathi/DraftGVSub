@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "7TP9VQEy5tFvAXlHHf/TZc5PoZ41KGA4Y3j/9e6Y5L4=",
+  "Hash": "7GjYkCgm46KHxxugOVQRGyT9Uf1zdQ6xekcUkx56iLE=",
   "Source": "GeneralValuationSubs",
   "BasePath": "_content/GeneralValuationSubs",
   "Mode": "Default",
@@ -4955,6 +4955,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\Loading GIF.gif",
+      "SourceId": "GeneralValuationSubs",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\",
+      "BasePath": "_content/GeneralValuationSubs",
+      "RelativePath": "Loading GIF.gif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Loading GIF.gif"
     },
     {
       "Identity": "C:\\Users\\10107037\\Desktop\\09 April 2024\\GeneralValuationSubs (2)\\GeneralValuationSubs\\GeneralValuationSubs\\wwwroot\\Uploads\\Kwazi.xlsx",

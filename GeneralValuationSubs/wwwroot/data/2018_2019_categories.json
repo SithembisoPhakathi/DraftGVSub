@@ -1,0 +1,26 @@
+[
+  { "CatDescName": "Agricultural Business" },
+  { "CatDescName": "Agricultural Other" },
+  { "CatDescName": "Agricultural Residential" },
+  { "CatDescName": "Business & Commercial" },
+  { "CatDescName": "Consent Use" },
+  { "CatDescName": "Education" },
+  { "CatDescName": "Farming" },
+  { "CatDescName": "Mining" },
+  { "CatDescName": "Multiple Purpose Business" },
+  { "CatDescName": "Multiple Purpose Residential" },
+  { "CatDescName": "Municipal" },
+  { "CatDescName": "Private Open Space" },
+  { "CatDescName": "Public Benefit Organisations" },
+  { "CatDescName": "Public Open Space" },
+  { "CatDescName": "Public Service Infrastructure" },
+  { "CatDescName": "Public Service Infrastructure Private" },
+  { "CatDescName": "R.E. of Township" },
+  { "CatDescName": "Religious" },
+  { "CatDescName": "Residential" },
+  { "CatDescName": "Sectional Title Business" },
+  { "CatDescName": "Sectional Title Other" },
+  { "CatDescName": "Sectional Title Residential" },
+  { "CatDescName": "State" }
+
+]
