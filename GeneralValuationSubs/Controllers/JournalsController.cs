@@ -402,45 +402,45 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);
         }
 
-        public JsonResult FetchRatesThreshold(string financialYear, string CATDescription)
-        {
-            try
-            { 
-                con.Open();
-                com.Connection = con;
-                com.CommandText = "SELECT [LIS CAT], Financial_Year, Rates_Tariff, [Residential Threshold] FROM [Journals].[dbo].[Tariffs table] WHERE Financial_Year = @FinancialYear AND [LIS CAT] = @LISCAT";
-                com.Parameters.AddWithValue("@FinancialYear", financialYear);
-                com.Parameters.AddWithValue("@LISCAT", CATDescription);
+        //public JsonResult FetchRatesThreshold(string financialYear, string CATDescription)
+        //{
+        //    try
+        //    { 
+        //        con.Open();
+        //        com.Connection = con;
+        //        com.CommandText = "SELECT [LIS CAT], Financial_Year, Rates_Tariff, [Residential Threshold] FROM [Journals].[dbo].[Tariffs table] WHERE Financial_Year = @FinancialYear AND [LIS CAT] = @LISCAT";
+        //        com.Parameters.AddWithValue("@FinancialYear", financialYear);
+        //        com.Parameters.AddWithValue("@LISCAT", CATDescription);
 
-                using (var dr = com.ExecuteReader())
-                {
-                    while (dr.Read())
-                    {
-                        categories.Add(new Category
-                        {
-                            CatDescName = dr["LIS CAT"].ToString(),
-                            Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
-                            Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"])
+        //        using (var dr = com.ExecuteReader())
+        //        {
+        //            while (dr.Read())
+        //            {
+        //                categories.Add(new Category
+        //                {
+        //                    CatDescName = dr["LIS CAT"].ToString(),
+        //                    Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
+        //                    Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"])
 
-                        });
-                    }
-                }
-                con.Close();
-            }
-            catch (Exception ex)
-            {
-                //Handle the exception
-                throw;
-            }
+        //                });
+        //            }
+        //        }
+        //        con.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //Handle the exception
+        //        throw;
+        //    }
 
-            return Json(categories);
-        }
+        //    return Json(categories);
+        //}
 
 
         [HttpPost]
         public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
-            string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? Threshold,
-            string? RatableValue, float? RatesTariff, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
+            string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
             string? MarketValue1, string? MarketValue2, string? MarketValue3, 
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
@@ -563,7 +563,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Open();
                 com.Connection = con;
                 com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + Threshold + "', '" + RatableValue + "', '" + RatesTariff + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "')";
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory

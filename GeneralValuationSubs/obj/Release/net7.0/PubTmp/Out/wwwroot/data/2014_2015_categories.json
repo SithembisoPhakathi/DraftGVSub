@@ -1,0 +1,117 @@
+[
+  {
+    "CatDescName": "Agricultural Business",
+    "Rates_Tariff": "0,017252",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Agricultural Other",
+    "Rates_Tariff": "0,005545",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Agricultural Residential",
+    "Rates_Tariff": "0,005545",
+    "Residential_Threshold": "200000,00"
+  },
+  {
+    "CatDescName": "Business & Commercial",
+    "Rates_Tariff": "0,017252",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Consent Use",
+    "Rates_Tariff": "0,012322",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Education",
+    "Rates_Tariff": "0,00154",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Farming",
+    "Rates_Tariff": "0,0015",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Mining",
+    "Rates_Tariff": "0,017252",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Multiple Purpose Business",
+    "Rates_Tariff": "0,017252",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Multiple Purpose Residential",
+    "Rates_Tariff": "0,006161",
+    "Residential_Threshold": "200000,00"
+  },
+  {
+    "CatDescName": "Municipal",
+    "Rates_Tariff": "0",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Private Open Space",
+    "Rates_Tariff": "0,00154",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Public Benefit Organisations",
+    "Rates_Tariff": "0,00154",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Public Open Space",
+    "Rates_Tariff": "0",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Public Service Infrastructure",
+    "Rates_Tariff": "0,00154",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Public Service Infrastructure Private",
+    "Rates_Tariff": "0,00154",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "R.E. of Township",
+    "Rates_Tariff": "0",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Religious",
+    "Rates_Tariff": "0",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Residential",
+    "Rates_Tariff": "0,006161",
+    "Residential_Threshold": "200000,00"
+  },
+  {
+    "CatDescName": "Sectional Title Business",
+    "Rates_Tariff": "0,017252",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Sectional Title Other",
+    "Rates_Tariff": "0,006161",
+    "Residential_Threshold": "0"
+  },
+  {
+    "CatDescName": "Sectional Title Residential",
+    "Rates_Tariff": "0,006161",
+    "Residential_Threshold": "200000,00"
+  },
+  {
+    "CatDescName": "State",
+    "Rates_Tariff": "0,009242",
+    "Residential_Threshold": "0"
+  }
+]

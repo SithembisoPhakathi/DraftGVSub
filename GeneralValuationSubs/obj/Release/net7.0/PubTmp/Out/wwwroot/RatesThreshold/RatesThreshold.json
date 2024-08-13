@@ -1,0 +1,15 @@
+{
+  "2013_2014": {
+    "Sectional Title Residential": {
+      "Rates_Tariff": "0,005868",
+      "Residential_Threshold": "200000,00"
+    }
+  },
+  "2014_2015": {
+    "Sectional Title Residential": {
+      "Rates_Tariff": "0,005900",
+      "Residential_Threshold": "210000,00"
+    }
+  }
+  // Add other financial years and categories here
+}

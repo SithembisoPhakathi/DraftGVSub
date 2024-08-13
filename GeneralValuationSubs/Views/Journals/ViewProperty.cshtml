@@ -158,12 +158,12 @@
                                     <div class="row my-3">
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Billing From</label>
-                                            <input class="form-control" id="billingFrom" name="billingFrom" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <input class="form-control" id="billingFrom" name="billingFrom" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled/>
                                         </div>
 
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Billing To</label>
-                                            <input class="form-control" id="billingTo" name="billingTo" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                            <input class="form-control" id="billingTo" name="billingTo" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled />
                                         </div>
 
                                         <div class="col-md-6 form-group">
@@ -231,7 +231,7 @@
 
                                         <div class="col-md-6 form-group">
                                             <label for="thresholdValue">Threshold</label>
-                                            <input type="text" id="thresholdValue" class="form-control" readonly />
+                                            <input type="text" id="thresholdValue" name="thresholdValue" class="form-control" readonly />
                                         </div>
 
                                         @*<div class="col-md-6 form-group">
@@ -259,7 +259,7 @@
 
                                         <div class="col-md-6 form-group">
                                             <label for="rateTariffValue">Rate Tariff</label>
-                                            <input type="text" id="rateTariffValue" class="form-control" readonly />
+                                            <input type="text" id="rateTariffValue" name="rateTariffValue" class="form-control" readonly />
                                         </div>
 
                                         @*<div class="col-md-6 form-group">
@@ -284,7 +284,7 @@
                                         <div class="col-md-6 form-group">
                                             <label for="RevisedMarketValue">Rebate Amount</label>
                                             <input class="form-control" id="RebateAmount" name="RebateAmount" oninput="calculateRabateAmount()" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
-                                                   placeholder="Rebate Amount E.g. R 1,000,000.00" onblur="validateField1()" required />
+                                                   placeholder="Rebate Amount E.g. R 1,000,000.00" onblur="validateField1()" required disabled/>
                                         </div>
 
                                         <div class="col-md-6 form-group">
@@ -792,6 +792,46 @@
             }
         });
     </script> *@   
+
+    <script>
+        function toggleBillingFields() {
+            var financialYear = document.getElementById('FinancialYear').value;
+            var category = document.getElementById('RevisedCategory').value;
+            var marketValue = document.getElementById('MarketValue').value;
+            var rebateAmount = document.getElementById('RebateAmount');
+            var calculatedRate = document.getElementById('calculatedRate').value;
+
+            var billingFrom = document.getElementById('billingFrom');
+            var billingTo = document.getElementById('billingTo');
+
+            // Check if all required fields are populated
+            if (financialYear && category && marketValue) {
+                billingFrom.disabled = false;
+                billingTo.disabled = false;
+            } else {
+                billingFrom.disabled = true;
+                billingTo.disabled = true;
+            }
+
+
+            if (calculatedRate) {
+                rebateAmount.disabled = false;
+            } else {
+                rebateAmount.disabled = true;
+            }
+        }
+
+        // Attach event listeners to the input fields
+        document.getElementById('FinancialYear').addEventListener('change', toggleBillingFields);
+        document.getElementById('RevisedCategory').addEventListener('change', toggleBillingFields);
+        document.getElementById('MarketValue').addEventListener('input', toggleBillingFields);
+        document.getElementById('calculatedRate').addEventListener('input', toggleFields); 
+
+        // Optionally, call the function on page load to set initial state
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleBillingFields();
+        });
+    </script>    
 
     <script>
         document.getElementById('FinancialYear').addEventListener('change', function () {
