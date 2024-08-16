@@ -27,5 +27,6 @@
         public string? RebateAmount { get; set; }
         public string? calculatedRate { get; set; }
         public string? UserName { get; set; }
+        public DateTime? Activity_Date { get; set; }
     }
 }

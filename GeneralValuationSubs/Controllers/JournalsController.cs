@@ -562,8 +562,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "')";
+                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [TobeCharged],  [Activity_Date]) " +
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', '" + TobeCharged + "' , '" + DateTime.Now + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
@@ -582,6 +582,114 @@ namespace GeneralValuationSubs.Controllers
 
             return RedirectToAction("ViewProperty", new { id = Journal_Id });
 
+        }
+
+        public IActionResult Transaction_To_Be_Checked()
+        {
+            var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
+            TempData.Keep("currentUserSector");
+
+            //userName = TempData["currentUserFirstname"].ToString() +' ' + TempData["currentUserSurname"].ToString();
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT Distinct [Premise ID], UserName FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (5))";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        //File_Name = dr["File Name"].ToString(),
+                        //Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        //Journal_Id = dr["Journal_Id"].ToString()
+
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View(journals);//journals
+        }
+
+        public IActionResult ViewTransactions(string? PremiseID)
+        {
+            var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
+            TempData.Keep("currentUserSector");
+
+            //userName = TempData["currentUserFirstname"].ToString() +' ' + TempData["currentUserSurname"].ToString();
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' order by Activity_Date";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        Account_Number = dr["Account Number"].ToString(),
+                        Installation = dr["Installation"].ToString(),
+                        Market_Value = dr["Market_Value"].ToString(),
+                        Category = dr["Category"].ToString(),
+                        BillingFrom = (DateTime)dr["BillingFrom"],
+                        BillingTo = (DateTime)dr["BillingTo"],
+                        BillingDays = dr["BillingDays"].ToString(),
+                        Threshold = dr["Threshold"].ToString(),
+                        RatableValue = dr["RatableValue"].ToString(),
+                        RatesTariff = dr["RatesTariff"].ToString(),
+                        RebateType = dr["RebateType"].ToString(),
+                        calculatedRate = dr["calculatedRate"].ToString(),
+                        RebateAmount = dr["RebateAmount"].ToString(),
+                        UserName = dr["UserName"].ToString(),
+                        Activity_Date = (DateTime)dr["Activity_Date"]
+
+                    });
+                }
+                con.Close();
+
+                ViewBag.PremiseID = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View(journals);//journals
         }
 
         public IActionResult Index()

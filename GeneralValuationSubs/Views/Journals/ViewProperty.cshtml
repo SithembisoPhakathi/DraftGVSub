@@ -158,12 +158,12 @@
                                     <div class="row my-3">
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Billing From</label>
-                                            <input class="form-control" id="billingFrom" name="billingFrom" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled/>
+                                            <input class="form-control" id="billingFrom" name="billingFrom" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled readonly />
                                         </div>
 
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Billing To</label>
-                                            <input class="form-control" id="billingTo" name="billingTo" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled />
+                                            <input class="form-control" id="billingTo" name="billingTo" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled readonly />
                                         </div>
 
                                         <div class="col-md-6 form-group">
@@ -283,8 +283,8 @@
 
                                         <div class="col-md-6 form-group">
                                             <label for="RevisedMarketValue">Rebate Amount</label>
-                                            <input class="form-control" id="RebateAmount" name="RebateAmount" oninput="calculateRabateAmount()" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
-                                                   placeholder="Rebate Amount E.g. R 1,000,000.00" onblur="validateField1()" required disabled/>
+                                            <input class="form-control" id="RebateAmount" name="RebateAmount" oninput="calculateRabateAmount()" value="R 0.00" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
+                                                   placeholder="Rebate Amount E.g. R 1,000,000.00" onblur="validateField1()" required/>
                                         </div>
 
                                         <div class="col-md-6 form-group">
@@ -794,6 +794,22 @@
     </script> *@   
 
     <script>
+        function formatRebateAmount() {
+            let input = document.getElementById('RebateAmount');
+            let value = input.value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters except decimal point
+            let number = parseFloat(value);
+            if (isNaN(number)) number = 0;
+            input.value = "R " + number.toFixed(2); // Format to 2 decimal places
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let rebateInput = document.getElementById('RebateAmount');
+            rebateInput.value = "R 0.00"; // Set default value on load
+            rebateInput.addEventListener('input', formatRebateAmount);
+        });
+    </script>
+
+    <script>
         function toggleBillingFields() {
             var financialYear = document.getElementById('FinancialYear').value;
             var category = document.getElementById('RevisedCategory').value;
@@ -811,21 +827,13 @@
             } else {
                 billingFrom.disabled = true;
                 billingTo.disabled = true;
-            }
-
-
-            if (calculatedRate) {
-                rebateAmount.disabled = false;
-            } else {
-                rebateAmount.disabled = true;
-            }
+            }            
         }
 
         // Attach event listeners to the input fields
         document.getElementById('FinancialYear').addEventListener('change', toggleBillingFields);
         document.getElementById('RevisedCategory').addEventListener('change', toggleBillingFields);
         document.getElementById('MarketValue').addEventListener('input', toggleBillingFields);
-        document.getElementById('calculatedRate').addEventListener('input', toggleFields); 
 
         // Optionally, call the function on page load to set initial state
         document.addEventListener('DOMContentLoaded', function () {
