@@ -11,8 +11,9 @@
 
     var WEF_DATE = TempData["WEF_DATE"];
     TempData.Keep("WEF_DATE");
-}
 
+    var premiseId = string.Empty;
+}
 
 <html>
 <head>
@@ -57,6 +58,8 @@
                                 {
                                     <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
 
+                                        premiseId = item.Premise_ID;
+
                                     <div class="row my-3">
                                         <div class="col-mt-3 form-group">
                                             <label for="PropertyDescription">Premise ID</label>
@@ -82,61 +85,196 @@
                                     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
                                     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
                                     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
                                     <script>
+                                        // Function to refresh all calculations
+                                        function refreshCalculations() {
+                                            calculateRatableValue();
+                                            calculateBillingDays();
+                                            calculateRabateAmount();
+                                        }
+
                                         $(function () {
                                             // Initialize datepickers
                                             $("#billingFrom, #billingTo").datepicker({
                                                 dateFormat: 'yy-mm-dd',
-                                                onSelect: calculateBillingDays
+                                                onSelect: function () {
+                                                    calculateBillingDays();
+                                                    calculateRabateAmount(); // Recalculate the rebate after date selection
+                                                }
                                             });
 
                                             // Update calculation when the rate tariff changes
-                                            $("#ratesTariffDropdown").on("change", calculateBillingDays);
+                                            $("#ratesTariffDropdown").on("change", function () {
+                                                calculateBillingDays();
+                                                calculateRabateAmount(); // Recalculate the rebate when tariff changes
+                                            });
 
                                             // Update calculation when Ratable Value or Rate Tariff changes
-                                            $("#RatableValue, #rateTariffValue").on("input", calculateBillingDays);
+                                            $("#RatableValue, #rateTariffValue").on("input", function () {
+                                                calculateBillingDays();
+                                                calculateRabateAmount(); // Recalculate the rebate when values change
+                                            });
 
-                                            function calculateBillingDays() {
-                                                var fromDate = $("#billingFrom").datepicker("getDate");
-                                                var toDate = $("#billingTo").datepicker("getDate");
+                                            // Update calculation when Category changes
+                                            $("#RevisedCategory").on("change", function () {
+                                                calculateRatableValue(); // Recalculate ratable value based on new category
+                                                calculateBillingDays(); // Recalculate rate when category changes
+                                                calculateRabateAmount(); // Recalculate the rebate after category changes
+                                            });
 
-                                                // Get the Ratable Value and Rate Tariff from the inputs
-                                                var RatableValue = parseFloat(parseCurrency($("#RatableValue").val())) || 0;
-                                                var ratesTariff = parseFloat(convertCommaToDot($("#rateTariffValue").val())) || 0;
+                                            // Update datepicker range when Financial Year changes
+                                            $("#FinancialYear").on("change", function () {
+                                                setFinancialYearDateRange();
+                                                refreshCalculations(); // Recalculate all values after financial year changes
+                                            });
 
-                                                if (fromDate && toDate) {
-                                                    // Calculate billing days
-                                                    var timeDifference = toDate - fromDate;
-                                                    var dayDifference = timeDifference / (1000 * 3600 * 24);
-                                                    dayDifference = dayDifference + 1; // Include both start and end date
+                                            // Function to set date range based on selected Financial Year
+                                            function setFinancialYearDateRange() {
+                                                var financialYear = $("#FinancialYear").val();
+                                                var startDate, endDate;
 
-                                                    $("#billingDays").val(dayDifference);
+                                                switch (financialYear) {
+                                                    case "2013_2014":
+                                                        startDate = new Date("2013-07-01");
+                                                        endDate = new Date("2014-06-30");
+                                                        break;
+                                                    case "2014_2015":
+                                                        startDate = new Date("2014-07-01");
+                                                        endDate = new Date("2015-06-30");
+                                                        break;
+                                                    case "2015_2016":
+                                                        startDate = new Date("2015-07-01");
+                                                        endDate = new Date("2016-06-30");
+                                                        break;
+                                                    case "2016_2017":
+                                                        startDate = new Date("2016-07-01");
+                                                        endDate = new Date("2017-06-30");
+                                                        break;
+                                                    case "2017_2018":
+                                                        startDate = new Date("2017-07-01");
+                                                        endDate = new Date("2018-06-30");
+                                                        break;
+                                                    case "2018_2019":
+                                                        startDate = new Date("2018-07-01");
+                                                        endDate = new Date("2019-06-30");
+                                                        break;
+                                                    case "2019_2020":
+                                                        startDate = new Date("2019-07-01");
+                                                        endDate = new Date("2020-06-30");
+                                                        break;
+                                                    case "2020_2021":
+                                                        startDate = new Date("2020-07-01");
+                                                        endDate = new Date("2021-06-30");
+                                                        break;
+                                                    case "2021_2022":
+                                                        startDate = new Date("2021-07-01");
+                                                        endDate = new Date("2022-06-30");
+                                                        break;
+                                                    case "2022_2023":
+                                                        startDate = new Date("2022-07-01");
+                                                        endDate = new Date("2023-06-30");
+                                                        break;
+                                                    case "2023_2024":
+                                                        startDate = new Date("2023-07-01");
+                                                        endDate = new Date("2024-06-30");
+                                                        break;
+                                                    case "2024_2025":
+                                                        startDate = new Date("2024-07-01");
+                                                        endDate = new Date("2025-06-30");
+                                                        break;
+                                                    // Add more cases for other financial years as needed
+                                                    default:
+                                                        startDate = null;
+                                                        endDate = null;
+                                                }
 
-                                                    // Check if both Ratable Value and Rate Tariff are valid
-                                                    if (RatableValue > 0 && ratesTariff > 0) {
-                                                        // Calculate the rate
-                                                        var rate = ((RatableValue * ratesTariff) / 365) * dayDifference;
-                                                        $("#calculatedRate").val(rate.toFixed(2)); // Display rate with 2 decimal places
-                                                    } else {
-                                                        $("#calculatedRate").val(''); // Clear rate if either value is missing
-                                                    }
-
+                                                if (startDate && endDate) {
+                                                    $("#billingFrom").datepicker("option", "minDate", startDate);
+                                                    $("#billingFrom").datepicker("option", "maxDate", endDate);
+                                                    $("#billingTo").datepicker("option", "minDate", startDate);
+                                                    $("#billingTo").datepicker("option", "maxDate", endDate);
                                                 } else {
-                                                    $("#billingDays").val('');
-                                                    $("#calculatedRate").val('');
+                                                    // Clear the date range restrictions if no financial year is selected
+                                                    $("#billingFrom").datepicker("option", "minDate", null);
+                                                    $("#billingFrom").datepicker("option", "maxDate", null);
+                                                    $("#billingTo").datepicker("option", "minDate", null);
+                                                    $("#billingTo").datepicker("option", "maxDate", null);
                                                 }
                                             }
 
-                                            function parseCurrency(value) {
-                                                // Remove currency symbol and commas, return numeric value
-                                                return value.replace(/[^\d.-]/g, '');
-                                            }
-
-                                            function convertCommaToDot(value) {
-                                                // Convert comma to dot in numeric values
-                                                return value.replace(',', '.');
-                                            }
+                                            // Call this function on page load to set initial date range
+                                            setFinancialYearDateRange();
                                         });
+
+                                        // Function to calculate Ratable Value
+                                        function calculateRatableValue() {
+                                            var marketValue = document.getElementById("MarketValue").value.replace(/[^0-9.-]+/g, "");
+                                            var threshold = document.getElementById("thresholdValue").value;
+
+                                            if (marketValue && threshold) {
+                                                var ratableValue = parseFloat(marketValue) - parseFloat(threshold);
+                                                document.getElementById("RatableValue").value = "R " + ratableValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                calculateBillingDays(); // Recalculate rate when ratable value changes
+                                                calculateRabateAmount(); // Recalculate the rebate after ratable value changes
+                                            } else {
+                                                document.getElementById("RatableValue").value = "";
+                                            }
+                                        }
+
+                                        // Function to calculate Billing Days and Rate
+                                        function calculateBillingDays() {
+                                            var fromDate = $("#billingFrom").datepicker("getDate");
+                                            var toDate = $("#billingTo").datepicker("getDate");
+
+                                            var RatableValue = parseFloat(parseCurrency($("#RatableValue").val())) || 0;
+                                            var ratesTariff = parseFloat(convertCommaToDot($("#rateTariffValue").val())) || 0;
+
+                                            if (fromDate && toDate) {
+                                                var timeDifference = toDate - fromDate;
+                                                var dayDifference = timeDifference / (1000 * 3600 * 24) + 1;
+
+                                                $("#billingDays").val(dayDifference);
+
+                                                if (RatableValue > 0 && ratesTariff > 0) {
+                                                    var rate = ((RatableValue * ratesTariff) / 365) * dayDifference;
+                                                    $("#calculatedRate").val(rate.toFixed(2));
+                                                } else {
+                                                    $("#calculatedRate").val('');
+                                                }
+
+                                            } else {
+                                                $("#billingDays").val('');
+                                                $("#calculatedRate").val('');
+                                            }
+                                        }
+
+                                        // Function to calculate Rebate Amount
+                                        function calculateRabateAmount() {
+                                            var rebateAmount = document.getElementById("RebateAmount").value.replace(/[^0-9.-]+/g, "");
+                                            var calculatedRate = document.getElementById("calculatedRate").value.replace(/[^0-9.-]+/g, "");
+
+                                            rebateAmount = parseFloat(rebateAmount) || 0;
+                                            calculatedRate = parseFloat(calculatedRate) || 0;
+
+                                            var toBeCharged = calculatedRate - rebateAmount;
+                                            document.getElementById("TobeCharged").value = "R " + toBeCharged.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                        }
+
+                                        function parseCurrency(value) {
+                                            return value.replace(/[^\d.-]/g, '');
+                                        }
+
+                                        function convertCommaToDot(value) {
+                                            return value.replace(',', '.');
+                                        }
+
+                                        // Allow only numeric input
+                                        function onlyNumberKey(evt) {
+                                            var ASCIICode = (evt.which) ? evt.which : evt.keyCode;
+                                            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) return false;
+                                            return true;
+                                        }
                                     </script>
                                         }
 
@@ -197,32 +335,7 @@
                                             </select>
                                         </div>
 
-                                        @*<div class="col-md-6 form-group">
-                                            <label for="RevisedCategory">Category</label>
-                                            <input id="RevisedCategoryHidden" name="RevisedCategory" hidden>
-                                            <select class="form-control" id="RevisedCategory" name="CATDescription" onblur="validateField2()" style="height:45px;" required>
-                                                @{
-                                                    if (@item.Category != "")
-                                                    {
-                                                        <option></option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option selected disabled value="">Category E.g. Residential</option>
-                                                    }
-                                                }
-                                                @{
-                                                    if (ViewBag.CategoriesList != null)
-                                                    {
-                                                        foreach (var cat in ViewBag.CategoriesList)
-                                                        {
-                                                            <option value="@cat.CatDescName">@cat.CatDescName</option>
-                                                        }
-                                                    }
-                                                }
-                                            </select>
-                                        </div>*@
-
+                                       
                                         <div class="col-md-6 form-group">
                                             <label for="RevisedMarketValue">Market Value</label>
                                             <input class="form-control" id="MarketValue" name="Market_Value" oninput="calculateRatableValue()" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
@@ -232,21 +345,7 @@
                                         <div class="col-md-6 form-group">
                                             <label for="thresholdValue">Threshold</label>
                                             <input type="text" id="thresholdValue" name="thresholdValue" class="form-control" readonly />
-                                        </div>
-
-                                        @*<div class="col-md-6 form-group">
-                                            <label for="thresholdDropdown">Threshold</label>
-                                            <select id="thresholdDropdown" class="form-control" name="Threshold" style="height:45px;" onchange="calculateRatableValue()">
-                                                <option value="">Select a Threshold</option>
-                                                @if (ViewBag.Threshold != null)
-                                                {
-                                                    foreach (var threshold in ViewBag.Threshold)
-                                                    {
-                                                        <option value="@threshold.Threshold">@threshold.Threshold</option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>*@
+                                        </div>                                                                            
 
                                         <div class="col-md-6 form-group mt-3 mt-md-0">
                                             <label for="RatableValue">Ratable Value</label>
@@ -260,21 +359,7 @@
                                         <div class="col-md-6 form-group">
                                             <label for="rateTariffValue">Rate Tariff</label>
                                             <input type="text" id="rateTariffValue" name="rateTariffValue" class="form-control" readonly />
-                                        </div>
-
-                                        @*<div class="col-md-6 form-group">
-                                            <label for="ratesTariffDropdown">Rates Tariff</label>
-                                            <select id="ratesTariffDropdown" class="form-control" name="RatesTariff" style="height:45px;">
-                                                <option value="">Select a Rates Tariff</option>
-                                                @if (ViewBag.Rates_Tariff != null)
-                                                {
-                                                    foreach (var tariff in ViewBag.Rates_Tariff)
-                                                    {
-                                                        <option value="@tariff.Rates_Tariff">@tariff.Rates_Tariff</option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>*@
+                                        </div>                                       
 
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Rebate Type</label>
@@ -309,7 +394,18 @@
                                         <div class="col-md-6 form-group">
                                             <label for="datepicker">Net Adjustment</label>
                                             <input class="form-control" id="NetAdjustment" name="NetAdjustment" />
-                                        </div>                                        
+                                        </div>
+
+                                        @*<div class="col-md-3 form-group">
+                                            <br />
+                                            <button type="button" class="btn btn-primary" onclick="clearFields()">Clear Fields</button>
+                                        </div>*@
+
+                                        <div class="col-md-3 form-group d-flex justify-content-center align-items-center">
+                                            <br /><br /><br />
+                                            <button  type="button" class="btn btn-primary" onclick="refreshCalculations()">Refresh Calculations</button>
+                                        </div>
+                                        
                                     </div>
 
                                     <div id="multipurposeFields" style="display: none;">
@@ -569,7 +665,7 @@
                                     <label for="evidence"> Evidence Upload </label>
                                     <span style="color:red;">(Only 30MB File Allowed)</span>
                                     <div class="row my-3">
-                                        <input id="evidence" type="file" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data*@
+                                        <input id="evidence" type="file" accept=".pdf" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data*@
                                     </div>
                                     //<button type="submit">Upload File</button>
 
@@ -594,11 +690,11 @@
                         <div class="text-center">
                             <button type="submit" class="btn" style="background-color:#006570;">Update</button> 
 
-                            @*<button type="submit" asp-controller="Home" asp-action="KillTask" asp-route-userName="@currentUserFirstname @currentUserSurname"
-                                    class="btn" style="background-color: #4CAF50;"
-                                    onclick="return confirm('Are you sure you want to kill the task?');">
-                                Kill Task
-                            </button>*@
+                            <button type="submit" asp-controller="Journals" asp-action="SubmitTask" asp-route-PremiseID="@premiseId"
+                                    class="btn" style="background-color: #4CAF50;" onclick="removeRequiredFields();
+                                    onclick="return confirm('Are you sure you want to submit the task?');">
+                                Submit Task
+                            </button>
 
                             <a type="button" class="btn btn-secondary"
                                asp-controller="Journals" asp-action="PropPerUser" asp-route-userName="@currentUserFirstname @currentUserSurname"
@@ -617,12 +713,6 @@
             <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>
-                            Premise Id
-                        </th>
-                        <th>
-                            Account Number
-                        </th>
                         <th>
                             Market Value
                         </th>
@@ -659,6 +749,9 @@
                         <th>
                             Calculated Rate
                         </th>
+                        <th>
+                            To Be Charged
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -667,12 +760,6 @@
                         @foreach (var item in ViewBag.JournalListAudit)
                         {
                             <tr>
-                                <td>
-                                    @item.Premise_ID
-                                </td>
-                                <td>
-                                    @item.Account_Number
-                                </td>
                                 <td>
                                     @item.Market_Value
                                 </td>
@@ -714,6 +801,9 @@
                                 <td>
                                     @item.calculatedRate
                                 </td>
+                                <td>
+                                    @item.ToBeCharged
+                                </td>
                             </tr>
 
                         }
@@ -751,62 +841,36 @@
 
     </form>
 
-    @*<script>
-        document.getElementById('FinancialYear').addEventListener('change', function () {
-            var financialYear = this.value;
-            var categorySelect = document.getElementById('RevisedCategory');
+    <script>
+        function removeRequiredFields() {
+            // Select all elements with the required attribute
+            var requiredFields = document.querySelectorAll('[required]');
 
-            // Clear current categories
-            categorySelect.innerHTML = '<option selected disabled value="">Category E.g. Residential</option>';
-
-            if (financialYear) {
-                // Construct the URL to fetch the JSON file based on the selected financial year
-                var url = `/data/${financialYear}_categories.json`;
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data && Array.isArray(data)) {
-                            data.forEach(function (category) {
-                                if (category && category.CatDescName) {
-                                    var option = document.createElement('option');
-                                    option.value = category.CatDescName;
-                                    option.textContent = category.CatDescName;
-                                    categorySelect.appendChild(option);
-                                }
-                            });
-                        } else {
-                            var option = document.createElement('option');
-                            option.value = "";
-                            option.textContent = "No categories found";
-                            categorySelect.appendChild(option);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                // Handle case where no financial year is selected
-                var option = document.createElement('option');
-                option.value = "";
-                option.textContent = "Select Financial Year";
-                categorySelect.appendChild(option);
-            }
-        });
-    </script> *@   
+            // Loop through each element and remove the required attribute
+            requiredFields.forEach(function (field) {
+                field.removeAttribute('required');
+            });
+        }
+    </script>
 
     <script>
-        function formatRebateAmount() {
-            let input = document.getElementById('RebateAmount');
-            let value = input.value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters except decimal point
-            let number = parseFloat(value);
-            if (isNaN(number)) number = 0;
-            input.value = "R " + number.toFixed(2); // Format to 2 decimal places
+        function clearFields() {
+            // Clear specific fields by ID
+            document.getElementById('rateTariffValue').value = '';
+            document.getElementById('calculatedRate').value = '';
+            document.getElementById('MarketValue').value = '';
+            document.getElementById('rebateAmount').value = '';
+            document.getElementById('FinancialYear').value = '';
+            document.getElementById('RevisedCategory').value = '';
+            document.getElementById('calculatedRate').value = '';
+            document.getElementById('billingDays').value = '';    
+            document.getElementById('thresholdValue').value = '';
+            document.getElementById('RatableValue').value = '';
+            document.getElementById('RebateType').value = '';
+            document.getElementById('TobeCharged').value = '';
+            document.getElementById('ActualBilling').value = '';
+            document.getElementById('NetAdjustment').value = '';
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            let rebateInput = document.getElementById('RebateAmount');
-            rebateInput.value = "R 0.00"; // Set default value on load
-            rebateInput.addEventListener('input', formatRebateAmount);
-        });
     </script>
 
     <script>

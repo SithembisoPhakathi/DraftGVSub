@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GeneralValuationSubs.Controllers
 {
@@ -174,7 +175,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM [Journals].[dbo].[Details] WHERE [Allocated Name] = '" + userName + "'";
+                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name] FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] <> 'Transaction Finalized') GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name]";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -295,29 +296,7 @@ namespace GeneralValuationSubs.Controllers
 
             categories.Clear();
 
-            //try
-            //{
-            //    con.Open();
-            //    com.Connection = con;
-            //    com.CommandText = "SELECT DISTINCT [Rates_Tariff] FROM [Journals].[dbo].[Tariffs table] ORDER BY [Rates_Tariff]";
-            //    dr = com.ExecuteReader();
-            //    while (dr.Read()) 
-            //    {
-            //        categories.Add(new Category
-            //        {
-            //            Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"]),
-            //        });
-            //    }
-            //    con.Close();
-
-            //    ViewBag.Rates_Tariff = categories.ToList();
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-
+            
             if (journals.Count > 0)
             {
                 journals.Clear();
@@ -364,7 +343,7 @@ namespace GeneralValuationSubs.Controllers
                     journals.Clear();
 
                     // Second query to get the journal details using the Premise ID
-                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID";
+                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID ORDER BY Activity_Date";
                     com.Parameters.AddWithValue("@PremiseID", premiseId);
 
                     dr = com.ExecuteReader();
@@ -386,7 +365,8 @@ namespace GeneralValuationSubs.Controllers
                             RebateType = dr["RebateType"].ToString(),
                             calculatedRate = dr["calculatedRate"].ToString(),
                             RebateAmount = dr["RebateAmount"].ToString(),
-                            UserName = dr["UserName"].ToString()
+                            UserName = dr["UserName"].ToString(),
+                            ToBeCharged = dr["ToBeCharged"].ToString()
                         });
                     }
                 }
@@ -401,41 +381,6 @@ namespace GeneralValuationSubs.Controllers
 
             return View(journals);
         }
-
-        //public JsonResult FetchRatesThreshold(string financialYear, string CATDescription)
-        //{
-        //    try
-        //    { 
-        //        con.Open();
-        //        com.Connection = con;
-        //        com.CommandText = "SELECT [LIS CAT], Financial_Year, Rates_Tariff, [Residential Threshold] FROM [Journals].[dbo].[Tariffs table] WHERE Financial_Year = @FinancialYear AND [LIS CAT] = @LISCAT";
-        //        com.Parameters.AddWithValue("@FinancialYear", financialYear);
-        //        com.Parameters.AddWithValue("@LISCAT", CATDescription);
-
-        //        using (var dr = com.ExecuteReader())
-        //        {
-        //            while (dr.Read())
-        //            {
-        //                categories.Add(new Category
-        //                {
-        //                    CatDescName = dr["LIS CAT"].ToString(),
-        //                    Threshold = Convert.ToDecimal(dr["Residential Threshold"]),
-        //                    Rates_Tariff = Convert.ToDecimal(dr["Rates_Tariff"])
-
-        //                });
-        //            }
-        //        }
-        //        con.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //Handle the exception
-        //        throw;
-        //    }
-
-        //    return Json(categories);
-        //}
-
 
         [HttpPost]
         public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
@@ -522,37 +467,7 @@ namespace GeneralValuationSubs.Controllers
 
                 save_files = FileNameAttach;
             }
-
-            //if (journals.Count > 0)
-            //{
-            //    journals.Clear();
-            //}
-            //try
-            //{
-            //    con.Open();
-            //    com.Connection = con;
-
-            //    //string fileNameAttachValue = (files != null && files.FileName != null) ? Path.GetFileName(files.FileName) : null;
-
-            //    com.CommandText = "UPDATE [UpdatedGVTool].[dbo].[NotValued] SET [Market Value1] = '" + MarketValue1 + "', [Market Value2] = '" + MarketValue2 + "', [Market Value3] = '" + MarketValue3 + "', [CAT Description] = '" + CATDescription + "', " + "[CAT Description1] = '" + CATDescription1 + "', [CAT Description2] = '" + CATDescription2 + "', [CAT Description3] = '" + CATDescription3 + "', Comment = '" + Comment + "', WEF_DATE = '" + WEF_DATE + "', Activity_Date = getdate(), " +
-            //                        "FileNameAttach = '" + save_files + "', Status = (SELECT Status_Description FROM [UpdatedGVTool].[dbo].[Status] WHERE Status_ID = 2) WHERE DraftId = '" + Journal_Id + "'";
-
-            //    dr = com.ExecuteReader();
-            //    while (dr.Read())
-            //    {
-            //        journals.Add(new Journals
-            //        {
-
-            //        });
-            //    }
-
-            //    con.Close();
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
+           
 
             if (JournalHistories.Count > 0)
             {
@@ -584,12 +499,119 @@ namespace GeneralValuationSubs.Controllers
 
         }
 
-        public IActionResult Transaction_To_Be_Checked()
+        [HttpPost]
+        public async Task<IActionResult> SubmitTask(string? Journal_Id, string? PremiseId, string? Account_Number,
+            string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
+            string? MarketValue1, string? MarketValue2, string? MarketValue3,
+            string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
-            var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
+            var userID = TempData["currentUser"];
+            TempData.Keep("currentUser");
+
+            var currentUserSurname = TempData["currentUserSurname"];
+            TempData.Keep("currentUserSurname");
+            var currentUserFirstname = TempData["currentUserFirstname"];
+            TempData.Keep("currentUserFirstname");
+
+            var userSector = TempData["currentUserSector"];
             TempData.Keep("currentUserSector");
 
-            //userName = TempData["currentUserFirstname"].ToString() +' ' + TempData["currentUserSurname"].ToString();
+            TempData["CATDescription"] = CATDescription;
+            TempData["WEF_DATE"] = WEF_DATE;
+
+            int count = 0;
+
+            string Premise_ID = PremiseId.ToString();
+            string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}";
+            string folder = uploadRoot + "\\" + Premise_ID;
+            // ******Check existance then create it.******
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
+            string save_files = "";
+
+            string FileNameAttach = "";
+
+            List<string> Upload = new List<string>();
+            foreach (IFormFile file in files)
+            {
+                count++;
+
+                string fileName = Path.GetFileName(file.FileName);
+                string filePath = $"{folder}\\{Path.GetFileName(file.FileName)}";
+
+                switch (count)
+                {
+                    case 1:
+                        FileNameAttach += fileName;
+                        break;
+                    case 2:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 3:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 4:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 5:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 6:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 7:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 8:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 9:
+                        FileNameAttach += "," + fileName;
+                        break;
+                    case 10:
+                        FileNameAttach += "," + fileName;
+                        break;
+                }
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    file.CopyTo(stream);
+                    Upload.Add(fileName);
+                }
+
+                save_files = FileNameAttach;
+            }
+
+
+            if (JournalHistories.Count > 0)
+            {
+                JournalHistories.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "'";
+
+                com.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return RedirectToAction("PropPerUser", new { userName = userName });
+
+        }
+
+        public IActionResult Transaction_To_Be_Checked()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
 
             if (journals.Count > 0)
             {
@@ -638,10 +660,8 @@ namespace GeneralValuationSubs.Controllers
 
         public IActionResult ViewTransactions(string? PremiseID)
         {
-            var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
+            var userSector = TempData["currentUserSector"]; 
             TempData.Keep("currentUserSector");
-
-            //userName = TempData["currentUserFirstname"].ToString() +' ' + TempData["currentUserSurname"].ToString();
 
             if (journals.Count > 0)
             {

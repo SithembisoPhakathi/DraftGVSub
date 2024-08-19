@@ -25,8 +25,9 @@
         public string? RatesTariff { get; set; }
         public string? RebateType { get; set; }
         public string? RebateAmount { get; set; }
-        public string? calculatedRate { get; set; }
+        public string? calculatedRate { get; set; } 
         public string? UserName { get; set; }
         public DateTime? Activity_Date { get; set; }
+        public string? ToBeCharged { get; set; } 
     }
 }
