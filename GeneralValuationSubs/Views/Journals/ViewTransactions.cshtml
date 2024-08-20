@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var premiseId = string.Empty;
 }
 
 <head>
@@ -46,7 +48,6 @@
     <form asp-controller="Journals" asp-action="AllocatingTask" method="POST">
 
         @*<div style="overflow-x:auto;"> </div>*@
-        <table>
             <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
                 <thead>
                     <tr>
@@ -97,11 +98,17 @@
                 <tbody>
                     @if (ViewBag.PremiseID != null)
                     {
+
                         @foreach (var item in ViewBag.PremiseID)
                         {
                             <tr>
                                 <td>
                                     @item.Premise_ID
+
+                                    @{
+                                        premiseId = item.Premise_ID; 
+                                    }
+
                                 </td>
                                 <td>
                                     @item.Account_Number
@@ -154,6 +161,10 @@
 
                 </tbody>
             </table>
+
+            <div class="col-md-6 form-group">
+                <a class="btn btn-primary" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId" style="margin-left: 2cm;">Download File</a>
+            </div>
 
         <br />
         <br />       

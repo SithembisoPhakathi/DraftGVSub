@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
+using System.IO.Compression;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GeneralValuationSubs.Controllers
@@ -175,7 +176,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name] FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] <> 'Transaction Finalized') GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name]";
+                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name] FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] <> 'Transaction Finalized') GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name]";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -389,12 +390,12 @@ namespace GeneralValuationSubs.Controllers
             string? MarketValue1, string? MarketValue2, string? MarketValue3, 
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
-            var userID = TempData["currentUser"];
+            var userID = TempData["currentUser"] as string; ;
             TempData.Keep("currentUser");
 
-            var currentUserSurname = TempData["currentUserSurname"];
+            var currentUserSurname = TempData["currentUserSurname"] as string; ;
             TempData.Keep("currentUserSurname");
-            var currentUserFirstname = TempData["currentUserFirstname"];
+            var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
             TempData.Keep("currentUserFirstname");
 
             var userSector = TempData["currentUserSector"];
@@ -402,6 +403,12 @@ namespace GeneralValuationSubs.Controllers
 
             TempData["CATDescription"] = CATDescription;
             TempData["WEF_DATE"] = WEF_DATE;
+
+            if (string.IsNullOrWhiteSpace(currentUserSurname) || string.IsNullOrWhiteSpace(currentUserFirstname) || string.IsNullOrWhiteSpace(userID))
+            {
+                TempData["RefreshMessage"] = $"User Surname or Firstname is missing or blank. Please refresh the page.";
+                return RedirectToAction("RefreshMessage");
+            }
 
             int count = 0;
 
@@ -477,8 +484,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [TobeCharged],  [Activity_Date]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', '" + TobeCharged + "' , '" + DateTime.Now + "')";
+                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged],  [Activity_Date]) " +
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', '" + "Transaction Processed" + "', '" + TobeCharged + "' , '" + DateTime.Now + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
@@ -710,6 +717,66 @@ namespace GeneralValuationSubs.Controllers
             TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
 
             return View(journals);//journals
+        }
+
+        public IActionResult DownloadFiles(string PremiseID)
+        {
+            string folderPath = @"G:\\JOURNALS_TEST\\" + PremiseID + "";
+            //string[] filePaths = Directory.GetFiles(folderPath);
+
+            if (!Directory.Exists(folderPath))
+            {
+                TempData["ErrorMessage"] = $"Premise Id: {PremiseID} evidence not uploaded";
+                return RedirectToAction("ShowError");
+            }
+
+            string[] filePaths = Directory.GetFiles(folderPath);
+
+            if (filePaths.Length == 0)
+            {
+                TempData["ErrorMessage"] = $"Premise Id: {PremiseID} evidence not uploaded";
+                return RedirectToAction("ShowError");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    foreach (var filePath in filePaths)
+                    {
+                        string fileName = Path.GetFileName(filePath);
+                        using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        {
+                            var entry = archive.CreateEntry(fileName);
+                            using (var entryStream = entry.Open())
+                            {
+                                fileStream.CopyTo(entryStream);
+                            }
+                        }
+                    }
+                }
+
+                //memoryStream.Position = 0;
+                byte[] combinedData = memoryStream.ToArray();
+
+                using (var finalMemoryStream = new MemoryStream())
+                {
+                    //memoryStream.CopyTo(finalMemoryStream);
+                    finalMemoryStream.Position = 0;
+
+                    return File(combinedData, "application/zip", PremiseID + " Files.zip");
+                }
+            }
+        }
+
+        public IActionResult ShowError()
+        {
+            return View();
+        }
+
+        public IActionResult RefreshMessage()
+        {
+            return View();
         }
 
         public IActionResult Index()
