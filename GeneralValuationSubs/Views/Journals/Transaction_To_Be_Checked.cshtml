@@ -21,6 +21,25 @@
 
 </head>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        // Automatically hide the success message after 10 seconds (10000 milliseconds)
+        setTimeout(function () {
+            var successAlert = document.getElementById("successAlert");
+            if (successAlert) {
+                var bsAlert = new bootstrap.Alert(successAlert);
+                bsAlert.close();
+            }
+        }, 5000);
+    </script>
+}
+
 <link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
 
@@ -54,7 +73,7 @@
                     <th>
                         Premise Id
                     </th>
-                    <th>
+                   @*  <th>
                         Account Number
                     </th>
                     <th>
@@ -74,7 +93,7 @@
                     </th>
                     <th>
                         File Name
-                    </th>
+                    </th> *@
 
                     <th>
                         Status
@@ -96,7 +115,7 @@
                             <td>
                                 <a asp-controller="Journals" asp-action="ViewTransactions" asp-route-PremiseID="@item.Premise_ID"> @item.Premise_ID </a>
                             </td>
-                            <td>
+                            @* <td>
                                 @item.Account_Number
                             </td>
                             <td>
@@ -119,7 +138,7 @@
 
                             <td>
                                 @item.File_Name
-                            </td>
+                            </td> *@
 
                             <td>
                                 @item.Status

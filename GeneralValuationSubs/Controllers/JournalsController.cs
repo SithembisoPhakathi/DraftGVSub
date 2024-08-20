@@ -628,7 +628,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT Distinct [Premise ID], UserName FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (5))";
+                com.CommandText = "SELECT [Premise ID], Status, UserName FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (5)) GROUP BY [Premise ID], Status, UserName";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -644,7 +644,7 @@ namespace GeneralValuationSubs.Controllers
                         //WEF = dr["WEF"].ToString(),
                         //Net_Accrual = dr["Net Accrual"].ToString(),
                         //File_Name = dr["File Name"].ToString(),
-                        //Status = dr["Status"].ToString(),
+                        Status = dr["Status"].ToString(),
                         Allocated_Name = dr["UserName"].ToString(),
                         //Journal_Id = dr["Journal_Id"].ToString()
 
@@ -721,7 +721,7 @@ namespace GeneralValuationSubs.Controllers
 
         public IActionResult DownloadFiles(string PremiseID)
         {
-            string folderPath = @"G:\\JOURNALS_TEST\\" + PremiseID + "";
+            string folderPath = @"E:\\JOURNALS_TEST\\" + PremiseID + "";
             //string[] filePaths = Directory.GetFiles(folderPath);
 
             if (!Directory.Exists(folderPath))
@@ -767,6 +767,40 @@ namespace GeneralValuationSubs.Controllers
                     return File(combinedData, "application/zip", PremiseID + " Files.zip");
                 }
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TransactionApproveReject(string PremiseId, string ActionType)
+        {
+            try
+            {
+                con.Open();
+                com.Connection = con;
+
+                if (ActionType == "Approve")
+                {
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = 'Approved' WHERE [Premise ID] = @PremiseId";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
+                }
+                else if (ActionType == "Reject")
+                {
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = 'Rejected' WHERE [Premise ID] = @PremiseId";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                }
+
+                com.Parameters.AddWithValue("@PremiseId", PremiseId);
+                com.ExecuteNonQuery();                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return RedirectToAction("Transaction_To_Be_Checked");
         }
 
         public IActionResult ShowError()

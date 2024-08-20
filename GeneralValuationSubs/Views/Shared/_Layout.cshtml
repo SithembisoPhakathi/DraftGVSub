@@ -33,6 +33,28 @@
     <script src="https://kendo.cdn.telerik.com/2023.2.408/js/jquery.min.js"></script>
     <script src="https://kendo.cdn.telerik.com/2023.2.408/js/kendo.all.min.js"></script>
 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <style>
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #preloader {
+            background: rgba(255, 255, 255, 0.8) no-repeat center center; /* Change this line */
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
 </head>
 
 @{
@@ -50,9 +72,22 @@
     TempData.Keep("currentUserFirstname");
 }
 <body>
+
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"].ToString();
+        var currentAction = ViewContext.RouteData.Values["action"].ToString();
+    }
+
+    @if (!(currentController == "Home" && currentAction == "Index"))
+    {
+        <div id="preloader">
+            <img src="~/images/1494_.gif" />
+        </div>
+    }
+
     <header>   
 
-  @*    <section id="topbar" class="d-flex align-items-center">
+  @*<section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
       <div class="contact-info d-flex align-items-center">
         <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:valuationenquiries@joburg.org.za">valuationenquiries@joburg.org.za</a></i>
@@ -284,8 +319,6 @@
 
                         }
 
-                        &nbsp;
-                        &nbsp;
                         
                         @*<li>
                             @if (@role != null)
@@ -408,7 +441,6 @@
                                 </li>
                             }
                         }
-                        &nbsp;
 
                         @if (@role != null)
                         {
@@ -482,13 +514,20 @@
         </main>
     </div>
 
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(window).on('load', function () {
+            setTimeout(function () {
+                $('#preloader').fadeOut('slow', function () {
+                    $(this).remove();
+                });
+                $('.loading-spinner').hide();
+            }, 1000); // Adjust the delay if necessary
+        });
 
-    @* <div id="loading">
-        <img src="~/Loading GIF.gif" alt="Loading..." />
-    </div> *@
+    </script>
 
     <footer id="footer" style="background-color:black;">
-
 
 
         <div class="footer-top" style="background-color:#29292b;">
