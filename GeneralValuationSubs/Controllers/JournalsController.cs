@@ -42,7 +42,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT Top(100) * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 5))"; 
+                com.CommandText = "SELECT Top(100) DATEDIFF(DAY,Allocated_Date, GETDATE()) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 5))"; 
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -61,8 +61,8 @@ namespace GeneralValuationSubs.Controllers
                         Status = dr["Status"].ToString(),
                         Allocated_Name = dr["Allocated Name"].ToString(),
                         Journal_Id = dr["Journal_Id"].ToString(),
-                        ValuationDate = dr["Valuation Date"].ToString()
-
+                        ValuationDate = dr["Valuation Date"].ToString(),
+                        DateDiff = (int)dr["Date_Diff"]
                     });
                 }
                 con.Close();
@@ -592,7 +592,6 @@ namespace GeneralValuationSubs.Controllers
                 save_files = FileNameAttach;
             }
 
-
             if (JournalHistories.Count > 0)
             {
                 JournalHistories.Clear();
@@ -601,7 +600,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "'";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = 'Transaction Finalized' WHERE [Premise ID] = '" + PremiseId + "'COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 

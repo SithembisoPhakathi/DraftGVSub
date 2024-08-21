@@ -28,6 +28,7 @@
         public string? calculatedRate { get; set; } 
         public string? UserName { get; set; }
         public DateTime? Activity_Date { get; set; }
-        public string? ToBeCharged { get; set; } 
+        public string? ToBeCharged { get; set; }
+        public int? DateDiff { get; set; }
     }
 }
