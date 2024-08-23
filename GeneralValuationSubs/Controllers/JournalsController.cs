@@ -42,7 +42,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT Top(100) DATEDIFF(DAY,Allocated_Date, GETDATE()) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 5))"; 
+                com.CommandText = "SELECT Top(100) DATEDIFF(DAY, GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5))"; 
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -68,6 +68,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
 
                 ViewBag.UserDataList = journals.ToList();
+                
             }
 
             catch (Exception ex)
@@ -102,12 +103,10 @@ namespace GeneralValuationSubs.Controllers
                 throw ex;
             }
 
-            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
-
             return PartialView("PropPerUserAllocate", new { userName = userName });//journals
         }
 
-        public IActionResult AllocatingTask(List<int> selectedItems, string? JournalName) 
+        public IActionResult AllocatingTask(List<int> selectedItems, string? JournalName, string? priorityOrIndifference) 
         {
             var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
             TempData.Keep("currentUserSector");
@@ -125,9 +124,9 @@ namespace GeneralValuationSubs.Controllers
                 com.Connection = con;
 
                 // Create a parameterized query to avoid SQL injection
-                com.CommandText = "EXEC AllocatingTask_Procedure @JournalUserName, @JournalId";
+                com.CommandText = "EXEC AllocatingTask_Procedure @JournalUserName, @JournalId, @PriorityOrIndifference";
 
-                com.Parameters.AddWithValue("@JournalUserName", JournalName);
+                //com.Parameters.AddWithValue("@JournalUserName", JournalName);
 
                 foreach (int journalId in selectedItems)
                 {
@@ -135,6 +134,7 @@ namespace GeneralValuationSubs.Controllers
 
                     com.Parameters.AddWithValue("@JournalId", journalId);
                     com.Parameters.AddWithValue("@JournalUserName", JournalName);
+                    com.Parameters.AddWithValue("@PriorityOrIndifference", priorityOrIndifference);
                     dr = com.ExecuteReader();
 
                     while (dr.Read())
@@ -485,7 +485,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Open();
                 com.Connection = con;
                 com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged],  [Activity_Date]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', '" + "Transaction Processed" + "', '" + TobeCharged + "' , '" + DateTime.Now + "')";
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', 'Transaction Processed', '" + TobeCharged + "' , '" + DateTime.Now + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
@@ -600,7 +600,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = 'Transaction Finalized' WHERE [Premise ID] = '" + PremiseId + "'COMMIT TRANSACTION;";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = 'Transaction Finalized', End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 

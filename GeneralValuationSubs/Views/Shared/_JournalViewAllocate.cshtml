@@ -139,19 +139,19 @@
 
                             <td>
 
-                                @if (@item.DateDiff >= 0 && @item.DateDiff <= 10)
+                                @if (@item.DateDiff >= 5 && @item.DateDiff <= 7)
                                 {
                                     <span style="color: green;">
                                         @item.DateDiff
                                     </span>
                                 }
-                                else if (@item.DateDiff >= 11 && @item.DateDiff <= 20)
+                                else if (@item.DateDiff >= 3 && @item.DateDiff <= 4)
                                 {
                                     <span style="color: orange;">
                                         @item.DateDiff
                                     </span>
                                 }
-                                else if (@item.DateDiff >= 21)
+                                else if (@item.DateDiff <= 2)
                                 {
                                     <span style="color: red;">
                                         @item.DateDiff
@@ -176,9 +176,9 @@
         <br />
 
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-center">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
                 <div class="form-group">
-                    <select name="JournalName" required id="JournalName" class="form-select" style="font-size: 15px">
+                    <select name="JournalName" required id="JournalName" class="form-select" style="font-size: 15px; margin-left: 40px;">
                         <option disabled selected value="">Select User</option>
                         @if (ViewBag.ValuersList != null)
                         {
@@ -187,11 +187,20 @@
                                 <option id="valuersss" value="@valuer.FirstName @valuer.Surname">@valuer.FirstName @valuer.Surname</option>
                             }
                         }
-                    </select>
+                    </select>   
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-center">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center">
+                <label>
+                    <input type="radio" name="priorityOrIndifference" value="Priority - Allocated" id="priority"> Priority
+                </label>
+                <label>
+                    <input type="radio" name="priorityOrIndifference" value="Allocated" id="indifference" checked> Indifference
+                </label>
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
                 <div>
                     <button type="submit" style="background-color: #025752; color: white">Allocate Tasks</button>
                 </div>

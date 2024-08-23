@@ -277,6 +277,23 @@
                                                 }
                                             }
 
+                                            function calculateNetAdjustment() {
+                                                // Get and clean the values from the input fields
+                                                var ActualBilling = document.getElementById("ActualBilling").value.replace(/[^0-9.-]+/g, "");
+                                                var TobeCharged = document.getElementById("TobeCharged").value.replace(/[^0-9.-]+/g, "");
+
+                                                // Parse values as floats
+                                                ActualBilling = parseFloat(ActualBilling) || 0;
+                                                TobeCharged = parseFloat(TobeCharged) || 0;
+
+                                                // Calculate the Net Adjustment
+                                                var NetAdjustment = TobeCharged - ActualBilling;
+
+                                                // Set the result in the "Net Adjustment" input field
+                                                document.getElementById("NetAdjustment").value = "R " + NetAdjustment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                            }
+
+
                                             // Function to calculate Rebate Amount
                                             function calculateRabateAmount() {
                                                 var rebateAmount = document.getElementById("RebateAmount").value.replace(/[^0-9.-]+/g, "");
@@ -411,12 +428,13 @@
 
                                             <div class="col-md-6 form-group">
                                                 <label for="datepicker">To be Charged </label>
-                                                <input class="form-control" id="TobeCharged"  name="TobeCharged" />
+                                                <input class="form-control" id="TobeCharged" name="TobeCharged" />
                                             </div>
 
                                             <div class="col-md-6 form-group">
                                                 <label for="datepicker">Actual Billing </label>
-                                                <input class="form-control" id="ActualBilling" name="ActualBilling" />
+                                                <input class="form-control" id="ActualBilling" oninput="calculateNetAdjustment()" name="ActualBilling" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
+                                                     placeholder="Actual Billing E.g. R 1,000.00" onblur="validateField1()" required />
                                             </div>
 
                                             <div class="col-md-6 form-group">
@@ -680,14 +698,8 @@
                                         <div class="row my-3">
                                             <div class="form-group mt-3">
                                                 <label for="Comment">Comment</label>
-                                                <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment" required></textarea>
-                                            </div>
-                                            @*<div class="col-md-6 form-group">
-                            <input class="form-control" id="MarketValueComment" name="MarketValueComment" Value="@item.CommentMarketValue" placeholder="Revised Market Value comment" required />
-                            </div>
-                            <div class="col-md-6 form-group mt-3 mt-md-0">
-                            <input class="form-control" id="CategoryComment" name="CategoryComment" Value="@item.CommentCategory" placeholder="Revised Category comment" required />
-                            </div>*@
+                                                <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment"></textarea>
+                                            </div>                                           
                                         </div>
 
                                         <label for="evidence"> Evidence Upload </label>
@@ -835,7 +847,8 @@
                     }
 
                 </tbody>
-        </table>
+        </table>    
+        
         <!-- End of tiles -->
 
         <script>
@@ -847,6 +860,7 @@
                 });
 
                 document.getElementById('Evidence').setAttribute('required', 'required');
+                document.getElementById('Comment').setAttribute('required', 'required');
             });
         </script>
 
@@ -1029,8 +1043,7 @@
 
             // Set the result in the "To Be Charged" input field
             document.getElementById("TobeCharged").value = "R " + toBeCharged.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
+        }      
 
         function onlyNumberKey(evt) {
             // Only ASCII character in that range allowed
