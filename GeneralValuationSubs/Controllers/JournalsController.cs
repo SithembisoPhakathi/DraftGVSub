@@ -123,7 +123,6 @@ namespace GeneralValuationSubs.Controllers
                 con.Open();
                 com.Connection = con;
 
-                // Create a parameterized query to avoid SQL injection
                 com.CommandText = "EXEC AllocatingTask_Procedure @JournalUserName, @JournalId, @PriorityOrIndifference";
 
                 //com.Parameters.AddWithValue("@JournalUserName", JournalName);
@@ -145,7 +144,7 @@ namespace GeneralValuationSubs.Controllers
                         });
                     }
 
-                    dr.Close(); // Close the DataReader before the next iteration
+                    dr.Close(); 
                 }
 
                 con.Close();
