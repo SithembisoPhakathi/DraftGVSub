@@ -60,6 +60,7 @@
                                 {
                                             <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
 
+
                                         premiseId = item.Premise_ID;
 
                                             <div class="row my-3">
@@ -687,14 +688,14 @@
                                             <!-- MultipurposeFields -->
 
                                             @if (@item.Status == "Rejected")
-                                    {
+                                            {
                                                 <div class="row my-3">
                                                     <div class="form-group mt-3">
                                                         <label for="Comment"> Approver Comment</label>
                                                         <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" disabled> @item.ApproverComment </textarea>
                                                     </div>
                                                 </div>
-                                    }
+                                             }
 
                                             <div class="row my-3">
                                                 <div class="form-group mt-3">
@@ -790,6 +791,9 @@
                         <th>
                             To Be Charged
                         </th>
+                        <th>
+                             -----
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -841,6 +845,9 @@
                                 </td>
                                 <td>
                                     @item.ToBeCharged
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
                                 </td>
                             </tr>
 
@@ -1118,7 +1125,7 @@
         function validateField1() {
             var RevisedMarketValue = document.getElementById("RevisedMarketValue");
             var RevisedCategory = document.getElementById("RevisedCategory");
-            var MarketValueComment = document.getElementById("Comment");
+            var MarketValueComment = document.getElementById("CommentComment");
 
             if (RevisedMarketValue.value.length > 0) {
                 MarketValueComment.required = true;
@@ -1132,7 +1139,7 @@
     <script>
         function validateField2() {
             var RevisedCategory = document.getElementById("RevisedCategory");
-            var CategoryComment = document.getElementById("Comment");
+            var CategoryComment = document.getElementById("CommentComment");
 
             if (RevisedCategory.Checked = true) {
                 CategoryComment.required = true;

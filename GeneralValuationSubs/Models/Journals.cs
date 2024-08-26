@@ -30,5 +30,6 @@
         public DateTime? Activity_Date { get; set; }
         public string? ToBeCharged { get; set; }
         public int? DateDiff { get; set; }
+        public int? Transaction_ID { get; set; }
     }
 }

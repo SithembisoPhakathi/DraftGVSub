@@ -1,0 +1,1115 @@
+﻿@model List<GeneralValuationSubs.Models.Journals>
+
+@{
+    var currentUserSurname = TempData["currentUserSurname"];
+    TempData.Keep("currentUserSurname");
+    var currentUserFirstname = TempData["currentUserFirstname"];
+    TempData.Keep("currentUserFirstname");
+
+    var CATDescription = TempData["CATDescription"];
+    TempData.Keep("CATDescription");
+
+    var WEF_DATE = TempData["WEF_DATE"];
+    TempData.Keep("WEF_DATE");
+
+    var premiseId = string.Empty;
+}
+
+<html>
+<head>
+
+    <style>
+        .column {
+            float: left;
+            width: 33.33%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .php-email-form {
+            box-shadow: 0 0 30px rgb(214 215 216 / 60%);
+            padding: 30px;
+        }
+
+        label {
+            font-weight: bolder;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <form id="ViewTransactionForm" asp-controller="Journals" asp-action="UpdateValue" method="POST" enctype="multipart/form-data">
+
+        <input hidden type="text" name="userName" value="@currentUserFirstname @currentUserSurname" />
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="row justify-content-center aos-init aos-animate php-email-form" data-aos="fade-up" data-aos-delay="300">
+                    <div class="col-xl-9 col-lg-12 mt-4">
+
+                        @{
+                            if (ViewBag.JournalListDetails != null)
+                            {
+                                foreach (var item in ViewBag.JournalListDetails)
+                                {
+                                            <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
+
+
+                                        premiseId = item.Premise_ID;
+
+                                            <div class="row my-3">
+                                                <div class="col-mt-3 form-group">
+                                                    <label for="PropertyDescription">Premise ID</label>
+                                                    @*<button onclick="copyToClipboard()"><i class="fa-solid fa-copy"></i></button>*@
+                                                <input class="form-control" id="PremiseID" name="PremiseId" Value="@item.Premise_ID" disabled />
+                                                    <input hidden class="form-control" id="MarketValueComment" name="PremiseId" Value="@item.Premise_ID" />
+                                                </div>
+                                            </div>
+
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="PremiseId">Account Number</label>
+                                                    <input class="form-control" id="PremiseId" name="Account_Number" Value="@item.Account_Number" disabled />
+                                                    <input class="form-control" hidden id="PremiseId" name="Account_Number" Value="@item.Account_Number" />
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label for="TownNameDesc">Installation</label>
+                                                    <input class="form-control" id="TownNameDesc" name="Installation" Value="@item.Installation" disabled />
+                                                    <input class="form-control" hidden id="PremiseId" name="Installation" Value="@item.Installation" />
+                                                </div>
+
+                                            <script>
+                                                function copyToClipboard() {
+                                                    // Get the input field
+                                                    var inputField = document.getElementById('PremiseID');
+
+                                                    // Select the text inside the input field
+                                                    inputField.select();
+                                                    inputField.setSelectionRange(0, 99999); // For mobile devices
+
+                                                    // Copy the text inside the input field to the clipboard
+                                                    document.execCommand('copy');
+                                                   
+
+                                                    // Alert user that the text has been copied (optional)
+                                                    alert('Copied the text: ' + inputField.value);
+                                                }
+                                            </script>
+
+                                                @section Scripts
+                                        {
+                                            <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+                                            <script>
+                                                // Function to refresh all calculations
+                                                function refreshCalculations() {
+                                                    calculateRatableValue();
+                                                    calculateBillingDays();
+                                                    calculateRabateAmount();
+                                                    calculateNetAdjustment();
+                                                }
+
+                                                $(function () {
+                                                    // Initialize datepickers
+                                                    $("#billingFrom, #billingTo").datepicker({
+                                                        dateFormat: 'yy-mm-dd',
+                                                        onSelect: function () {
+                                                            calculateBillingDays();
+                                                            calculateRabateAmount(); // Recalculate the rebate after date selection
+                                                        }
+                                                    });
+
+                                                    // Update calculation when the rate tariff changes
+                                                    $("#ratesTariffDropdown").on("change", function () {
+                                                        calculateBillingDays();
+                                                        calculateRabateAmount(); // Recalculate the rebate when tariff changes
+                                                    });
+
+                                                    // Update calculation when Ratable Value or Rate Tariff changes
+                                                    $("#RatableValue, #rateTariffValue").on("input", function () {
+                                                        calculateBillingDays();
+                                                        calculateRabateAmount(); // Recalculate the rebate when values change
+                                                    });
+
+                                                    // Update calculation when Category changes
+                                                    $("#RevisedCategory").on("change", function () {
+                                                        calculateRatableValue(); // Recalculate ratable value based on new category
+                                                        calculateBillingDays(); // Recalculate rate when category changes
+                                                        calculateRabateAmount(); // Recalculate the rebate after category changes
+                                                    });
+
+                                                    // Update datepicker range when Financial Year changes
+                                                    $("#FinancialYear").on("change", function () {
+                                                        setFinancialYearDateRange();
+                                                        refreshCalculations(); // Recalculate all values after financial year changes
+                                                    });
+
+                                                    // Function to set date range based on selected Financial Year
+                                                    function setFinancialYearDateRange() {
+                                                        var financialYear = $("#FinancialYear").val();
+                                                        var startDate, endDate;
+
+                                                        switch (financialYear) {
+                                                            case "2013_2014":
+                                                                startDate = new Date("2013-07-01");
+                                                                endDate = new Date("2014-06-30");
+                                                                break;
+                                                            case "2014_2015":
+                                                                startDate = new Date("2014-07-01");
+                                                                endDate = new Date("2015-06-30");
+                                                                break;
+                                                            case "2015_2016":
+                                                                startDate = new Date("2015-07-01");
+                                                                endDate = new Date("2016-06-30");
+                                                                break;
+                                                            case "2016_2017":
+                                                                startDate = new Date("2016-07-01");
+                                                                endDate = new Date("2017-06-30");
+                                                                break;
+                                                            case "2017_2018":
+                                                                startDate = new Date("2017-07-01");
+                                                                endDate = new Date("2018-06-30");
+                                                                break;
+                                                            case "2018_2019":
+                                                                startDate = new Date("2018-07-01");
+                                                                endDate = new Date("2019-06-30");
+                                                                break;
+                                                            case "2019_2020":
+                                                                startDate = new Date("2019-07-01");
+                                                                endDate = new Date("2020-06-30");
+                                                                break;
+                                                            case "2020_2021":
+                                                                startDate = new Date("2020-07-01");
+                                                                endDate = new Date("2021-06-30");
+                                                                break;
+                                                            case "2021_2022":
+                                                                startDate = new Date("2021-07-01");
+                                                                endDate = new Date("2022-06-30");
+                                                                break;
+                                                            case "2022_2023":
+                                                                startDate = new Date("2022-07-01");
+                                                                endDate = new Date("2023-06-30");
+                                                                break;
+                                                            case "2023_2024":
+                                                                startDate = new Date("2023-07-01");
+                                                                endDate = new Date("2024-06-30");
+                                                                break;
+                                                            case "2024_2025":
+                                                                startDate = new Date("2024-07-01");
+                                                                endDate = new Date("2025-06-30");
+                                                                break;
+                                                            // Add more cases for other financial years as needed
+                                                            default:
+                                                                startDate = null;
+                                                                endDate = null;
+                                                        }
+
+                                                        if (startDate && endDate) {
+                                                            $("#billingFrom").datepicker("option", "minDate", startDate);
+                                                            $("#billingFrom").datepicker("option", "maxDate", endDate);
+                                                            $("#billingTo").datepicker("option", "minDate", startDate);
+                                                            $("#billingTo").datepicker("option", "maxDate", endDate);
+                                                        } else {
+                                                            // Clear the date range restrictions if no financial year is selected
+                                                            $("#billingFrom").datepicker("option", "minDate", null);
+                                                            $("#billingFrom").datepicker("option", "maxDate", null);
+                                                            $("#billingTo").datepicker("option", "minDate", null);
+                                                            $("#billingTo").datepicker("option", "maxDate", null);
+                                                        }
+                                                    }
+
+                                                    // Call this function on page load to set initial date range
+                                                    setFinancialYearDateRange();
+                                                });
+
+                                                // Function to calculate Ratable Value
+                                                function calculateRatableValue() {
+                                                    var marketValue = document.getElementById("MarketValue").value.replace(/[^0-9.-]+/g, "");
+                                                    var threshold = document.getElementById("thresholdValue").value;
+
+
+
+                                                    if (marketValue && threshold) {
+                                                        var ratableValue = parseFloat(marketValue) - parseFloat(threshold);
+
+                                                    if (ratableValue < 0) 
+                                                    {
+                                                        ratableValue = 0;
+                                                    }
+                                                        document.getElementById("RatableValue").value = "R " + ratableValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                        calculateBillingDays(); // Recalculate rate when ratable value changes
+                                                        calculateRabateAmount(); // Recalculate the rebate after ratable value changes
+                                                    } else {
+                                                        document.getElementById("RatableValue").value = "";
+                                                    }
+                                                }
+
+                                                // Function to calculate Billing Days and Rate
+                                                function calculateBillingDays() {
+                                                    var fromDate = $("#billingFrom").datepicker("getDate");
+                                                    var toDate = $("#billingTo").datepicker("getDate");
+
+                                                    var RatableValue = parseFloat(parseCurrency($("#RatableValue").val())) || 0;
+                                                    var ratesTariff = parseFloat(convertCommaToDot($("#rateTariffValue").val())) || 0;
+
+                                                    if (fromDate && toDate) {
+                                                        var timeDifference = toDate - fromDate;
+                                                        var dayDifference = timeDifference / (1000 * 3600 * 24) + 1;
+
+                                                        $("#billingDays").val(dayDifference);
+
+                                                        if (RatableValue > 0 && ratesTariff > 0) {
+                                                            var rate = ((RatableValue * ratesTariff) / 365) * dayDifference;
+                                                            $("#calculatedRate").val(rate.toFixed(2));
+                                                        } else {
+                                                            $("#calculatedRate").val('');
+                                                        }
+
+                                                    } else {
+                                                        $("#billingDays").val('');
+                                                        $("#calculatedRate").val('');
+                                                    }
+                                                }
+
+                                                function calculateNetAdjustment() {
+                                                    // Get and clean the values from the input fields
+                                                    var ActualBilling = document.getElementById("ActualBilling").value.replace(/[^0-9.-]+/g, "");
+                                                    var TobeCharged = document.getElementById("TobeCharged").value.replace(/[^0-9.-]+/g, "");
+
+                                                    // Parse values as floats
+                                                    ActualBilling = parseFloat(ActualBilling) || 0;
+                                                    TobeCharged = parseFloat(TobeCharged) || 0;
+
+                                                    // Calculate the Net Adjustment
+                                                    var NetAdjustment = TobeCharged - ActualBilling;
+
+                                                    // Set the result in the "Net Adjustment" input field
+                                                    document.getElementById("NetAdjustment").value = "R " + NetAdjustment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                }
+
+
+                                                // Function to calculate Rebate Amount
+                                                function calculateRabateAmount() {
+                                                    var rebateAmount = document.getElementById("RebateAmount").value.replace(/[^0-9.-]+/g, "");
+                                                    var calculatedRate = document.getElementById("calculatedRate").value.replace(/[^0-9.-]+/g, "");
+
+                                                    rebateAmount = parseFloat(rebateAmount) || 0;
+                                                    calculatedRate = parseFloat(calculatedRate) || 0;
+
+                                                    var toBeCharged = calculatedRate - rebateAmount;
+                                                    document.getElementById("TobeCharged").value = "R " + toBeCharged.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                }
+
+                                                function parseCurrency(value) {
+                                                    return value.replace(/[^\d.-]/g, '');
+                                                }
+
+                                                function convertCommaToDot(value) {
+                                                    return value.replace(',', '.');
+                                                }
+
+                                                // Allow only numeric input
+                                                function onlyNumberKey(evt) {
+                                                    var ASCIICode = (evt.which) ? evt.which : evt.keyCode;
+                                                    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) return false;
+                                                    return true;
+                                                }
+                                            </script>
+                                                }
+
+                                            </div>                                   
+
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="ValuationType">Category</label>
+                                                    <input class="form-control" id="ValuationType" name="ValuationType" Value="@item.Category" disabled />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="ValuationTypeDescription">Valuation Date</label>
+                                                    <input class="form-control" id="ValuationDate" name="ValuationDate" Value="@item.ValuationDate" disabled />
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row my-3">
+                                                <div class="col-md-6 form-group">
+                                                    <label for="FinancialYear">Financial Year</label>
+                                                    <select id="FinancialYear" class="form-control" name="FinancialYear" style="height:45px;" required>
+                                                        <option value="" placeholder="Select Financial Year"></option>
+                                                        @if (ViewBag.FinancialYearList != null)
+                                                        {
+                                                            foreach (var FinancialYearList in ViewBag.FinancialYearList)
+                                                            {
+                                                                <option value="@FinancialYearList.Financial_Year">@FinancialYearList.Financial_Year</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Billing From</label>
+                                                    <input class="form-control" id="billingFrom" name="billingFrom" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled readonly />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Billing To</label>
+                                                    <input class="form-control" id="billingTo" name="billingTo" value="@DateTime.Now.ToString("yyyy-MM-dd")" disabled readonly />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Billing Days</label>
+                                                    <input class="form-control" id="billingDays" name="billingDays" readonly />
+                                                </div>                                                
+
+                                            </div>
+
+                                            <div class="row my-3">
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="RevisedCategory">Category</label>
+                                                    <input id="RevisedCategoryHidden" name="RevisedCategory" hidden>
+                                                    <select class="form-control" id="RevisedCategory" name="CATDescription" onblur="validateField2()" style="height:45px;" required>
+                                                        <option selected disabled value="">Category E.g. Residential</option>
+                                                    </select>
+                                                </div>
+
+                                               
+                                                <div class="col-md-6 form-group">
+                                                    <label for="RevisedMarketValue">Market Value</label>
+                                                    <input class="form-control" id="MarketValue" name="Market_Value" oninput="calculateRatableValue()" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
+                                                           placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" required />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="thresholdValue">Threshold</label>
+                                                    <input type="text" id="thresholdValue" name="thresholdValue" class="form-control" readonly />
+                                                </div>                                                                            
+
+                                                <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                    <label for="RatableValue">Ratable Value</label>
+                                                    <input class="form-control" id="RatableValue" name="RatableValue" readonly />
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div class="row my-3">
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="rateTariffValue">Rate Tariff</label>
+                                                    <input type="text" id="rateTariffValue" name="rateTariffValue" class="form-control" readonly />
+                                                </div>                                       
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Rebate Type</label>
+                                                    <input class="form-control" id="RebateType" name="RebateType" />
+                                                </div>     
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="RevisedMarketValue">Rebate Amount</label>
+                                                    <input class="form-control" id="RebateAmount" name="RebateAmount" oninput="calculateRabateAmount()" value="R 0.00" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
+                                                           placeholder="Rebate Amount E.g. R 1,000,000.00" onblur="validateField1()" required/>
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Rates</label>
+                                                    <input class="form-control" id="calculatedRate" oninput="calculateRabateAmount()" name="calculatedRate" readonly />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row my-3">
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">To be Charged </label>
+                                                    <input class="form-control" id="TobeCharged" name="TobeCharged" />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Actual Billing </label>
+                                                    <input class="form-control" id="ActualBilling" oninput="calculateNetAdjustment()" name="ActualBilling" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency"
+                                                         placeholder="Actual Billing E.g. R 1,000.00" onblur="validateField1()" required />
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    <label for="datepicker">Net Adjustment</label>
+                                                    <input class="form-control" id="NetAdjustment" name="NetAdjustment" />
+                                                </div>
+
+                                                @*<div class="col-md-3 form-group">
+                                            <br />
+                                            <button type="button" class="btn btn-primary" onclick="clearFields()">Clear Fields</button>
+                                        </div>*@
+
+                                                <div class="col-md-3 form-group d-flex justify-content-center align-items-center">
+                                                    <br /><br /><br />
+                                                    <button  type="button" class="btn btn-primary" onclick="refreshCalculations()">Refresh Calculations</button>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <div id="multipurposeFields" style="display: none;">
+                                                <hr style="height:2px;border-width:0;color:red;background-color:red">
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="RevisedMarketValue" name="MarketValue1" Value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                               pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="MarketValue1" name="MarketValue1" Value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;"
+                                                               ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                    </div>
+                                                </div> <!-- End First Row -->
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="RevisedCategory" name="CATDescription1" value="@item.Category" onblur="validateField2()" style="height:45px;" disabled>
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="CATDescription1" name="CATDescription1" value="@item.Category" onblur="validateField2()" style="height:43px;">
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div> <!-- End Third Row -->
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent1">Extent</label>
+                                                        <input class="form-control" name="Extent1" Value="@item.Premise_ID" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent1">Extent</label>
+                                                        <input class="form-control" id="Extent1" name="Extent1" Value="@item.Premise_ID" />
+                                                    </div>
+                                                </div>
+                                                <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="RevisedMarketValue" name="MarketValue2" Value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                               pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="RevisedMarketValue" name="MarketValue2" value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0"
+                                                               onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                    </div>
+                                                </div> <!-- End First Row --> 
+
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="RevisedCategory" name="CATDescription2" value="@item.Category" onblur="validateField2()" style="height:43px;" disabled>
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="RevisedCategory" name="CATDescription2" value="@item.Category" onblur="validateField2()" style="height:43px;">
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div> <!-- End Third Row -->
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent2">Extent</label>
+                                                        <input class="form-control" id="Extent2" name="Extent2" Value="@item.Premise_ID" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent2">Extent</label>
+                                                        <input class="form-control" id="Extent2" name="Extent2" Value="@item.Premise_ID" />
+                                                    </div>
+                                                </div>
+                                                <hr style="height:2px;border-width:1;color:red;background-color:red">
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="RevisedMarketValue" name="MarketValue3" Value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0" onpaste="return false;" ondrop="return false;" maxlength="17"
+                                                               pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedMarketValue">Market Value</label>
+                                                        <input class="form-control" id="RevisedMarketValue" name="MarketValue3" value="@item.Market_Value" onkeypress="return onlyNumberKey(event)" min="0"
+                                                               onpaste="return false;" ondrop="return false;" maxlength="17" pattern="^\R\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="Market Value E.g. R 1,000,000.00" onblur="validateField1()" />
+                                                    </div>
+                                                </div> <!-- End First Row -->
+
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="RevisedCategory" name="CATDescription3" value="@item.Category" onblur="validateField2()" style="height:43px;" disabled>
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-6 form-group">
+                                                        <label for="RevisedCategory">Category</label>
+                                                        <input id="RevisedCategory" name="RevisedCategory" hidden>
+                                                        <select class="form-control" id="RevisedCategory" name="CATDescription3" value="@item.Category" onblur="validateField2()" style="height:43px;">
+                                                            @{
+                                                        if (@item.Category != "")
+                                                        {
+                                                                            <option selected value="@item.Category">@item.Category</option>
+                                                        }
+                                                        else
+                                                        {
+                                                                            <option selected disabled value="">Category E.g. Residential</option>
+                                                        }
+                                                            }
+                                                            @{
+                                                        if (ViewBag.CategoriesList != null)
+                                                        {
+                                                            foreach (var cat in ViewBag.CategoriesList)
+                                                            {
+                                                                                <option value="@cat.CatDescName">@cat.CatDescName</option>
+                                                            }
+                                                        }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div> <!-- End Third Row -->
+                                                <div class="row my-3">
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent3">Extent</label>
+                                                        <input class="form-control" id="Extent3" name="Extent3" Value="@item.Premise_ID" disabled />
+                                                    </div>
+                                                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                                                        <label for="Extent3">Extent</label>
+                                                        <input class="form-control" id="Extent3" name="Extent3" Value="@item.Premise_ID" />
+                                                    </div>
+                                                </div>
+                                            </div>                                     
+                                            <!-- MultipurposeFields -->
+
+                                            @if (@item.Status == "Rejected")
+                                            {
+                                                <div class="row my-3">
+                                                    <div class="form-group mt-3">
+                                                        <label for="Comment"> Approver Comment</label>
+                                                        <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" disabled> @item.ApproverComment </textarea>
+                                                    </div>
+                                                </div>
+                                             }
+                                             <br />                                             
+
+                                            @*<div class="row my-3">
+                                                <div class="form-group mt-3">
+                                                    <label for="Comment">Comment</label>
+                                                    <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment"></textarea>
+                                                </div>                                           
+                                            </div>
+
+                                            <label for="evidence"> Evidence Upload </label>
+                                            <span style="color:red;">(Only 30MB File Allowed)</span>
+                                            <div class="row my-3">
+                                                <input id="Evidence" type="file" accept=".pdf" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data
+                                            </div>*@
+                                    //<button type="submit">Upload File</button>
+
+                                    @if (ViewBag.Message != null)
+                                    {
+                                                <div class="alert" style="margin-top:20px">
+                                                    @ViewBag.Message
+                                                </div>
+                                    }
+
+                                }
+                            }
+
+                        }
+
+                        <div class="my-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn" style="background-color:#006570;width:102px;height:44px;border-radius: 50px;padding: 10px 24px;">Edit</button>
+
+                            @*<button type="submit" asp-controller="Journals" asp-action="SubmitTask" asp-route-PremiseID="@premiseId"
+                                    id="SubmitTask" class="btn" style="background-color: #4CAF50;">
+                                Submit Task
+                            </button>*@
+
+                            <a type="button" class="btn btn-secondary"
+                               asp-controller="Journals" asp-action="PropPerUser" asp-route-userName="@currentUserFirstname @currentUserSurname"
+                               style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px">
+                                Back
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+        </section>
+        
+        <!-- End of tiles -->
+
+        <script>
+            document.getElementById('SubmitTask').addEventListener('click', function () 
+            {
+                document.getElementById('ViewTransactionForm').querySelectorAll('[required]').forEach(function (element) 
+                {
+                    element.removeAttribute('required');
+                });
+
+                document.getElementById('Evidence').setAttribute('required', 'required');
+                document.getElementById('Comment').setAttribute('required', 'required');
+            });
+        </script>
+
+        <!-- Update Modal -->
+        <div class="modal fade" id="SubmitTaskModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="approveModalLabel">Confirm Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to complete this task?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div><!-- Button trigger modal -->
+
+    </form>    
+
+    <script>
+        function clearFields() {
+            // Clear specific fields by ID
+            document.getElementById('rateTariffValue').value = '';
+            document.getElementById('calculatedRate').value = '';
+            document.getElementById('MarketValue').value = '';
+            document.getElementById('rebateAmount').value = '';
+            document.getElementById('FinancialYear').value = '';
+            document.getElementById('RevisedCategory').value = '';
+            document.getElementById('calculatedRate').value = '';
+            document.getElementById('billingDays').value = '';    
+            document.getElementById('thresholdValue').value = '';
+            document.getElementById('RatableValue').value = '';
+            document.getElementById('RebateType').value = '';
+            document.getElementById('TobeCharged').value = '';
+            document.getElementById('ActualBilling').value = '';
+            document.getElementById('NetAdjustment').value = '';
+        }
+    </script>
+
+   <script>
+        function toggleBillingFields() {
+            var financialYear = document.getElementById('FinancialYear').value;            
+
+            var billingFrom = document.getElementById('billingFrom');
+            var billingTo = document.getElementById('billingTo');
+
+            // Check if all required fields are populated
+            if (financialYear) {
+                billingFrom.disabled = false;
+                billingTo.disabled = false;
+            } else {
+                billingFrom.disabled = true;
+                billingTo.disabled = true;
+            }            
+        }
+
+        // Attach event listeners to the input fields
+        document.getElementById('FinancialYear').addEventListener('change', toggleBillingFields);
+        document.getElementById('RevisedCategory').addEventListener('change', toggleBillingFields);
+        document.getElementById('MarketValue').addEventListener('input', toggleBillingFields);
+
+        // Optionally, call the function on page load to set initial state
+        document.addEventListener('DOMContentLoaded', function () {
+            toggleBillingFields();
+        });
+    </script>   
+
+    <script>
+        document.getElementById('FinancialYear').addEventListener('change', function () {
+            var financialYear = this.value;
+            var categorySelect = document.getElementById('RevisedCategory');
+
+            // Clear current categories
+            categorySelect.innerHTML = '<option selected disabled value="">Category E.g. Residential</option>';
+
+            if (financialYear) {
+                var url = `/data/${financialYear}_categories.json?v=${new Date().getTime()}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && Array.isArray(data)) {
+                            data.forEach(function (category) {
+                                if (category && category.CatDescName) {
+                                    var option = document.createElement('option');
+                                    option.value = category.CatDescName;
+                                    option.textContent = category.CatDescName;
+                                    categorySelect.appendChild(option);
+                                }
+                            });
+                        } else {
+                            var option = document.createElement('option');
+                            option.value = "";
+                            option.textContent = "No categories found";
+                            categorySelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else {
+                var option = document.createElement('option');
+                option.value = "";
+                option.textContent = "Select Financial Year";
+                categorySelect.appendChild(option);
+            }
+        });
+
+        document.getElementById('RevisedCategory').addEventListener('change', function () {
+            var financialYear = document.getElementById('FinancialYear').value;
+            var category = this.value;
+            var thresholdField = document.getElementById('thresholdValue');
+            var rateField = document.getElementById('rateTariffValue');
+
+            if (financialYear && category) {
+                var url = `/data/${financialYear}_categories.json?v=${new Date().getTime()}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && Array.isArray(data)) {
+                            var selectedCategory = data.find(c => c.CatDescName === category);
+                            if (selectedCategory) {
+                                thresholdField.value = selectedCategory.Residential_Threshold;
+                                rateField.value = selectedCategory.Rates_Tariff;
+                            } else {
+                                thresholdField.value = "Not available";
+                                rateField.value = "Not available";
+                            }
+                        } else {
+                            thresholdField.value = "Error";
+                            rateField.value = "Error";
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        thresholdField.value = "Error";
+                        rateField.value = "Error";
+                    });
+            } else {
+                thresholdField.value = "";
+                rateField.value = "";
+            }
+        });
+    </script>
+
+
+    <script>
+        function calculateRatableValue() {
+            var marketValue = document.getElementById("MarketValue").value.replace(/[^0-9.-]+/g, "");
+            var threshold = document.getElementById("thresholdValue").value;
+
+            if (marketValue && threshold) {
+                var ratableValue = parseFloat(marketValue) - parseFloat(threshold);
+                document.getElementById("RatableValue").value = "R " + ratableValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } else {
+                document.getElementById("RatableValue").value = "";
+            }
+        }       
+
+        function calculateRabateAmount() {
+            var rebateAmount = document.getElementById("RebateAmount").value.replace(/[^0-9.-]+/g, "");
+            var calculatedRate = document.getElementById("calculatedRate").value.replace(/[^0-9.-]+/g, "");
+
+            // Parse values as floats
+            rebateAmount = parseFloat(rebateAmount) || 0;
+            calculatedRate = parseFloat(calculatedRate) || 0;
+
+            // Calculate the value for "To Be Charged"
+            var toBeCharged = calculatedRate - rebateAmount;
+
+            // Set the result in the "To Be Charged" input field
+            document.getElementById("TobeCharged").value = "R " + toBeCharged.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }      
+
+        function onlyNumberKey(evt) {
+            // Only ASCII character in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                return false;
+            return true;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function onlyNumberKey(evt) {
+            // Only ASCII character in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+                return false;
+            return true;
+        }
+
+        // Jquery Dependency                                
+        $("input[data-type='currency']").on({
+            keyup: function () {
+                formatCurrency($(this));
+            },
+            blur: function () {
+                formatCurrency($(this), "blur");
+            }
+        });
+
+        function formatNumber(n) {
+            // format number 1000000 to 1,234,567
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        }
+        function formatCurrency(input, blur) {
+            // appends $ to value, validates decimal side
+            // and puts cursor back in right position.                                     // get input value
+            var input_val = input.val();                                     // don't validate empty input
+            if (input_val === "") { return; }                                     // original length
+            var original_len = input_val.length;                                     // initial caret position
+            var caret_pos = input.prop("selectionStart");                                     // check for decimal
+            if (input_val.indexOf(".") >= 0) {                                         // get position of first decimal
+                // this prevents multiple decimals from
+                // being entered
+                var decimal_pos = input_val.indexOf(".");                                         // split number by decimal point
+                var left_side = input_val.substring(0, decimal_pos);
+                var right_side = input_val.substring(decimal_pos);                                         // add commas to left side of number
+                left_side = formatNumber(left_side);                                         // validate right side
+                right_side = formatNumber(right_side);                                         // On blur make sure 2 numbers after decimal
+                if (blur === "blur") {
+                    right_side += "00";
+                }                                         // Limit decimal to only 2 digits
+                right_side = right_side.substring(0, 2);                                         // join number by .
+                input_val = "R " + left_side + "." + right_side;
+            }
+            else {
+                // no decimal entered
+                // add commas to number
+                // remove all non-digits
+                input_val = formatNumber(input_val);
+                input_val = "R " + input_val;                                         // final formatting
+                if (blur === "blur") {
+                    input_val += ".00";
+                }
+            }                                     // send updated string to input
+            input.val(input_val);                                     // put caret back in the right position
+            var updated_len = input_val.length;
+            caret_pos = updated_len - original_len + caret_pos;
+            input[0].setSelectionRange(caret_pos, caret_pos);
+        }
+    </script>
+
+
+    <script>
+        function validateField1() {
+            var RevisedMarketValue = document.getElementById("RevisedMarketValue");
+            var RevisedCategory = document.getElementById("RevisedCategory");
+            var MarketValueComment = document.getElementById("CommentComment");
+
+            if (RevisedMarketValue.value.length > 0) {
+                MarketValueComment.required = true;
+            }
+            else {
+                MarketValueComment.required = false;
+            }
+        }
+    </script>
+
+    <script>
+        function validateField2() {
+            var RevisedCategory = document.getElementById("RevisedCategory");
+            var CategoryComment = document.getElementById("CommentComment");
+
+            if (RevisedCategory.Checked = true) {
+                CategoryComment.required = true;
+            }
+            else {
+                CategoryComment.required = false;
+            }
+        }
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        document.getElementById("RevisedCategory").addEventListener("change", function () {
+            var selectedCategory = this.value;
+            if (selectedCategory === "Multiple Purposes") {
+                document.getElementById("multipurposeFields").style.display = "block";
+                document.getElementById("MarketValue1").required = true;
+                document.getElementById("CATDescription1").required = true;
+                document.getElementById("Extent1").required = true;
+                // document.getElementById("RevisedMarketValue").parentNode.style.display = "none";
+                // document.getElementById("RevisedMarketValue").setAttribute("disabled", true);
+                document.getElementById("Extent").parentNode.style.display = "block";
+                document.getElementById("Extent").required = true;
+            } else {
+                document.getElementById("multipurposeFields").style.display = "none";
+                document.getElementById("RevisedMarketValue").parentNode.style.display = "block";
+                document.getElementById("Extent").parentNode.style.display = "block";
+                document.getElementById("MarketValue1").required = false;
+                document.getElementById("CATDescription1").required = false;
+                document.getElementById("Extent1").required = false;
+                //document.getElementById("Extent").required = false;
+                //document.getElementById("RevisedMarketValue").required = false;
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize the datepicker
+            $("#datepicker").datepicker({
+                dateFormat: 'yy-mm-dd', // Set your desired date format
+                // Additional options and callbacks can be added here
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            // Initialize the datepicker
+            $("#datepicker").datepicker({
+                dateFormat: 'yy-mm-dd',
+                onSelect: function (dateText, inst) {
+                    // 'dateText' contains the selected date
+                    // You can perform actions here, e.g., send it to the server
+                }
+            });
+        });
+
+        $('#Comment').keyup(function () {
+            $(this).val($(this).val().replace(/\r?\n/gi, ''));
+        });
+    </script>
+
+    <script>
+        const textarea1 = document.getElementById('Comment');
+
+        const preventEnterKey = function (textarea) {
+            textarea.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                }
+            });
+        };
+
+        preventEnterKey(textarea1);
+    </script>
+
+</body>
+</html>

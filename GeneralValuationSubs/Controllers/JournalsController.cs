@@ -366,7 +366,8 @@ namespace GeneralValuationSubs.Controllers
                             calculatedRate = dr["calculatedRate"].ToString(),
                             RebateAmount = dr["RebateAmount"].ToString(),
                             UserName = dr["UserName"].ToString(),
-                            ToBeCharged = dr["ToBeCharged"].ToString()
+                            ToBeCharged = dr["ToBeCharged"].ToString(),
+                            Transaction_ID = (int)dr["Transaction_ID"]
                         });
                     }
                 }
@@ -801,7 +802,127 @@ namespace GeneralValuationSubs.Controllers
             return RedirectToAction("Transaction_To_Be_Checked");
         }
 
-        public IActionResult ShowError()
+
+        public IActionResult Edit_Transaction(string? id)
+        { 
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT DISTINCT Financial_Year FROM [Journals].[dbo].[Tariffs table] ORDER BY Financial_Year";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    categories.Add(new Category
+                    {
+                        Financial_Year = dr["Financial_Year"].ToString(),
+                    });
+                }
+                con.Close();
+
+                ViewBag.FinancialYearList = categories.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
+
+            categories.Clear();
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+
+            try
+            {
+                con.Open();
+                com.Connection = con;
+
+                // First query to get the Premise ID from the Details table
+                com.CommandText = "SELECT [Premise ID], [Account Number], [Installation], [Market Value], [Category], [Valuation Date], [WEF], [Net Accrual], [File Name], [Status], [Allocated Name], [Journal_Id], [Valuation Date] FROM [Journals].[dbo].[Details] WHERE Journal_Id = @JournalId";
+                com.Parameters.AddWithValue("@JournalId", id);
+                string premiseId = null;
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    premiseId = dr["Premise ID"].ToString();
+
+                    journals.Add(new Journals
+                    {
+                        Premise_ID = premiseId,
+                        Account_Number = dr["Account Number"].ToString(),
+                        Installation = dr["Installation"].ToString(),
+                        Market_Value = dr["Market Value"].ToString(),
+                        Category = dr["Category"].ToString(),
+                        Valuation_Date = dr["Valuation Date"].ToString(),
+                        WEF = dr["WEF"].ToString(),
+                        Net_Accrual = dr["Net Accrual"].ToString(),
+                        File_Name = dr["File Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["Allocated Name"].ToString(),
+                        Journal_Id = dr["Journal_Id"].ToString(),
+                        ValuationDate = dr["Valuation Date"].ToString()
+                    });
+                }
+                dr.Close();
+
+                ViewBag.JournalListDetails = journals.ToList();
+
+                if (premiseId != null)
+                {
+                    journals.Clear();
+
+                    // Second query to get the journal details using the Premise ID
+                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID ORDER BY Activity_Date";
+                    com.Parameters.AddWithValue("@PremiseID", premiseId);
+
+                    dr = com.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        journals.Add(new Journals
+                        {
+                            Premise_ID = dr["Premise ID"].ToString(),
+                            Account_Number = dr["Account Number"].ToString(),
+                            Installation = dr["Installation"].ToString(),
+                            Market_Value = dr["Market_Value"].ToString(),
+                            Category = dr["Category"].ToString(),
+                            BillingFrom = (DateTime)dr["BillingFrom"],
+                            BillingTo = (DateTime)dr["BillingTo"],
+                            BillingDays = dr["BillingDays"].ToString(),
+                            Threshold = dr["Threshold"].ToString(),
+                            RatableValue = dr["RatableValue"].ToString(),
+                            RatesTariff = dr["RatesTariff"].ToString(),
+                            RebateType = dr["RebateType"].ToString(),
+                            calculatedRate = dr["calculatedRate"].ToString(),
+                            RebateAmount = dr["RebateAmount"].ToString(),
+                            UserName = dr["UserName"].ToString(),
+                            ToBeCharged = dr["ToBeCharged"].ToString(),
+                            Transaction_ID = (int)dr["Transaction_ID"]
+                        });
+                    }
+                }
+                con.Close();
+
+                ViewBag.JournalListAudit = journals.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return View(journals);
+        }
+
+            public IActionResult ShowError()
         {
             return View();
         }
