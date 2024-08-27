@@ -802,7 +802,6 @@ namespace GeneralValuationSubs.Controllers
             return RedirectToAction("Transaction_To_Be_Checked");
         }
 
-
         public IActionResult Edit_Transaction(string? id)
         { 
             if (journals.Count > 0)
@@ -840,75 +839,35 @@ namespace GeneralValuationSubs.Controllers
             {
                 journals.Clear();
             }
-
             try
             {
                 con.Open();
-                com.Connection = con;
-
-                // First query to get the Premise ID from the Details table
-                com.CommandText = "SELECT [Premise ID], [Account Number], [Installation], [Market Value], [Category], [Valuation Date], [WEF], [Net Accrual], [File Name], [Status], [Allocated Name], [Journal_Id], [Valuation Date] FROM [Journals].[dbo].[Details] WHERE Journal_Id = @JournalId";
-                com.Parameters.AddWithValue("@JournalId", id);
-                string premiseId = null;
+                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Transaction_ID] = @Transaction_ID ORDER BY Activity_Date";
+                com.Parameters.AddWithValue("@Transaction_ID", id);
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    premiseId = dr["Premise ID"].ToString();
-
                     journals.Add(new Journals
                     {
-                        Premise_ID = premiseId,
+                        Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
                         Installation = dr["Installation"].ToString(),
-                        Market_Value = dr["Market Value"].ToString(),
+                        Market_Value = dr["Market_Value"].ToString(),
                         Category = dr["Category"].ToString(),
-                        Valuation_Date = dr["Valuation Date"].ToString(),
-                        WEF = dr["WEF"].ToString(),
-                        Net_Accrual = dr["Net Accrual"].ToString(),
-                        File_Name = dr["File Name"].ToString(),
-                        Status = dr["Status"].ToString(),
-                        Allocated_Name = dr["Allocated Name"].ToString(),
-                        Journal_Id = dr["Journal_Id"].ToString(),
-                        ValuationDate = dr["Valuation Date"].ToString()
+                        BillingFrom = (DateTime)dr["BillingFrom"],
+                        BillingTo = (DateTime)dr["BillingTo"],
+                        BillingDays = dr["BillingDays"].ToString(),
+                        Threshold = dr["Threshold"].ToString(),
+                        RatableValue = dr["RatableValue"].ToString(),
+                        RatesTariff = dr["RatesTariff"].ToString(),
+                        RebateType = dr["RebateType"].ToString(),
+                        calculatedRate = dr["calculatedRate"].ToString(),
+                        RebateAmount = dr["RebateAmount"].ToString(),
+                        UserName = dr["UserName"].ToString(),
+                        ToBeCharged = dr["ToBeCharged"].ToString(),
+                        Transaction_ID = (int)dr["Transaction_ID"]
                     });
-                }
-                dr.Close();
-
-                ViewBag.JournalListDetails = journals.ToList();
-
-                if (premiseId != null)
-                {
-                    journals.Clear();
-
-                    // Second query to get the journal details using the Premise ID
-                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID ORDER BY Activity_Date";
-                    com.Parameters.AddWithValue("@PremiseID", premiseId);
-
-                    dr = com.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        journals.Add(new Journals
-                        {
-                            Premise_ID = dr["Premise ID"].ToString(),
-                            Account_Number = dr["Account Number"].ToString(),
-                            Installation = dr["Installation"].ToString(),
-                            Market_Value = dr["Market_Value"].ToString(),
-                            Category = dr["Category"].ToString(),
-                            BillingFrom = (DateTime)dr["BillingFrom"],
-                            BillingTo = (DateTime)dr["BillingTo"],
-                            BillingDays = dr["BillingDays"].ToString(),
-                            Threshold = dr["Threshold"].ToString(),
-                            RatableValue = dr["RatableValue"].ToString(),
-                            RatesTariff = dr["RatesTariff"].ToString(),
-                            RebateType = dr["RebateType"].ToString(),
-                            calculatedRate = dr["calculatedRate"].ToString(),
-                            RebateAmount = dr["RebateAmount"].ToString(),
-                            UserName = dr["UserName"].ToString(),
-                            ToBeCharged = dr["ToBeCharged"].ToString(),
-                            Transaction_ID = (int)dr["Transaction_ID"]
-                        });
-                    }
                 }
                 con.Close();
 
@@ -918,11 +877,67 @@ namespace GeneralValuationSubs.Controllers
             {
                 throw ex;
             }
-
+            
             return View(journals);
         }
 
-            public IActionResult ShowError()
+        [HttpPost]
+        public async Task<IActionResult> Edit(string? Journal_Id, string? PremiseId, string? Account_Number,
+            string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue, int? Transaction_ID,
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
+            string? MarketValue1, string? MarketValue2, string? MarketValue3, string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
+        {
+            var userID = TempData["currentUser"] as string; ;
+            TempData.Keep("currentUser");
+
+            var currentUserSurname = TempData["currentUserSurname"] as string; ;
+            TempData.Keep("currentUserSurname");
+            var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
+            TempData.Keep("currentUserFirstname");
+
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            TempData["CATDescription"] = CATDescription;
+            TempData["WEF_DATE"] = WEF_DATE;
+
+            if (string.IsNullOrWhiteSpace(currentUserSurname) || string.IsNullOrWhiteSpace(currentUserFirstname) || string.IsNullOrWhiteSpace(userID))
+            {
+                TempData["RefreshMessage"] = $"User Surname or Firstname is missing or blank. Please refresh the page.";
+                return RedirectToAction("RefreshMessage");
+            }           
+
+            if (JournalHistories.Count > 0)
+            {
+                JournalHistories.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET [UserName] = '" + currentUserFirstname + ' ' + currentUserSurname + "',  [UserID] = '" + userID + "',  [Account Number] = '" + Account_Number + "',  [Installation] = '" + Installation + "', [BillingFrom] = '" + billingFrom + "', [BillingTo] = '" + billingTo + "', [BillingDays] = '" + billingDays + "', [Category] = '" + CATDescription + "', [Market_Value] = '" + Market_Value + "', [Threshold] = '" + thresholdValue + "', [RatableValue] = '" + RatableValue + "', [RatesTariff] = '" + rateTariffValue + "', [RebateType] = '" + RebateType + "', [RebateAmount] = '" + RebateAmount + "', [calculatedRate] = '" + calculatedRate + "', [Status] = 'Transaction Processed', [TobeCharged] = '" + TobeCharged + "', [Activity_Date] = '" + DateTime.Now + "' WHERE [Transaction_ID] = '" + Transaction_ID + "';";
+
+                //while (dr.Read())
+                //{
+                //    JournalHistories.Add(new JournalHistory
+                //    {
+
+                //    });
+                //}
+                //con.Close();
+                com.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return RedirectToAction("ViewProperty", new { id = Journal_Id });
+        }
+
+
+        public IActionResult ShowError()
         {
             return View();
         }

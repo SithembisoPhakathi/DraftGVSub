@@ -13,6 +13,7 @@
     TempData.Keep("WEF_DATE");
 
     var premiseId = string.Empty;
+    var journalId = string.Empty;
 }
 
 <html>
@@ -58,10 +59,10 @@
                             {
                                 foreach (var item in ViewBag.JournalListDetails)
                                 {
-                                            <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
+                                    <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
 
-
-                                        premiseId = item.Premise_ID;
+                                    premiseId = item.Premise_ID;
+                                    journalId = item.Journal_Id;
 
                                             <div class="row my-3">
                                                 <div class="col-mt-3 form-group">
@@ -847,7 +848,7 @@
                                     @item.ToBeCharged
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
+                                    <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
                                 </td>
                             </tr>
 

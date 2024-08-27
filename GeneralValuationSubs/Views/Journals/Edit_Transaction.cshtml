@@ -45,7 +45,7 @@
 </head>
 
 <body>
-    <form id="ViewTransactionForm" asp-controller="Journals" asp-action="UpdateValue" method="POST" enctype="multipart/form-data">
+    <form id="ViewTransactionForm" asp-controller="Journals" asp-action="Edit" method="POST" enctype="multipart/form-data">
 
         <input hidden type="text" name="userName" value="@currentUserFirstname @currentUserSurname" />
         <section id="contact" class="contact">
@@ -54,12 +54,12 @@
                     <div class="col-xl-9 col-lg-12 mt-4">
 
                         @{
-                            if (ViewBag.JournalListDetails != null)
+                            if (ViewBag.JournalListAudit != null)
                             {
-                                foreach (var item in ViewBag.JournalListDetails)
-                                {
-                                            <input hidden type="text" name="Journal_Id" value="@item.Journal_Id" />
-
+                                foreach (var item in ViewBag.JournalListAudit)
+                                {                                       
+                                       <input type="hidden" name="Journal_Id" value="@Context.Request.Query["journalId"]" />
+                                       <input hidden type="text" name="Transaction_ID" value="@item.Transaction_ID" />
 
                                         premiseId = item.Premise_ID;
 
@@ -730,7 +730,7 @@
                             <div class="sent-message">Your message has been sent. Thank you!</div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn" style="background-color:#006570;width:102px;height:44px;border-radius: 50px;padding: 10px 24px;">Edit</button>
+                            <button type="submit" class="btn" style="background-color:#006570;width:102px;height:44px;border-radius: 50px;padding: 10px 24px;" data-bs-target="#UpdateTransactionTaskModal" data-bs-toggle="modal">Edit</button>
 
                             @*<button type="submit" asp-controller="Journals" asp-action="SubmitTask" asp-route-PremiseID="@premiseId"
                                     id="SubmitTask" class="btn" style="background-color: #4CAF50;">
@@ -766,7 +766,7 @@
         </script>
 
         <!-- Update Modal -->
-        <div class="modal fade" id="SubmitTaskModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal fade" id="UpdateTransactionTaskModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -774,7 +774,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> 
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to complete this task?
+                        Are you sure you want to update this transaction?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
