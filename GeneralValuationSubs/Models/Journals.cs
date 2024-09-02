@@ -29,6 +29,8 @@
         public string? UserName { get; set; }
         public DateTime? Activity_Date { get; set; }
         public string? ToBeCharged { get; set; }
+        public string? ActualBilling { get; set; }
+        public string? NetAdjustment { get; set; }
         public int? DateDiff { get; set; }
         public int? Transaction_ID { get; set; }
     }

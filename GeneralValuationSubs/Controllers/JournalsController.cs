@@ -367,6 +367,8 @@ namespace GeneralValuationSubs.Controllers
                             RebateAmount = dr["RebateAmount"].ToString(),
                             UserName = dr["UserName"].ToString(),
                             ToBeCharged = dr["ToBeCharged"].ToString(),
+                            ActualBilling = dr["ActualBilling"].ToString(),
+                            NetAdjustment = dr["NetAdjustment"].ToString(),
                             Transaction_ID = (int)dr["Transaction_ID"]
                         });
                     }
@@ -386,8 +388,8 @@ namespace GeneralValuationSubs.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
-            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
-            string? MarketValue1, string? MarketValue2, string? MarketValue3, 
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, 
+            string? NetAdjustment, string? MarketValue1, string? MarketValue2, string? MarketValue3, 
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"] as string; ;
@@ -484,8 +486,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged],  [Activity_Date]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', 'Transaction Processed', '" + TobeCharged + "' , '" + DateTime.Now + "')";
+                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged], [ActualBilling], [NetAdjustment], [Activity_Date]) " +
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "','" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', 'Transaction Processed', '" + TobeCharged + "', '" + ActualBilling + "','" + NetAdjustment + "', '" + DateTime.Now + "')";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
@@ -866,6 +868,8 @@ namespace GeneralValuationSubs.Controllers
                         RebateAmount = dr["RebateAmount"].ToString(),
                         UserName = dr["UserName"].ToString(),
                         ToBeCharged = dr["ToBeCharged"].ToString(),
+                        ActualBilling = dr["ActualBilling"].ToString(),
+                        NetAdjustment = dr["NetAdjustment"].ToString(),
                         Transaction_ID = (int)dr["Transaction_ID"]
                     });
                 }
