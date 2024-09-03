@@ -180,9 +180,9 @@
                 <div class="form-group">
                     <select name="JournalName" required id="JournalName" class="form-select" style="font-size: 15px; margin-left: 40px;">
                         <option disabled selected value="">Select User</option>
-                        @if (ViewBag.ValuersList != null)
+                        @if (ViewBag.LVCList != null)
                         {
-                            foreach (var valuer in ViewBag.ValuersList)
+                            foreach (var valuer in ViewBag.LVCList)
                             {
                                 <option id="valuersss" value="@valuer.FirstName @valuer.Surname">@valuer.FirstName @valuer.Surname</option>
                             }

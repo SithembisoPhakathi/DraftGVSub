@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.IO.Compression;
+using System.Net.Mail;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GeneralValuationSubs.Controllers
@@ -18,6 +19,7 @@ namespace GeneralValuationSubs.Controllers
         SqlCommand com = new SqlCommand();
         SqlConnection con = new SqlConnection();
         SqlDataReader dr;
+        EmailHelper emailHelper = new EmailHelper();
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
 
@@ -96,7 +98,7 @@ namespace GeneralValuationSubs.Controllers
                 }
                 con.Close();
 
-                ViewBag.ValuersList = adminValuers.ToList();
+                ViewBag.LVCList = adminValuers.ToList();
             }
             catch (Exception ex)
             {
@@ -155,6 +157,42 @@ namespace GeneralValuationSubs.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+
+            List<string> emails = new List<string>();
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+
+            try
+            {
+                con.Open();
+                com.Connection = con;
+
+                com.CommandText = "EXEC [dbo].[SendEmailTask] @FirstNameSurname = '" + JournalName + "'";
+
+                using (SqlDataReader reader = com.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        emails.Add(reader["Email_Address"].ToString());
+                    }
+                }
+
+                if (emails.Count > 0)
+                {
+                    emailHelper.SendEmailTaskAllocated(string.Join(",", emails), JournalName);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
             }
 
             return RedirectToAction("AllocateTask", new { userName = userName });
@@ -894,9 +932,9 @@ namespace GeneralValuationSubs.Controllers
             var userID = TempData["currentUser"] as string; ;
             TempData.Keep("currentUser");
 
-            var currentUserSurname = TempData["currentUserSurname"] as string; ;
+            var currentUserSurname = TempData["currentUserSurname"] as string;
             TempData.Keep("currentUserSurname");
-            var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
+            var currentUserFirstname = TempData["currentUserFirstname"] as string;
             TempData.Keep("currentUserFirstname");
 
             var userSector = TempData["currentUserSector"];

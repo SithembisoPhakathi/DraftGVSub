@@ -5074,3 +5074,5 @@ C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuatio
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Release\net7.0\System.Web.WebPages.Razor.dll
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Release\net7.0\System.Web.WebPages.dll
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Release\net7.0\Microsoft.Web.Infrastructure.dll
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Release\net7.0\Microsoft.Office.Interop.Outlook.dll
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Release\net7.0\Office.dll

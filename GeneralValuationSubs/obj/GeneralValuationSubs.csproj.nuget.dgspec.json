@@ -94,9 +94,17 @@
               "target": "Package",
               "version": "[7.0.2, )"
             },
+            "Microsoft.Office.Interop.Outlook": {
+              "target": "Package",
+              "version": "[15.0.4797.1004, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[7.0.3, )"
+            },
+            "MicrosoftOfficeCore": {
+              "target": "Package",
+              "version": "[15.0.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
