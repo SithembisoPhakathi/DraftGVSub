@@ -927,7 +927,7 @@ namespace GeneralValuationSubs.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string? Journal_Id, string? PremiseId, string? Account_Number,
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue, int? Transaction_ID,
-            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment, string? FinancialYear,
             string? MarketValue1, string? MarketValue2, string? MarketValue3, string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"] as string; ;
@@ -958,7 +958,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET [UserName] = '" + currentUserFirstname + ' ' + currentUserSurname + "',  [UserID] = '" + userID + "',  [Account Number] = '" + Account_Number + "',  [Installation] = '" + Installation + "', [BillingFrom] = '" + billingFrom + "', [BillingTo] = '" + billingTo + "', [BillingDays] = '" + billingDays + "', [Category] = '" + CATDescription + "', [Market_Value] = '" + Market_Value + "', [Threshold] = '" + thresholdValue + "', [RatableValue] = '" + RatableValue + "', [RatesTariff] = '" + rateTariffValue + "', [RebateType] = '" + RebateType + "', [RebateAmount] = '" + RebateAmount + "', [calculatedRate] = '" + calculatedRate + "', [Status] = 'Transaction Processed', [TobeCharged] = '" + TobeCharged + "', [ActualBilling] = '"+ ActualBilling + "', [NetAdjustment] = '"+ NetAdjustment + "', [Activity_Date] = '" + DateTime.Now + "' WHERE [Transaction_ID] = '" + Transaction_ID + "';";
+                com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET [UserName] = '" + currentUserFirstname + ' ' + currentUserSurname + "',  [UserID] = '" + userID + "',  [Account Number] = '" + Account_Number + "',  [Installation] = '" + Installation + "', [FinancialYear] = '" + FinancialYear + "', [BillingFrom] = '" + billingFrom + "', [BillingTo] = '" + billingTo + "', [BillingDays] = '" + billingDays + "', [Category] = '" + CATDescription + "', [Market_Value] = '" + Market_Value + "', [Threshold] = '" + thresholdValue + "', [RatableValue] = '" + RatableValue + "', [RatesTariff] = '" + rateTariffValue + "', [RebateType] = '" + RebateType + "', [RebateAmount] = '" + RebateAmount + "', [calculatedRate] = '" + calculatedRate + "', [Status] = 'Transaction Processed', [TobeCharged] = '" + TobeCharged + "', [ActualBilling] = '" + ActualBilling + "', [NetAdjustment] = '" + NetAdjustment + "', [Activity_Date] = '" + DateTime.Now + "' WHERE [Transaction_ID] = '" + Transaction_ID + "';";
 
                 //while (dr.Read())
                 //{
