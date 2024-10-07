@@ -249,6 +249,9 @@ namespace GeneralValuationSubs.Controllers
 
         public IActionResult ViewProperty(string? id)
         {
+            DateTime? previousBillingTo = null;
+            DateTime? newBillingFrom = null;
+
             if (journals.Count > 0)
             {
                 journals.Clear();
@@ -333,7 +336,6 @@ namespace GeneralValuationSubs.Controllers
             }
 
             categories.Clear();
-
             
             if (journals.Count > 0)
             {
@@ -348,7 +350,11 @@ namespace GeneralValuationSubs.Controllers
                 // First query to get the Premise ID from the Details table
                 com.CommandText = "SELECT [Premise ID], [Account Number], [Installation], [Market Value], [Category], [Valuation Date], [WEF], [Net Accrual], [File Name], [Status], [Allocated Name], [Journal_Id], [Valuation Date] FROM [Journals].[dbo].[Details] WHERE Journal_Id = @JournalId";
                 com.Parameters.AddWithValue("@JournalId", id);
+
                 string premiseId = null;
+
+                TempData["Journal_Id"] = id;
+                ViewBag.Journal_Id = id;
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -407,7 +413,10 @@ namespace GeneralValuationSubs.Controllers
                             ToBeCharged = dr["ToBeCharged"].ToString(),
                             ActualBilling = dr["ActualBilling"].ToString(),
                             NetAdjustment = dr["NetAdjustment"].ToString(),
-                            Transaction_ID = (int)dr["Transaction_ID"]
+                            Transaction_ID = (int)dr["Transaction_ID"],
+                            Status = dr["Status"].ToString(),
+                            Comment = dr["Comment"].ToString(),
+                            ApproverComment = dr["ApproverComment"].ToString()
                         });
                     }
                 }
@@ -513,8 +522,7 @@ namespace GeneralValuationSubs.Controllers
                 }
 
                 save_files = FileNameAttach;
-            }
-           
+            }           
 
             if (JournalHistories.Count > 0)
             {
@@ -549,9 +557,9 @@ namespace GeneralValuationSubs.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitTask(string? Journal_Id, string? PremiseId, string? Account_Number,
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
-            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, string? NetAdjustment,
-            string? MarketValue1, string? MarketValue2, string? MarketValue3,
-            string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling,
+            string? NetAdjustment, string? Comment, string? MarketValue1, string? MarketValue2, string? MarketValue3,
+            string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"];
             TempData.Keep("currentUser");
@@ -640,7 +648,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = 'Transaction Finalized', End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' COMMIT TRANSACTION;";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 
@@ -809,7 +817,7 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TransactionApproveReject(string PremiseId, string ActionType)
+        public async Task<IActionResult> TransactionApproveReject(string PremiseId, string ActionType, string? ApproverComment)
         {
             try
             {
@@ -818,12 +826,12 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = 'Approved' WHERE [Premise ID] = @PremiseId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Reject")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = 'Rejected' WHERE [Premise ID] = @PremiseId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 

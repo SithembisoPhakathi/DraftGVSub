@@ -45,184 +45,202 @@
         }
     </style>
 
-        @*<div style="overflow-x:auto;"> </div>*@
-            <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
-                <thead>
+    @*<div style="overflow-x:auto;"> </div>*@
+    <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Premise Id
+                </th>
+                <th>
+                    Account Number
+                </th>
+                <th>
+                    Market Value
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Billing From
+                </th>
+                <th>
+                    Billing To
+                </th>
+                <th>
+                    Billing Days
+                </th>
+                <th>
+                    Threshold
+                </th>
+
+                <th>
+                    Ratable Value
+                </th>
+
+                <th>
+                    Rates Tariff
+                </th>
+
+                <th>
+                    Rebate Type
+                </th>
+                <th>
+                    Rebate Amount
+                </th>
+                <th>
+                    Calculated Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PremiseID != null)
+            {
+
+                @foreach (var item in ViewBag.PremiseID)
+                {
                     <tr>
-                        <th>
-                            Premise Id
-                        </th>
-                        <th>
-                            Account Number
-                        </th>
-                        <th>
-                            Market Value
-                        </th>
-                        <th>
-                            Category
-                        </th>
-                        <th>
-                            Billing From
-                        </th>
-                        <th>
-                            Billing To
-                        </th>
-                        <th>
-                            Billing Days
-                        </th>
-                        <th>
-                            Threshold
-                        </th>
+                        <td>
+                            @item.Premise_ID
 
-                        <th>
-                            Ratable Value
-                        </th>
+                            @{
+                                premiseId = item.Premise_ID;
+                            }
 
-                        <th>
-                            Rates Tariff
-                        </th>
+                        </td>
+                        <td>
+                            @item.Account_Number
+                        </td>
+                        <td>
+                            @item.Market_Value
+                        </td>
+                        <td>
+                            @item.Category
+                        </td>
 
-                        <th>
-                            Rebate Type
-                        </th>
-                        <th>
-                            Rebate Amount
-                        </th>
-                        <th>
-                            Calculated Rate
-                        </th>
+                        <td>
+                            @item.BillingFrom.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @item.BillingTo.ToString("yyyy-MM-dd")
+                        </td>
+
+                        <td>
+                            @item.BillingDays
+                        </td>
+
+                        <td>
+                            @item.Threshold
+                        </td>
+
+                        <td>
+                            @item.RatableValue
+                        </td>
+
+                        <td>
+                            @item.RatesTariff
+                        </td>
+
+                        <td>
+                            @item.RebateType
+                        </td>
+
+                        <td>
+                            @item.RebateAmount
+                        </td>
+
+                        <td>
+                            @item.calculatedRate
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @if (ViewBag.PremiseID != null)
-                    {
 
-                        @foreach (var item in ViewBag.PremiseID)
-                        {
-                            <tr>
-                                <td>
-                                    @item.Premise_ID
+                }
+            }
 
-                                    @{
-                                        premiseId = item.Premise_ID; 
-                                    }
+        </tbody>
+    </table>
 
-                                </td>
-                                <td>
-                                    @item.Account_Number
-                                </td>
-                                <td>
-                                    @item.Market_Value
-                                </td>
-                                <td>
-                                    @item.Category
-                                </td>
+    <div class="container">
+        <label for="Comment"> Approver Comment </label>
+        <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" placeholder="Approver Comment"> </textarea>
+    </div>
 
-                                <td>
-                                    @item.BillingFrom.ToString("yyyy-MM-dd")
-                                </td>
-                                <td>
-                                    @item.BillingTo.ToString("yyyy-MM-dd")
-                                </td>
+    <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
+        <a class="btn btn-primary mx-2" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId">Download File</a>
 
-                                <td>
-                                    @item.BillingDays
-                                </td>
+        <a class="btn mx-2" style="width:111px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
 
-                                <td>
-                                    @item.Threshold
-                                </td>
+        <a class="btn mx-2" style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: red; color: white;" data-bs-target="#rejectModal" data-bs-toggle="modal">Reject</a>
+    </div>
 
-                                <td>
-                                    @item.RatableValue
-                                </td>
+    <br />
+    <br />
 
-                                <td>
-                                    @item.RatesTariff
-                                </td>
+    <!-- Approve Modal -->
+    <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                                <td>
-                                    @item.RebateType
-                                </td>
+                    <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="ActionType" value="Approve" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
 
-                                <td>
-                                    @item.RebateAmount
-                                </td>
-
-                                <td>
-                                    @item.calculatedRate
-                                </td>
-                            </tr>
-
-                        }
-                    }
-
-                </tbody>
-            </table>
-
-            <div class="col-md-7 form-group">
-                <a class="btn btn-primary" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId" style="margin-left: 2cm;">Download File</a>
-
-                <a style="width:111px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white " class="btn" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
-
-                <a style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: red; color: white" class="btn" data-bs-target="#rejectModal" data-bs-toggle="modal">Reject</a> &nbsp;
-
-             </div>
-        
-        <br />
-        <br />
-
-        <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to approve this task?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-                        <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject">
-                            <input type="hidden" name="PremiseId" value="@premiseId" />
-                            <input type="hidden" name="ActionType" value="Approve" />
-
-                            <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
-                        </form>
-                    </div>
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="rejectModalLabel">Confirm Rejection</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        Are you sure you want to reject this task?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Confirm Rejection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to reject this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                        <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject">
-                            <input type="hidden" name="PremiseId" value="@premiseId" />
-                            <input type="hidden" name="ActionType" value="Reject" />
+                    <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="ActionType" value="Reject" />
+                        <!-- Hidden input for reject modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
 
-                            <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
-                        </form>
-                    </div>
+                        <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
+    <script>
+        function addCommentToForm(form) {
+            // Get the value from the textarea
+            var commentValue = document.getElementById('ApproverComment').value;
 
-        <!-- Modal -->
-        
+            // Set the value to the hidden input inside the specific form being submitted
+            form.querySelector('.HiddenApproverComment').value = commentValue;
+        }
+    </script>
+    <!-- Modal -->
+
     <script type="text/javascript"
             charset="utf8"
             src="https://code.jquery.com/jquery-3.5.1.js"></script>
