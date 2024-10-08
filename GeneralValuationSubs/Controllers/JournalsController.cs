@@ -14,6 +14,7 @@ namespace GeneralValuationSubs.Controllers
     {
         List<Journals> journals = new List<Journals>();
         List<Category> categories = new List<Category>();
+        List<FileName> fileNames = new List<FileName>();
         List<AdminValuer> adminValuers = new();
         List<JournalHistory> JournalHistories = new List<JournalHistory>();
         SqlCommand com = new SqlCommand();
@@ -40,11 +41,81 @@ namespace GeneralValuationSubs.Controllers
             {
                 journals.Clear();
             }
+
             try
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT Top(100) DATEDIFF(DAY, GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5))"; 
+                com.CommandText = "SELECT DISTINCT [File Name] FROM [Journals].[dbo].[Details] WHERE [File Name] IS NOT NULL";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    fileNames.Add(new FileName
+                    {
+                        FileNames = dr["File Name"].ToString(),
+                    });
+                }
+                con.Close();
+
+                ViewBag.FileNames = fileNames.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+                       
+            return PartialView("PropPerUserAllocate", new { userName = userName });//journals
+        }
+
+
+        [HttpPost]
+        public IActionResult AllocateTask(string? userName, string? FileName)
+        {
+            var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
+            TempData.Keep("currentUserSector");
+
+            //userName = TempData["currentUserFirstname"].ToString() +' ' + TempData["currentUserSurname"].ToString();
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT DISTINCT [File Name] FROM [Journals].[dbo].[Details] WHERE [File Name] IS NOT NULL";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    fileNames.Add(new FileName
+                    {
+                        FileNames = dr["File Name"].ToString(),
+                    });
+                }
+                con.Close();
+
+                ViewBag.FileNames = fileNames.ToList();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT DATEDIFF(DAY, GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5)) and [File Name] = '" + FileName + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())

@@ -1521,7 +1521,13 @@
                                 @item.NetAdjustment
                             </td>
                             <td>
-                                <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId"><i class="bi bi-pencil-square"></i>&nbsp; Edit</a>
+                                <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId">
+                                    <i class="bi bi-pencil-square"></i>&nbsp; Edit
+                                </a>
+                                @*<a class="btn btn-danger" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId">
+                                    <i class="bi bi-trash"></i>&nbsp; Delete
+                                </a>*@
+
                             </td>
                         </tr>
 

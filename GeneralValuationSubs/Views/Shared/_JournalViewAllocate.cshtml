@@ -43,9 +43,28 @@
         }
     </style>
 
+    <form asp-controller="Journals" asp-action="AllocateTask" method="POST" id="dropdownForm">
+        <div class="d-flex justify-content-center">
+            <div class="form-group row" style="width: 800px;">
+                <label class="col-sm-4 col-form-label">Choose File Name</label>
+                <div class="col-sm-8">
+                    <select name="FileName" class="form-select" onchange="document.getElementById('dropdownForm').submit();">
+                        <option value="">Choose File Name</option>
+                        @if (ViewBag.FileNames != null)
+                        {
+                            foreach (var FileName in ViewBag.FileNames)
+                            {
+                                <option value="@FileName.FileNames">@FileName.FileNames</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <form asp-controller="Journals" asp-action="AllocatingTask" method="POST">
 
-        @*<div style="overflow-x:auto;"> </div>*@
         <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
 
             <thead>
@@ -160,7 +179,7 @@
                                 else if (@item.DateDiff <= 0)
                                 {
                                     <span style="color: red;">
-                                       <p>Task is overdue</p>
+                                        <p>Task is overdue</p>
                                     </span>
                                 }
 
@@ -174,7 +193,7 @@
 
                     }
                 }
-                
+
             </tbody>
         </table>
 
@@ -193,7 +212,7 @@
                                 <option id="valuersss" value="@valuer.FirstName @valuer.Surname">@valuer.FirstName @valuer.Surname</option>
                             }
                         }
-                    </select>   
+                    </select>
                 </div>
             </div>
 
@@ -234,6 +253,7 @@
             </div>
         </div>
     </form>
+
 
     <script type="text/javascript"
             charset="utf8"
