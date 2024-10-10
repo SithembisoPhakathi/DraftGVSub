@@ -158,35 +158,39 @@
 
                             <td>
 
-                                @if (@item.DateDiff >= 5 && @item.DateDiff <= 7)
+                                @if (item.Status != "Unallocated")
                                 {
-                                    <span style="color: green;">
-                                        @item.DateDiff
-                                    </span>
-                                }
-                                else if (@item.DateDiff >= 3 && @item.DateDiff <= 4)
-                                {
-                                    <span style="color: orange;">
-                                        @item.DateDiff
-                                    </span>
-                                }
-                                else if (@item.DateDiff >= 1 && @item.DateDiff <= 2)
-                                {
-                                    <span style="color: red;">
-                                        @item.DateDiff
-                                    </span>
-                                }
-                                else if (@item.DateDiff <= 0)
-                                {
-                                    <span style="color: red;">
-                                        <p>Task is overdue</p>
-                                    </span>
+                                    @if (item.DateDiff >= 5 && item.DateDiff <= 7)
+                                    {
+                                        <span style="color: green;">
+                                            @item.DateDiff
+                                        </span>
+                                    }
+                                    else if (item.DateDiff >= 3 && item.DateDiff <= 4)
+                                    {
+                                        <span style="color: orange;">
+                                            @item.DateDiff
+                                        </span>
+                                    }
+                                    else if (item.DateDiff >= 1 && item.DateDiff <= 2)
+                                    {
+                                        <span style="color: red;">
+                                            @item.DateDiff
+                                        </span>
+                                    }
+                                    else if (item.DateDiff <= 0)
+                                    {
+                                        <span style="color: red;">
+                                            <p>Task is overdue</p>
+                                        </span>
+                                    }
                                 }
 
                             </td>
 
                             <td>
-                                <input type="checkbox" name="selectedItems" value="@item.Journal_Id" />
+                                <input type="checkbox" name="selectedItems" value="@item.Journal_Id"
+                                @(item.Status != "Transaction Finalized" ? "" : "disabled") />
                             </td>
 
                         </tr>
@@ -253,7 +257,6 @@
             </div>
         </div>
     </form>
-
 
     <script type="text/javascript"
             charset="utf8"

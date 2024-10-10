@@ -33,6 +33,7 @@
         public string? NetAdjustment { get; set; }
         public int? DateDiff { get; set; }
         public string? FinancialYear { get; set; }
-        public int? Transaction_ID { get; set; }
+        public int? Transaction_ID { get; set; } 
+        public int? Journal_ID { get; set; } 
     }
 }

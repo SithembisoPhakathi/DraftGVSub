@@ -534,7 +534,7 @@ namespace GeneralValuationSubs.Controllers
 
             string Premise_ID = PremiseId.ToString();
             string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}";
-            string folder = uploadRoot + "\\" + Premise_ID;
+            string folder = uploadRoot + "\\" + "Journal" + ' ' + Journal_Id + ' ' + Premise_ID;
             // ******Check existance then create it.******
             if (!Directory.Exists(folder))
             {
@@ -603,8 +603,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [FinancialYear] , [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged], [ActualBilling], [NetAdjustment], [Activity_Date]) " +
-                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "' ,'" + FinancialYear + "' ,'" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', 'Transaction Processed', '" + TobeCharged + "', '" + ActualBilling + "','" + NetAdjustment + "', '" + DateTime.Now + "')";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [FinancialYear] , [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged], [ActualBilling], [NetAdjustment], [Activity_Date], [Journal_Id]) " +
+                                  "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "' ,'" + FinancialYear + "' ,'" + billingFrom + "', '" + billingTo + "', '" + billingDays + "', '" + CATDescription + "', '" + Market_Value + "' , '" + thresholdValue + "', '" + RatableValue + "', '" + rateTariffValue + "', '" + RebateType + "', '" + RebateAmount + "', '" + calculatedRate + "', 'Transaction Processed', '" + TobeCharged + "', '" + ActualBilling + "','" + NetAdjustment + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
                 //while (dr.Read())
                 //{
                 //    JournalHistories.Add(new JournalHistory
@@ -649,8 +649,8 @@ namespace GeneralValuationSubs.Controllers
             int count = 0;
 
             string Premise_ID = PremiseId.ToString();
-            string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}";
-            string folder = uploadRoot + "\\" + Premise_ID;
+            string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}"; 
+            string folder = uploadRoot + "\\" + "Journal" + ' ' + Journal_Id + ' ' + Premise_ID;
             // ******Check existance then create it.******
             if (!Directory.Exists(folder))
             {
@@ -719,7 +719,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' COMMIT TRANSACTION;";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 
@@ -733,7 +733,7 @@ namespace GeneralValuationSubs.Controllers
 
         }
 
-        public IActionResult Transaction_To_Be_Checked()
+        public IActionResult Pending()
         {
             var userSector = TempData["currentUserSector"];
             TempData.Keep("currentUserSector");
@@ -818,8 +818,9 @@ namespace GeneralValuationSubs.Controllers
                         calculatedRate = dr["calculatedRate"].ToString(),
                         RebateAmount = dr["RebateAmount"].ToString(),
                         UserName = dr["UserName"].ToString(),
-                        Activity_Date = (DateTime)dr["Activity_Date"]
-
+                        Activity_Date = (DateTime)dr["Activity_Date"],
+                        Transaction_ID = (int)dr["Transaction_ID"],
+                        Journal_ID = (int)dr["Journal_Id"]                        
                     });
                 }
                 con.Close();
@@ -837,9 +838,9 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);//journals
         }
 
-        public IActionResult DownloadFiles(string PremiseID)
+        public IActionResult DownloadFiles(int JournalID, string PremiseID)
         {
-            string folderPath = @"E:\\JOURNALS_TEST\\" + PremiseID + "";
+            string folderPath = @"E:\\JOURNALS_TEST\\" + "Journal " + JournalID + " " + PremiseID + "";
             //string[] filePaths = Directory.GetFiles(folderPath);
 
             if (!Directory.Exists(folderPath))
@@ -882,13 +883,13 @@ namespace GeneralValuationSubs.Controllers
                     //memoryStream.CopyTo(finalMemoryStream);
                     finalMemoryStream.Position = 0;
 
-                    return File(combinedData, "application/zip", PremiseID + " Files.zip");
+                    return File(combinedData, "application/zip", "Journal " + JournalID + " " + PremiseID + " Files.zip");
                 }
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> TransactionApproveReject(string PremiseId, string ActionType, string? ApproverComment)
+        public async Task<IActionResult> TransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? ApproverComment)
         {
             try
             {
@@ -897,16 +898,17 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Reject")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
                 com.Parameters.AddWithValue("@PremiseId", PremiseId);
+                com.Parameters.AddWithValue("@JournalId", JournalId);
                 com.ExecuteNonQuery();                
             }
             catch (Exception ex)
@@ -918,7 +920,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
             }
 
-            return RedirectToAction("Transaction_To_Be_Checked");
+            return RedirectToAction("Pending");
         }
 
         public IActionResult Edit_Transaction(string? id)

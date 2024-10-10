@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 
     var premiseId = string.Empty;
+    int journalId = 0;
 }
 
 <head>
@@ -99,6 +100,8 @@
 
                 @foreach (var item in ViewBag.PremiseID)
                 {
+                    journalId = item.Journal_ID;
+
                     <tr>
                         <td>
                             @item.Premise_ID
@@ -166,7 +169,7 @@
     </div>
 
     <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
-        <a class="btn btn-primary mx-2" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId">Download File</a>
+        <a class="btn btn-primary mx-2" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId" asp-route-JournalID="@journalId">Download File</a>
 
         <a class="btn mx-2" style="width:111px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
 
@@ -192,6 +195,7 @@
 
                     <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Approve" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
@@ -219,6 +223,7 @@
 
                     <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Reject" />
                         <!-- Hidden input for reject modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
