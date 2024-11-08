@@ -1,0 +1,262 @@
+﻿@*@model IEnumerable<GeneralValuationSubs.Models.Draft>*@
+
+@{
+    ViewData["Title"] = "Index";
+
+    var premiseId = string.Empty;
+    int journalId = 0;
+}
+
+<head>
+    <link href=https://fonts.googleapis.com/icon?family =Material+Icons rel="stylesheet">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css" />
+
+</head>
+
+<link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
+
+<script src="~/js/jquery-3.5.1.js" asp-append-version="true"></script>
+<script src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+<script src="~/js/dataTables.buttons.min.js" asp-append-version="true"></script>
+<script src="~/js/jszip.min.js" asp-append-version="true"></script>
+<script src="~/js/pdfmake.min.js" asp-append-version="true"></script>
+<script src="~/js/vfs_fonts.js" asp-append-version="true"></script>
+<script src="~/js/buttons.html5.min.js" asp-append-version="true"></script>
+
+<body class="bg-light text-dark">
+    <style>
+        #preloader {
+            background: white no-repeat center center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+    </style>
+
+    @*<div style="overflow-x:auto;"> </div>*@
+    <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Premise Id
+                </th>
+                <th>
+                    Account Number
+                </th>
+                <th>
+                    Market Value
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Billing From
+                </th>
+                <th>
+                    Billing To
+                </th>
+                <th>
+                    Billing Days
+                </th>
+                <th>
+                    Threshold
+                </th>
+
+                <th>
+                    Ratable Value
+                </th>
+
+                <th>
+                    Rates Tariff
+                </th>
+
+                <th>
+                    Rebate Type
+                </th>
+                <th>
+                    Rebate Amount
+                </th>
+                <th>
+                    Calculated Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PremiseID != null)
+            {
+
+                @foreach (var item in ViewBag.PremiseID)
+                {
+                    journalId = item.Journal_ID;
+
+                    <tr>
+                        <td>
+                            @item.Premise_ID
+
+                            @{
+                                premiseId = item.Premise_ID;
+                            }
+
+                        </td>
+                        <td>
+                            @item.Account_Number
+                        </td>
+                        <td>
+                            @item.Market_Value
+                        </td>
+                        <td>
+                            @item.Category
+                        </td>
+
+                        <td>
+                            @item.BillingFrom.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @item.BillingTo.ToString("yyyy-MM-dd")
+                        </td>
+
+                        <td>
+                            @item.BillingDays
+                        </td>
+
+                        <td>
+                            @item.Threshold
+                        </td>
+
+                        <td>
+                            @item.RatableValue
+                        </td>
+
+                        <td>
+                            @item.RatesTariff
+                        </td>
+
+                        <td>
+                            @item.RebateType
+                        </td>
+
+                        <td>
+                            @item.RebateAmount
+                        </td>
+
+                        <td>
+                            @item.calculatedRate
+                        </td>
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table>      
+
+    <br />
+    <br />
+
+    <!-- Approve Modal -->
+    <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="Approve" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Confirm Rejection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to reject this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="TransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="Reject" />
+                        <!-- Hidden input for reject modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addCommentToForm(form) {
+            // Get the value from the textarea
+            var commentValue = document.getElementById('ApproverComment').value;
+
+            // Set the value to the hidden input inside the specific form being submitted
+            form.querySelector('.HiddenApproverComment').value = commentValue;
+        }
+    </script>
+    <!-- Modal -->
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                scrollX: true
+            });
+        });
+    </script>
+
+</body>

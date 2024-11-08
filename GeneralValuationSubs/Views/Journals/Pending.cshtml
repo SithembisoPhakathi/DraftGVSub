@@ -73,9 +73,10 @@
                     <th>
                         Premise Id
                     </th>
-                   @*  <th>
-                        Account Number
+                    <th>
+                        File Name
                     </th>
+                    @*
                     <th>
                         Market Value
                     </th>
@@ -111,13 +112,15 @@
                     @foreach (var item in ViewBag.UserDataList)
                     {
                         <tr>
-
                             <td>
-                                <a asp-controller="Journals" asp-action="ViewTransactions" asp-route-PremiseID="@item.Premise_ID"> @item.Premise_ID </a>
+                                <a asp-controller="Journals" asp-action="ViewTransactions" asp-route-PremiseID="@item.Premise_ID" asp-route-JournalID="@item.Journal_ID">
+                                    @item.Premise_ID
+                                </a>
                             </td>
-                            @* <td>
-                                @item.Account_Number
+                             <td>
+                                @item.FileName
                             </td>
+                            @*
                             <td>
                                 @item.Market_Value
                             </td>

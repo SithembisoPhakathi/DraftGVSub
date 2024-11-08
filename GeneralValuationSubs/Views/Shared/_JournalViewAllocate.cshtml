@@ -21,6 +21,25 @@
 
 </head>
 
+@if (TempData["AllocateTaskMessage"] != null)
+{
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["AllocateTaskMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        // Automatically hide the success message after 10 seconds (10000 milliseconds)
+        setTimeout(function () {
+            var successAlert = document.getElementById("successAlert");
+            if (successAlert) {
+                var bsAlert = new bootstrap.Alert(successAlert);
+                bsAlert.close();
+            }
+        }, 5000);
+    </script>
+}
+
 <link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
 
@@ -91,9 +110,9 @@
                     <th>
                         Net Accrual
                     </th>
-                    <th>
+                    @* <th>
                         File Name
-                    </th>
+                    </th> *@
 
                     <th>
                         Status
@@ -144,9 +163,9 @@
                                 @item.Net_Accrual
                             </td>
 
-                            <td>
+                           @*  <td>
                                 @item.File_Name
-                            </td>
+                            </td> *@
 
                             <td>
                                 @item.Status
@@ -225,7 +244,7 @@
                     <input type="radio" name="priorityOrIndifference" value="Priority - Allocated" id="priority"> Priority
                 </label>
                 <label>
-                    <input type="radio" name="priorityOrIndifference" value="Allocated" id="indifference" checked> Indifference
+                    <input type="radio" name="priorityOrIndifference" value="Allocated" id="indifference" checked> Normal
                 </label>
             </div>
 

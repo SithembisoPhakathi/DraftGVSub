@@ -267,7 +267,8 @@
 
                                                 if (RatableValue > 0 && ratesTariff > 0) {
                                                     var rate = ((RatableValue * ratesTariff) / 365) * dayDifference;
-                                                    $("#calculatedRate").val(rate.toFixed(2));
+                                                    var formattedRate = "R " + rate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                                    $("#calculatedRate").val(formattedRate);
                                                 } else {
                                                     $("#calculatedRate").val('');
                                                 }
@@ -333,7 +334,7 @@
                                         </div>
 
                                         <div class="col-md-6 form-group">
-                                            <label for="ValuationTypeDescription">Valuation Date</label>
+                                            <label for="ValuationTypeDescription">WEF Date</label>
                                             <input class="form-control" id="ValuationDate" name="ValuationDate" Value="@item.ValuationDate" disabled />
                                         </div>
                                     </div>

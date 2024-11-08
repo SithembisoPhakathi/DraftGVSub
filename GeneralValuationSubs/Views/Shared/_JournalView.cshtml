@@ -21,6 +21,25 @@
 
 </head>
 
+@if (TempData["SubmitTaskMessage"] != null)
+{
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SubmitTaskMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        // Automatically hide the success message after 10 seconds (10000 milliseconds)
+        setTimeout(function () {
+            var successAlert = document.getElementById("successAlert");
+            if (successAlert) {
+                var bsAlert = new bootstrap.Alert(successAlert);
+                bsAlert.close();
+            }
+        }, 5000);
+    </script>
+}
+
 
 <body class="bg-light text-dark">
     <style>
@@ -76,10 +95,14 @@
                     </th>
 
                     <th>
-                        Allocated Name
+                       Days Count Down
+                    </th> 
+
+                    <th>
+                        Expected Completion Date
                     </th>
 
-                    
+
                     @*<th>
                     Select
                     </th>*@
@@ -131,8 +154,35 @@
                             </td>
 
                             <td>
-                                @item.Allocated_Name
-                            </td>                          
+                                @if (item.DateDiff >= 5 && item.DateDiff <= 7)
+                                {
+                                    <span style="color: green;">
+                                        @item.DateDiff
+                                    </span>
+                                }
+                                else if (item.DateDiff >= 3 && item.DateDiff <= 4)
+                                {
+                                    <span style="color: orange;">
+                                        @item.DateDiff
+                                    </span>
+                                }
+                                else if (item.DateDiff >= 1 && item.DateDiff <= 2)
+                                {
+                                    <span style="color: red;">
+                                        @item.DateDiff
+                                    </span>
+                                }
+                                else if (item.DateDiff <= 0)
+                                {
+                                    <span style="color: red;">
+                                        <p>Task is overdue</p>
+                                    </span>
+                                }
+                            </td>
+
+                            <td>                                
+                                @item.End_Date.ToString("yyyy-MM-dd")
+                            </td>
 
                         </tr>
 

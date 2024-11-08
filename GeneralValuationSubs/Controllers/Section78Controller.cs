@@ -227,7 +227,6 @@ namespace GeneralValuationSubs.Controllers
                         Valuation_Key = dr["Valuation_Key"].ToString(),
                         objection_Status = dr["objection_Status"].ToString(),
                         QUERY_No = dr["QUERY_No"].ToString(),
-
                     });
                 }
                 con.Close();
