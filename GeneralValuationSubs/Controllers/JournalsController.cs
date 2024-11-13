@@ -1,18 +1,23 @@
-﻿using GeneralValuationSubs.Models;
+﻿using GeneralValuationSubs.Data;
+using GeneralValuationSubs.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ReadingTextFile.Data;
+using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO.Compression;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GeneralValuationSubs.Controllers
 {
     public class JournalsController : Controller
     {
-        List<Journals> journals = new List<Journals>();
+        List<Journals_Audit> journals = new List<Journals_Audit>();
         List<Category> categories = new List<Category>();
         List<FileName> fileNames = new List<FileName>();
         List<AdminValuer> adminValuers = new();
@@ -22,10 +27,14 @@ namespace GeneralValuationSubs.Controllers
         SqlDataReader dr;
         EmailHelper emailHelper = new EmailHelper();
         private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
+        private TableViewModel _viewModel;
+        private readonly FileParser _fileParser = new FileParser();
+        private readonly ApplicationDbContext _AppContext;
 
-        public JournalsController(Microsoft.Extensions.Configuration.IConfiguration config)
+        public JournalsController(Microsoft.Extensions.Configuration.IConfiguration config, ApplicationDbContext applicationDbContext)
         {
             _config = config;
+            this._AppContext = applicationDbContext;
             con.ConnectionString = _config.GetConnectionString("JournalConnection");
         }
 
@@ -64,7 +73,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 throw ex;
             }
-                       
+
             return PartialView("PropPerUserAllocate", new { userName = userName });//journals
         }
 
@@ -114,12 +123,12 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT DATEDIFF(DAY, GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5)) and [File Name] = '" + FileName + "'";
+                com.CommandText = "SELECT dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5, 6, 7)) and [File Name] = '" + FileName + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
@@ -140,7 +149,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
 
                 ViewBag.UserDataList = journals.ToList();
-                
+
             }
 
             catch (Exception ex)
@@ -178,7 +187,7 @@ namespace GeneralValuationSubs.Controllers
             return PartialView("PropPerUserAllocate", new { userName = userName });//journals
         }
 
-        public IActionResult AllocatingTask(List<int> selectedItems, string? JournalName, string? priorityOrIndifference) 
+        public IActionResult AllocatingTask(List<int> selectedItems, string? JournalName, string? priorityOrIndifference)
         {
             var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
             TempData.Keep("currentUserSector");
@@ -210,13 +219,13 @@ namespace GeneralValuationSubs.Controllers
 
                     while (dr.Read())
                     {
-                        journals.Add(new Journals
+                        journals.Add(new Journals_Audit
                         {
 
                         });
                     }
 
-                    dr.Close(); 
+                    dr.Close();
                 }
 
                 con.Close();
@@ -284,12 +293,12 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,J.[Status] ,D.[Allocated Name], D.End_Date, DATEDIFF(DAY, GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] = 'Rejected' OR J.[Status] NOT IN ('Transaction Finalized', 'Approved')) GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,J.[Status] ,D.[Allocated Name], D.End_Date";
+                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date, dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] = 'Rejected' OR J.[Status] NOT IN ('Transaction Finalized', 'Approved')) GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
@@ -409,7 +418,7 @@ namespace GeneralValuationSubs.Controllers
             }
 
             categories.Clear();
-            
+
             if (journals.Count > 0)
             {
                 journals.Clear();
@@ -434,7 +443,7 @@ namespace GeneralValuationSubs.Controllers
                 {
                     premiseId = dr["Premise ID"].ToString();
 
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = premiseId,
                         Account_Number = dr["Account Number"].ToString(),
@@ -461,13 +470,14 @@ namespace GeneralValuationSubs.Controllers
                     journals.Clear();
 
                     // Second query to get the journal details using the Premise ID
-                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID ORDER BY Activity_Date";
+                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID AND [Journal_Id] = @Journal_ID ORDER BY Activity_Date";
                     com.Parameters.AddWithValue("@PremiseID", premiseId);
+                    com.Parameters.AddWithValue("@Journal_ID", id);
 
                     dr = com.ExecuteReader();
                     while (dr.Read())
                     {
-                        journals.Add(new Journals
+                        journals.Add(new Journals_Audit
                         {
                             Premise_ID = dr["Premise ID"].ToString(),
                             Account_Number = dr["Account Number"].ToString(),
@@ -475,7 +485,7 @@ namespace GeneralValuationSubs.Controllers
                             Market_Value = dr["Market_Value"].ToString(),
                             Category = dr["Category"].ToString(),
                             BillingFrom = (DateTime)dr["BillingFrom"],
-                            BillingTo  = (DateTime)dr["BillingTo"],
+                            BillingTo = (DateTime)dr["BillingTo"],
                             BillingDays = dr["BillingDays"].ToString(),
                             Threshold = dr["Threshold"].ToString(),
                             RatableValue = dr["RatableValue"].ToString(),
@@ -497,7 +507,7 @@ namespace GeneralValuationSubs.Controllers
                 }
                 con.Close();
 
-                ViewBag.JournalListAudit = journals.ToList(); 
+                ViewBag.JournalListAudit = journals.ToList();
             }
             catch (Exception ex)
             {
@@ -508,9 +518,9 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId , string? Account_Number, 
+        public async Task<IActionResult> UpdateValue(string? Journal_Id, string? PremiseId, string? Account_Number,
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
-            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling, 
+            string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling,
             string? NetAdjustment, string? MarketValue1, string? MarketValue2, string? MarketValue3, string? FinancialYear, string? FileName,
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? Comment, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
@@ -597,7 +607,7 @@ namespace GeneralValuationSubs.Controllers
                 }
 
                 save_files = FileNameAttach;
-            }           
+            }
 
             if (JournalHistories.Count > 0)
             {
@@ -655,7 +665,7 @@ namespace GeneralValuationSubs.Controllers
             int count = 0;
 
             string Premise_ID = PremiseId.ToString();
-            string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}"; 
+            string uploadRoot = $"{_config["AppSettings:FileRooTPastJournal"]}";
             string folder = uploadRoot + "\\" + "Journal" + ' ' + Journal_Id + ' ' + Premise_ID;
             // ******Check existance then create it.******
             if (!Directory.Exists(folder))
@@ -725,7 +735,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), End_Date = GETDATE() WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 
@@ -759,7 +769,7 @@ namespace GeneralValuationSubs.Controllers
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         //Account_Number = dr["Account Number"].ToString(),
@@ -783,13 +793,13 @@ namespace GeneralValuationSubs.Controllers
             catch (Exception ex)
             {
                 throw ex;
-            }            
+            }
 
             TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
 
             return View(journals);//journals
         }
-         
+
         public IActionResult PendingFinalized()
         {
             var userSector = TempData["currentUserSector"];
@@ -808,7 +818,7 @@ namespace GeneralValuationSubs.Controllers
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         //Account_Number = dr["Account Number"].ToString(),
@@ -841,7 +851,7 @@ namespace GeneralValuationSubs.Controllers
 
         public IActionResult ViewTransactions(string? PremiseID, int? JournalID)
         {
-            var userSector = TempData["currentUserSector"]; 
+            var userSector = TempData["currentUserSector"];
             TempData.Keep("currentUserSector");
 
             if (journals.Count > 0)
@@ -857,7 +867,7 @@ namespace GeneralValuationSubs.Controllers
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
@@ -876,7 +886,7 @@ namespace GeneralValuationSubs.Controllers
                         UserName = dr["UserName"].ToString(),
                         Activity_Date = (DateTime)dr["Activity_Date"],
                         Transaction_ID = (int)dr["Transaction_ID"],
-                        Journal_ID = (int)dr["Journal_Id"]                        
+                        Journal_ID = (int)dr["Journal_Id"]
                     });
                 }
                 con.Close();
@@ -894,7 +904,7 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);//journals
         }
 
-        public IActionResult ViewTransactionsFinalized(string? PremiseID, int? JournalID) 
+        public IActionResult ViewTransactionsFinalized(string? PremiseID, int? JournalID)
         {
             var userSector = TempData["currentUserSector"];
             TempData.Keep("currentUserSector");
@@ -912,7 +922,7 @@ namespace GeneralValuationSubs.Controllers
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
@@ -1009,18 +1019,18 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '6') WHERE Journal_Id = '" + JournalId + "'  UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Reject")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '7') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
                 com.Parameters.AddWithValue("@PremiseId", PremiseId);
                 com.Parameters.AddWithValue("@JournalId", JournalId);
-                com.ExecuteNonQuery();                
+                com.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -1035,7 +1045,7 @@ namespace GeneralValuationSubs.Controllers
         }
 
         public IActionResult Edit_Transaction(string? id)
-        { 
+        {
             if (journals.Count > 0)
             {
                 journals.Clear();
@@ -1063,7 +1073,7 @@ namespace GeneralValuationSubs.Controllers
             catch (Exception ex)
             {
                 throw ex;
-            }            
+            }
 
             categories.Clear();
 
@@ -1080,7 +1090,7 @@ namespace GeneralValuationSubs.Controllers
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    journals.Add(new Journals
+                    journals.Add(new Journals_Audit
                     {
                         Premise_ID = dr["Premise ID"].ToString(),
                         Account_Number = dr["Account Number"].ToString(),
@@ -1112,7 +1122,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 throw ex;
             }
-            
+
             return View(journals);
         }
 
@@ -1140,7 +1150,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 TempData["RefreshMessage"] = $"User Surname or Firstname is missing or blank. Please refresh the page.";
                 return RedirectToAction("RefreshMessage");
-            }           
+            }
 
             if (JournalHistories.Count > 0)
             {
@@ -1186,5 +1196,211 @@ namespace GeneralValuationSubs.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(IFormFile file, string? Journal_Id, string? PremiseId, string? Account_Number, string? Installation, string? FileName)
+        {
+            if (file != null && file.Length > 0)
+            {
+                _viewModel = new TableViewModel();
+
+                string fileContent;
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                {
+                    fileContent = reader.ReadToEnd();
+                }
+
+                _viewModel = ParseData(fileContent, Journal_Id, PremiseId, Account_Number, Installation, FileName);
+
+                return RedirectToAction("ViewProperty", new { id = Journal_Id });
+            }
+
+            return View();
+        }
+
+        private TableViewModel ParseData(string content, string? Journal_Id, string? PremiseId, string? Account_Number, string? Installation, string? FileName)
+        {
+            var userID = TempData["currentUser"] as string; ;
+            TempData.Keep("currentUser");
+
+            var currentUserSurname = TempData["currentUserSurname"] as string; ;
+            TempData.Keep("currentUserSurname");
+            var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
+            TempData.Keep("currentUserFirstname");
+
+
+            string[] format = new string[] { "dd.MM.yyyy" };
+            int amountColumnIndex = -1;
+            int docNoIndex = -1;
+            int docDateIndex = -1;
+            int descriptionIndex = -1;
+            int divIndex = -1;
+            int typeIndex = -1;
+
+            long docNum = 0;
+            double amount = 0;
+            string divNum = "";
+            string type = "";
+            string description = "";
+            DateTime Docdate = DateTime.Now;
+            string dateVar = "";
+            string format2 = "dd/MM/yyyy";
+
+            DateTime dateOnly;
+            var model = new TableViewModel();
+            var rows = new List<TableRow>();
+
+            using (StringReader reader = new StringReader(content))
+            {
+                string line;
+                bool headersFound = false;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!headersFound)
+                    {
+                        var potentialHeaders = line.Split('\t');
+                        if (potentialHeaders.Contains("Stat"))
+                        {
+                            model.Headers = new List<string> { "DocDate", "Type", "DocNo", "Div", "Description", "Amount" };
+                            headersFound = true;
+
+                            // Find the indexes of required columns only
+                            amountColumnIndex = Array.IndexOf(potentialHeaders, "Amount");
+                            docDateIndex = Array.IndexOf(potentialHeaders, "DocDate");
+                            typeIndex = Array.IndexOf(potentialHeaders, "Type");
+                            docNoIndex = Array.IndexOf(potentialHeaders, "DocNo");
+                            divIndex = Array.IndexOf(potentialHeaders, "Div");
+                            descriptionIndex = Array.IndexOf(potentialHeaders, "Description");
+                        }
+                    }
+                    else
+                    {
+                        var fields = line.Split('\t');
+                        var filteredFields = new List<string>();
+
+                        // Parsing and formatting the DocDate
+                        if (docDateIndex >= 0 && docDateIndex < fields.Length)
+                        {
+                            dateVar = fields[docDateIndex].Replace(".", "/").Trim();
+                            Docdate = DateTime.TryParseExact(dateVar, format2, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
+                                ? parsedDate
+                                : DateTime.MinValue;
+                            filteredFields.Add(Docdate.ToString("dd/MM/yyyy"));
+                        }
+
+                        // Parsing the Type
+                        if (typeIndex >= 0 && typeIndex < fields.Length)
+                        {
+                            type = fields[typeIndex];
+                            filteredFields.Add(type);
+                        }
+
+                        // Parsing and converting the DocNo
+                        if (docNoIndex >= 0 && docNoIndex < fields.Length)
+                        {
+                            string docNoString = fields[docNoIndex].Replace(",", "").Trim();
+
+                            if (double.TryParse(docNoString, NumberStyles.Any, CultureInfo.InvariantCulture, out double docNoDouble))
+                            {
+                                docNum = (long)docNoDouble;
+                            }
+                            else
+                            {
+                                docNum = 0; // Default value if parsing fails
+                            }
+
+                            filteredFields.Add(docNum.ToString());
+                        }
+
+                        // Parsing the Div
+                        if (divIndex >= 0 && divIndex < fields.Length)
+                        {
+                            divNum = fields[divIndex].Trim();
+                            filteredFields.Add(divNum);
+                        }
+
+                        // Parsing the Description
+                        if (descriptionIndex >= 0 && descriptionIndex < fields.Length)
+                        {
+                            description = fields[descriptionIndex];
+                            filteredFields.Add(description);
+                        }
+
+                        // Parsing and converting the Amount
+                        if (amountColumnIndex >= 0 && amountColumnIndex < fields.Length)
+                        {
+                            string cleanedValue = fields[amountColumnIndex].Replace(",", "").Trim();
+                            amount = string.IsNullOrEmpty(cleanedValue) ? 0.0 : Convert.ToDouble(cleanedValue, CultureInfo.InvariantCulture);
+                            filteredFields.Add(amount.ToString("F2"));
+                        }
+
+                        if (JournalHistories.Count > 0)
+                        {
+                            JournalHistories.Clear();
+                        }
+                        try
+                        {
+                            using (SqlConnection con = new SqlConnection(_config.GetConnectionString("JournalConnection")))
+                            {
+                                using (SqlCommand com = con.CreateCommand())
+                                {
+                                    // Open connection once
+                                    con.Open();
+                                    com.Connection = con;
+                                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [File_Name], [FinancialYear] , [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged], [ActualBilling], [NetAdjustment], [Activity_Date], [Journal_Id]) " +
+                                                      "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "', '" + FileName + "' ,'" + description + "' ,'" + Docdate + "', '" + Docdate + "', '" + Docdate + "', '" + description + "', '" + amount + "' , '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', 'Transaction Processed', '" + amount + "', '" + amount + "','" + amount + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
+                                    //while (dr.Read())
+                                    //{
+                                    //    JournalHistories.Add(new JournalHistory
+                                    //    {
+
+                                    //    });
+                                    //}
+                                    //con.Close();
+                                    com.ExecuteNonQuery();
+
+                                    TempData["SaveMessage"] = $"Transaction successfully saved!";
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
+
+                        //Save record to database if needed
+                        //_AppContext.Journals_Audit.Add(new Journals_Audit
+                        //{
+                        //    BillingFrom = Docdate,
+                        //    Category = type,
+                        //    Market_Value = docNum.ToString(),
+                        //    ToBeCharged = divNum,
+                        //    FileName = description,
+                        //    RebateAmount = amount.ToString(),
+                        //    FinancialYear = null
+
+                        //    //DocDate = Docdate,
+                        //    //Type = type,
+                        //    //DocNo = docNum,
+                        //    //Div = divNum,
+                        //    //Description = description,
+                        //    //Amount = amount,
+                        //    //Financial_Year = null
+                        //});
+                        //_AppContext.SaveChanges();
+
+                        // Add filtered data to TableRow
+                        rows.Add(new TableRow { Columns = filteredFields });
+                    }
+                }
+            }
+
+            model.Rows = rows;
+            return model;
+        }
     }
 }
+
+

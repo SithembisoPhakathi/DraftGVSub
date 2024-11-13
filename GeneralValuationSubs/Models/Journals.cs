@@ -1,9 +1,13 @@
-﻿namespace GeneralValuationSubs.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GeneralValuationSubs.Models
 {
-    public class Journals
+    public class Journals_Audit
     {
+        [Key]
+        public int? Transaction_ID { get; set; }
         public string? Premise_ID { get; set; }
-        public string? Account_Number { get; set; }
+        public string? Account_Number { get; set; } 
         public string? Installation { get; set; }
         public string? Market_Value { get; set; }
         public string? Category { get; set; }
@@ -32,8 +36,7 @@
         public string? ActualBilling { get; set; }
         public string? NetAdjustment { get; set; }
         public int? DateDiff { get; set; }
-        public string? FinancialYear { get; set; } 
-        public int? Transaction_ID { get; set; } 
+        public string? FinancialYear { get; set; }         
         public int? Journal_ID { get; set; } 
         public string? FileName { get; set; }
         public DateTime? End_Date { get; set; }

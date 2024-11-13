@@ -5358,6 +5358,15 @@ D:\GeneralValuationSub2023\GeneralValuationSubs (2)\GeneralValuationSubs\General
 D:\GeneralValuationSub2023\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.genruntimeconfig.cache
 D:\GeneralValuationSub2023\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\GeneralValuationSubs.pdb
 D:\GeneralValuationSub2023\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\ref\GeneralValuationSubs.dll
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.csproj.AssemblyReference.cache
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.AssemblyInfoInputs.cache
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.AssemblyInfo.cs
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.csproj.CoreCompileInputs.cache
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.RazorAssemblyInfo.cache
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.RazorAssemblyInfo.cs
+C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.sourcelink.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\appsettings.Development.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\appsettings.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\GeneralValuationSubs.staticwebassets.runtime.json
@@ -5625,15 +5634,6 @@ C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuatio
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.csproj.AssemblyReference.cache
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.AssemblyInfoInputs.cache
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.AssemblyInfo.cs
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.csproj.CoreCompileInputs.cache
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.RazorAssemblyInfo.cache
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.RazorAssemblyInfo.cs
-C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\GeneralValuationSubs.sourcelink.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\staticwebassets.build.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\staticwebassets.development.json
 C:\Users\10107037\Desktop\09 April 2024\GeneralValuationSubs (2)\GeneralValuationSubs\GeneralValuationSubs\obj\Debug\net7.0\staticwebassets\msbuild.GeneralValuationSubs.Microsoft.AspNetCore.StaticWebAssets.props

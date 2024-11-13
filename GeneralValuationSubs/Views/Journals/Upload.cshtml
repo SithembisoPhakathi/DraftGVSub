@@ -1,0 +1,41 @@
+﻿@model GeneralValuationSubs.Models.TableViewModel
+
+@{
+    ViewData["Title"] = "Uploaded Document Records";
+    int i = 0;
+}
+
+<h2>Uploaded Document Records</h2>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+
+<table class="table">
+    <thead>        
+        <tr>
+            <th>DocDate</th>
+            <th>Type</th>
+            <th>DocNo</th>
+            <th>Div</th>
+            <th>Description</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rows in Model.Rows)
+        {
+            <tr>
+
+                @foreach (var column in rows.Columns)
+                {
+                    <td>@column</td>
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>

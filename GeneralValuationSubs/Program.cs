@@ -1,3 +1,4 @@
+using GeneralValuationSubs.Data;
 using GeneralValuationSubs.Interface;
 using GeneralValuationSubs.Models;
 using GeneralValuationSubs.Services;
@@ -18,6 +19,9 @@ builder.Services.AddTransient<IBufferedFileUploadService, BufferedFileUploadLoca
 
 builder.Services.AddDbContext<UpdatedGvtoolContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("JournalConnection")));
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
