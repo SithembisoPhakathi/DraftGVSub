@@ -1226,6 +1226,8 @@ namespace GeneralValuationSubs.Controllers
 
         private TableViewModel ParseData(string content, string? Journal_Id, string? PremiseId, string? Account_Number, string? Installation, string? FileName)
         {
+            bool isDeleted = false;
+
             var userID = TempData["currentUser"] as string; ;
             TempData.Keep("currentUser");
 
@@ -1352,6 +1354,31 @@ namespace GeneralValuationSubs.Controllers
                         }
                         try
                         {
+                            if (!isDeleted) 
+                            {                                
+                                using (SqlConnection con = new SqlConnection(_config.GetConnectionString("JournalConnection")))
+                                {
+                                    using (SqlCommand com = con.CreateCommand())
+                                    {
+                                        // Open connection once
+                                        con.Open();
+                                        com.Connection = con;
+                                        com.CommandText = "BEGIN TRANSACTION; DELETE FROM [Journals].[dbo].[Journals_Audit] where [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "'; COMMIT TRANSACTION;";
+                                        //{
+                                        //    JournalHistories.Add(new JournalHistory
+                                        //    {
+
+                                        //    });
+                                        //}
+                                        //con.Close();
+                                        com.ExecuteNonQuery();
+
+                                        TempData["SaveMessage"] = $"Transaction successfully saved!";
+                                    }
+                                    isDeleted = true;
+                                }
+                            }
+
                             using (SqlConnection con = new SqlConnection(_config.GetConnectionString("JournalConnection")))
                             {
                                 using (SqlCommand com = con.CreateCommand())
