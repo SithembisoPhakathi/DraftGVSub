@@ -45,6 +45,23 @@
 
 </head>
 
+<head>
+    <link href=https://fonts.googleapis.com/icon?family =Material+Icons rel="stylesheet">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css" />
+
+</head>
+
 @if (TempData["SaveMessage"] != null)
 {
     <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -1447,50 +1464,23 @@
             <thead>
                 <tr>
                     <th>
-                        Market Value
+                        Doc Date
                     </th>
                     <th>
-                        Category
+                        Type
                     </th>
                     <th>
-                        Billing From
+                        Doc No
                     </th>
                     <th>
-                        Billing To
+                        Div
                     </th>
                     <th>
-                        Billing Days
+                        Description
                     </th>
                     <th>
-                        Threshold
-                    </th>
-
-                    <th>
-                        Ratable Value
-                    </th>
-
-                    <th>
-                        Rates Tariff
-                    </th>
-
-                    <th>
-                        Rebate Type
-                    </th>
-                    <th>
-                        Rebate Amount
-                    </th>
-                    <th>
-                        Calculated Rate
-                    </th>
-                    <th>
-                        To Be Charged
-                    </th>
-                    <th>
-                        Actual Billing
-                    </th>
-                    <th>
-                        Net Adjustment
-                    </th>
+                        Amount
+                    </th>                   
                     <th>
                         -----
                     </th>
@@ -1502,58 +1492,29 @@
                     @foreach (var item in ViewBag.JournalListAudit)
                     {
                         <tr>
+                             <td>
+                                @(DateTime.TryParse(item.DocDate, out DateTime parsedDate) ? parsedDate.ToString("yyyy-MM-dd") : "")
+
+                             </td>
                             <td>
-                                @item.Market_Value
+                                @item.Type
                             </td>
+                            
                             <td>
-                                @item.Category
+                                @item.DocNo
                             </td>
 
                             <td>
-                                @item.BillingFrom.ToString("yyyy-MM-dd")
-                            </td>
-                            <td>
-                                @item.BillingTo.ToString("yyyy-MM-dd")
+                                @item.Div
                             </td>
 
                             <td>
-                                @item.BillingDays
+                                @item.Description
                             </td>
 
                             <td>
-                                @item.Threshold
-                            </td>
-
-                            <td>
-                                @item.RatableValue
-                            </td>
-
-                            <td>
-                                @item.RatesTariff
-                            </td>
-
-                            <td>
-                                @item.RebateType
-                            </td>
-
-                            <td>
-                                @item.RebateAmount
-                            </td>
-
-                            <td>
-                                @item.calculatedRate
-                            </td>
-                            <td>
-                                @item.ToBeCharged
-                            </td>
-
-                            <td>
-                                @item.ActualBilling
-                            </td>
-
-                            <td>
-                                @item.NetAdjustment
-                            </td>
+                                @item.Amount
+                            </td>                            
                             <td>
                                 <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId">
                                     <i class="bi bi-pencil-square"></i>&nbsp; Edit
@@ -1978,6 +1939,32 @@
             // Submit the form programmatically
             form.submit();
         }
+    </script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+
+            });
+        });
     </script>
 
 </body>

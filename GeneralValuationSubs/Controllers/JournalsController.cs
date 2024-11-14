@@ -484,8 +484,8 @@ namespace GeneralValuationSubs.Controllers
                             Installation = dr["Installation"].ToString(),
                             Market_Value = dr["Market_Value"].ToString(),
                             Category = dr["Category"].ToString(),
-                            BillingFrom = (DateTime)dr["BillingFrom"],
-                            BillingTo = (DateTime)dr["BillingTo"],
+                            BillingFrom = dr["BillingFrom"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingFrom"],
+                            BillingTo = dr["BillingTo"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingTo"],
                             BillingDays = dr["BillingDays"].ToString(),
                             Threshold = dr["Threshold"].ToString(),
                             RatableValue = dr["RatableValue"].ToString(),
@@ -499,6 +499,12 @@ namespace GeneralValuationSubs.Controllers
                             NetAdjustment = dr["NetAdjustment"].ToString(),
                             Transaction_ID = (int)dr["Transaction_ID"],
                             Status = dr["Status"].ToString(),
+                            DocDate = dr["DocDate"].ToString(),
+                            Type = dr["Type"].ToString(),
+                            DocNo = dr["DocNo"].ToString(),
+                            Div = dr["Div"].ToString(),
+                            Description = dr["Description"].ToString(),
+                            Amount = dr["Amount"].ToString(),
                             Comment = dr["Comment"].ToString(),
                             ApproverComment = dr["ApproverComment"].ToString(),
                             FileName = dr["File_Name"].ToString()
@@ -1228,6 +1234,11 @@ namespace GeneralValuationSubs.Controllers
             var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
             TempData.Keep("currentUserFirstname");
 
+            if (string.IsNullOrWhiteSpace(currentUserSurname) || string.IsNullOrWhiteSpace(currentUserFirstname) || string.IsNullOrWhiteSpace(userID))
+            {
+                TempData["RefreshMessage"] = $"User Surname or Firstname is missing or blank. Please refresh the page.";
+                throw new InvalidOperationException("Redirect to RefreshMessage");
+            }
 
             string[] format = new string[] { "dd.MM.yyyy" };
             int amountColumnIndex = -1;
@@ -1286,7 +1297,7 @@ namespace GeneralValuationSubs.Controllers
                             Docdate = DateTime.TryParseExact(dateVar, format2, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
                                 ? parsedDate
                                 : DateTime.MinValue;
-                            filteredFields.Add(Docdate.ToString("dd/MM/yyyy"));
+                            filteredFields.Add(Docdate.ToString("yyyy-MM-dd"));
                         }
 
                         // Parsing the Type
@@ -1348,8 +1359,8 @@ namespace GeneralValuationSubs.Controllers
                                     // Open connection once
                                     con.Open();
                                     com.Connection = con;
-                                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [File_Name], [FinancialYear] , [BillingFrom]  ,[BillingTo] ,[BillingDays]  ,[Category], [Market_Value]  ,[Threshold] ,[RatableValue] ,[RatesTariff] ,[RebateType] ,[RebateAmount] ,[calculatedRate], [Status], [TobeCharged], [ActualBilling], [NetAdjustment], [Activity_Date], [Journal_Id]) " +
-                                                      "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "', '" + FileName + "' ,'" + description + "' ,'" + Docdate + "', '" + Docdate + "', '" + Docdate + "', '" + description + "', '" + amount + "' , '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', '" + amount + "', 'Transaction Processed', '" + amount + "', '" + amount + "','" + amount + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
+                                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [File_Name], [Status], [DocDate], [Type], [DocNo], [Div], [Description], [Amount],[Activity_Date], [Journal_Id]) " +
+                                                      "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "', '" + FileName + "' , 'Transaction Processed' ,'" + Docdate + "', '" + type + "', '" + docNum + "', '" + divNum + "', '" + description + "' , '" + amount + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
                                     //while (dr.Read())
                                     //{
                                     //    JournalHistories.Add(new JournalHistory
