@@ -1347,14 +1347,24 @@
                                     //     </div>
                                     // </div>
                                     <!-- MultipurposeFields -->
-                                    @if (@item.Status == "Rejected")
+                                    @if (ViewBag.JournalListAudit != null)
                                     {
-                                        <div class="row my-3">
-                                            <div class="form-group mt-3">
-                                                <label for="Comment"> Approver Comment</label>
-                                                <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" disabled> @item.ApproverComment </textarea>
-                                            </div>
-                                        </div>
+                                        bool isFirstRejectedFound = false;
+
+                                        foreach (var approverComment in ViewBag.JournalListAudit)
+                                        {
+                                            if (!isFirstRejectedFound && approverComment.Status == "Rejected")
+                                            {
+                                                isFirstRejectedFound = true;
+
+                                                <div class="row my-3">
+                                                    <div class="form-group mt-3">
+                                                        <label for="Comment"> Approver Comment</label>
+                                                        <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" disabled>@approverComment.ApproverComment</textarea>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
                                     }
 
                                     <div class="row my-3">

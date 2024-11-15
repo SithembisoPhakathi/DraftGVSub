@@ -434,6 +434,7 @@ namespace GeneralValuationSubs.Controllers
                 com.Parameters.AddWithValue("@JournalId", id);
 
                 string premiseId = null;
+                string status = null;
 
                 TempData["Journal_Id"] = id;
                 ViewBag.Journal_Id = id;
