@@ -1452,6 +1452,200 @@ namespace GeneralValuationSubs.Controllers
             model.Rows = rows;
             return model;
         }
+
+        //private TableViewModel ParseData(string content, string? Journal_Id, string? PremiseId, string? Account_Number, string? Installation, string? FileName)
+        //{
+        //    bool isDeleted = false;
+
+        //    var userID = TempData["currentUser"] as string; ;
+        //    TempData.Keep("currentUser");
+
+        //    var currentUserSurname = TempData["currentUserSurname"] as string; ;
+        //    TempData.Keep("currentUserSurname");
+        //    var currentUserFirstname = TempData["currentUserFirstname"] as string; ;
+        //    TempData.Keep("currentUserFirstname");
+
+        //    if (string.IsNullOrWhiteSpace(currentUserSurname) || string.IsNullOrWhiteSpace(currentUserFirstname) || string.IsNullOrWhiteSpace(userID))
+        //    {
+        //        TempData["RefreshMessage"] = $"User Surname or Firstname is missing or blank. Please refresh the page.";
+        //        throw new InvalidOperationException("Redirect to RefreshMessage");
+        //    }
+
+        //    string[] format = new string[] { "dd.MM.yyyy" };
+        //    int amountColumnIndex = -1;
+        //    int docNoIndex = -1;
+        //    int docDateIndex = -1;
+        //    int descriptionIndex = -1;
+        //    int divIndex = -1;
+        //    int typeIndex = -1;
+
+        //    long docNum = 0;
+        //    double amount = 0;
+        //    string divNum = "";
+        //    string type = "";
+        //    string description = "";
+        //    DateTime Docdate = DateTime.Now;
+        //    string dateVar = "";
+        //    string format2 = "dd/MM/yyyy";
+
+        //    DateTime dateOnly;
+        //    var model = new TableViewModel();
+        //    var rows = new List<TableRow>();
+        //    int rowCount = 0;
+
+        //    using (StringReader reader = new StringReader(content))
+        //    {
+        //        string line;
+        //        bool headersFound = false;
+        //        List<string> allLines = new List<string>();
+
+        //        // Read all lines into memory
+        //        while ((line = reader.ReadLine()) != null)
+        //        {
+        //            allLines.Add(line);
+        //        }
+
+        //        int totalRows = allLines.Count;
+        //        for (int i = 1; i < totalRows - 2; i++)
+        //        {
+        //            line = allLines[i];
+
+        //            var fields = line.Split('\t');
+        //            var filteredFields = new List<string>();
+
+        //            if (!headersFound)
+        //            {
+        //                var potentialHeaders = line.Split('\t');
+        //                if (potentialHeaders.Contains("Stat"))
+        //                {
+        //                    model.Headers = new List<string> { "DocDate", "Type", "DocNo", "Div", "Description", "Amount" };
+        //                    headersFound = true;
+
+        //                    // Find the indexes of required columns only
+        //                    amountColumnIndex = Array.IndexOf(potentialHeaders, "Amount");
+        //                    docDateIndex = Array.IndexOf(potentialHeaders, "DocDate");
+        //                    typeIndex = Array.IndexOf(potentialHeaders, "Type");
+        //                    docNoIndex = Array.IndexOf(potentialHeaders, "DocNo");
+        //                    divIndex = Array.IndexOf(potentialHeaders, "Div");
+        //                    descriptionIndex = Array.IndexOf(potentialHeaders, "Description");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                //var fields = line.Split('\t');
+        //                //var filteredFields = new List<string>();
+
+        //                // Parsing and formatting the DocDate
+        //                if (docDateIndex >= 0 && docDateIndex < fields.Length)
+        //                {
+        //                    dateVar = fields[docDateIndex].Replace(".", "/").Trim();
+        //                    Docdate = DateTime.TryParseExact(dateVar, format2, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
+        //                        ? parsedDate
+        //                        : DateTime.MinValue;
+        //                    filteredFields.Add(Docdate.ToString("yyyy-MM-dd"));
+        //                }
+
+        //                // Parsing the Type
+        //                if (typeIndex >= 0 && typeIndex < fields.Length)
+        //                {
+        //                    type = fields[typeIndex];
+        //                    filteredFields.Add(type);
+        //                }
+
+        //                // Parsing and converting the DocNo
+        //                if (docNoIndex >= 0 && docNoIndex < fields.Length)
+        //                {
+        //                    string docNoString = fields[docNoIndex].Replace(",", "").Trim();
+
+        //                    if (double.TryParse(docNoString, NumberStyles.Any, CultureInfo.InvariantCulture, out double docNoDouble))
+        //                    {
+        //                        docNum = (long)docNoDouble;
+        //                    }
+        //                    else
+        //                    {
+        //                        docNum = 0; // Default value if parsing fails
+        //                    }
+
+        //                    filteredFields.Add(docNum.ToString());
+        //                }
+
+        //                // Parsing the Div
+        //                if (divIndex >= 0 && divIndex < fields.Length)
+        //                {
+        //                    divNum = fields[divIndex].Trim();
+        //                    filteredFields.Add(divNum);
+        //                }
+
+        //                // Parsing the Description
+        //                if (descriptionIndex >= 0 && descriptionIndex < fields.Length)
+        //                {
+        //                    description = fields[descriptionIndex];
+        //                    filteredFields.Add(description);
+        //                }
+
+        //                // Parsing and converting the Amount
+        //                if (amountColumnIndex >= 0 && amountColumnIndex < fields.Length)
+        //                {
+        //                    string cleanedValue = fields[amountColumnIndex].Replace(",", "").Trim();
+        //                    amount = string.IsNullOrEmpty(cleanedValue) ? 0.0 : Convert.ToDouble(cleanedValue, CultureInfo.InvariantCulture);
+        //                    filteredFields.Add(amount.ToString("F2"));
+        //                }
+
+
+        //                if (JournalHistories.Count > 0)
+        //                {
+        //                    JournalHistories.Clear();
+        //                }
+        //                try
+        //                {
+        //                    if (!isDeleted)
+        //                    {
+        //                        using (SqlConnection con = new SqlConnection(_config.GetConnectionString("JournalConnection")))
+        //                        {
+        //                            using (SqlCommand com = con.CreateCommand())
+        //                            {
+        //                                // Open connection once
+        //                                con.Open();
+        //                                com.Connection = con;
+        //                                com.CommandText = "BEGIN TRANSACTION; DELETE FROM [Journals].[dbo].[Journals_Audit] where [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "'; COMMIT TRANSACTION;";
+        //                                com.ExecuteNonQuery();
+
+        //                                TempData["SaveMessage"] = $"Transaction successfully saved!";
+        //                            }
+        //                            isDeleted = true;
+        //                        }
+        //                    }
+
+        //                    using (SqlConnection con = new SqlConnection(_config.GetConnectionString("JournalConnection")))
+        //                    {
+        //                        using (SqlCommand com = con.CreateCommand())
+        //                        {
+        //                            // Open connection once
+        //                            con.Open();
+        //                            com.Connection = con;
+        //                            com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [File_Name], [Status], [DocDate], [Type], [DocNo], [Div], [Description], [Amount],[Activity_Date], [Journal_Id]) " +
+        //                                              "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "', '" + FileName + "' , 'Transaction Processed' ,'" + Docdate + "', '" + type + "', '" + docNum + "', '" + divNum + "', '" + description + "' , '" + amount + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
+        //                            com.ExecuteNonQuery();
+
+        //                            TempData["SaveMessage"] = $"Transaction successfully saved!";
+
+        //                        }
+        //                    }
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    throw ex;
+        //                }
+
+        //                // Add filtered data to TableRow
+        //                rows.Add(new TableRow { Columns = filteredFields });
+        //            }
+        //        }
+        //    }
+
+        //    model.Rows = rows;
+        //    return model;
+        //}
     }
 }
 
