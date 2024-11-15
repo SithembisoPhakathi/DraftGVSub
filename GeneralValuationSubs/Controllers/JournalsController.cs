@@ -880,8 +880,8 @@ namespace GeneralValuationSubs.Controllers
                         Installation = dr["Installation"].ToString(),
                         Market_Value = dr["Market_Value"].ToString(),
                         Category = dr["Category"].ToString(),
-                        BillingFrom = (DateTime)dr["BillingFrom"],
-                        BillingTo = (DateTime)dr["BillingTo"],
+                        BillingFrom = dr["BillingFrom"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingFrom"],
+                        BillingTo = dr["BillingTo"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingTo"],
                         BillingDays = dr["BillingDays"].ToString(),
                         Threshold = dr["Threshold"].ToString(),
                         RatableValue = dr["RatableValue"].ToString(),
@@ -890,9 +890,20 @@ namespace GeneralValuationSubs.Controllers
                         calculatedRate = dr["calculatedRate"].ToString(),
                         RebateAmount = dr["RebateAmount"].ToString(),
                         UserName = dr["UserName"].ToString(),
-                        Activity_Date = (DateTime)dr["Activity_Date"],
+                        ToBeCharged = dr["ToBeCharged"].ToString(),
+                        ActualBilling = dr["ActualBilling"].ToString(),
+                        NetAdjustment = dr["NetAdjustment"].ToString(),
                         Transaction_ID = (int)dr["Transaction_ID"],
-                        Journal_ID = (int)dr["Journal_Id"]
+                        Status = dr["Status"].ToString(),
+                        DocDate = dr["DocDate"].ToString(),
+                        Type = dr["Type"].ToString(),
+                        DocNo = dr["DocNo"].ToString(),
+                        Div = dr["Div"].ToString(),
+                        Description = dr["Description"].ToString(),
+                        Amount = dr["Amount"].ToString(),
+                        Comment = dr["Comment"].ToString(),
+                        ApproverComment = dr["ApproverComment"].ToString(),
+                        FileName = dr["File_Name"].ToString()
                     });
                 }
                 con.Close();
@@ -1219,6 +1230,7 @@ namespace GeneralValuationSubs.Controllers
                 _viewModel = ParseData(fileContent, Journal_Id, PremiseId, Account_Number, Installation, FileName);
 
                 return RedirectToAction("ViewProperty", new { id = Journal_Id });
+                //return View();
             }
 
             return View();

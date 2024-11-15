@@ -1,9 +1,25 @@
-﻿@model GeneralValuationSubs.Models.TableViewModel
+﻿@model List<GeneralValuationSubs.Models.Journals_Audit>
 
 @{
     ViewData["Title"] = "Uploaded Document Records";
     int i = 0;
 }
+
+<head>
+    <link href=https://fonts.googleapis.com/icon?family =Material+Icons rel="stylesheet">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css" />
+</head>
 
 <h2>Uploaded Document Records</h2>
 
@@ -14,28 +30,98 @@
     </div>
 }
 
-<table class="table">
-    <thead>        
+<table id="example" class="table table-hover table-bordered dt-responsive bg-light text-dark display" style="width:100%; border: 2px solid black;" cellspacing="0">
+    <thead>
         <tr>
-            <th>DocDate</th>
-            <th>Type</th>
-            <th>DocNo</th>
-            <th>Div</th>
-            <th>Description</th>
-            <th>Amount</th>
+            <th>
+                Doc Date
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Doc No
+            </th>
+            <th>
+                Div
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                -----
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var rows in Model.Rows)
+        @if (ViewBag.JournalListAudit != null)
         {
-            <tr>
+            @foreach (var item in ViewBag.JournalListAudit)
+            {
+                <tr>
+                    <td>
+                        @(DateTime.TryParse(item.DocDate, out DateTime parsedDate) ? parsedDate.ToString("yyyy-MM-dd") : "")
 
-                @foreach (var column in rows.Columns)
-                {
-                    <td>@column</td>
-                }
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
 
-            </tr>
+                    <td>
+                        @item.DocNo
+                    </td>
+
+                    <td>
+                        @item.Div
+                    </td>
+
+                    <td>
+                        @item.Description
+                    </td>
+
+                    <td>
+                        @item.Amount
+                    </td>
+                    <td>
+                       @*  <a class="btn btn-primary" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId">
+                            <i class="bi bi-pencil-square"></i>&nbsp; Edit
+                        </a> *@
+                        @*<a class="btn btn-danger" asp-controller="Journals" asp-action="Edit_Transaction" asp-route-id="@item.Transaction_ID" asp-route-journalId="@journalId">
+                <i class="bi bi-trash"></i>&nbsp; Delete
+                </a>*@
+
+                    </td>
+                </tr>
+
+            }
         }
+
     </tbody>
 </table>
+
+<script type="text/javascript"
+        charset="utf8"
+        src="https://code.jquery.com/jquery-3.5.1.js"></script> 
+
+<script type="text/javascript"
+        charset="utf8"
+        src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript"
+        charset="utf8"
+        src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+
+<script type="text/javascript"
+        charset="utf8"
+        src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            scrollX: true
+        });
+    });
+</script>

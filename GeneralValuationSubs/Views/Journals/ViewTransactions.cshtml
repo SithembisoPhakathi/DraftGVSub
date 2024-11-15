@@ -46,7 +46,68 @@
     </style>
 
     @*<div style="overflow-x:auto;"> </div>*@
-    <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+    <table id="example" class="table table-hover table-bordered dt-responsive bg-light text-dark display" style="width:100%; border: 2px solid black;" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Doc Date
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Doc No
+                </th>
+                <th>
+                    Div
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PremiseID != null)
+            {
+                @foreach (var item in ViewBag.PremiseID)
+                {
+                    <tr>
+                        <td>
+                            @(DateTime.TryParse(item.DocDate, out DateTime parsedDate) ? parsedDate.ToString("yyyy-MM-dd") : "")
+
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+
+                        <td>
+                            @item.DocNo
+                        </td>
+
+                        <td>
+                            @item.Div
+                        </td>
+
+                        <td>
+                            @item.Description
+                        </td>
+
+                        <td>
+                            @item.Amount
+                        </td>
+                        
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table>
+
+    @* <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
         <thead>
             <tr>
                 <th>
@@ -160,7 +221,7 @@
             }
 
         </tbody>
-    </table>
+    </table> *@
 
     <div class="container">
         <label for="Comment"> Approver Comment </label>
