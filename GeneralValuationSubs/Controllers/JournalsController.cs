@@ -1344,6 +1344,12 @@ namespace GeneralValuationSubs.Controllers
                         if (divIndex >= 0 && divIndex < fields.Length)
                         {
                             divNum = fields[divIndex].Trim();
+
+                            if (divNum != "7")
+                            {
+                                continue; // Skip this record and move to the next line
+                            }
+
                             filteredFields.Add(divNum);
                         }
 
