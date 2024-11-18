@@ -1,4 +1,5 @@
 ﻿@model List<GeneralValuationSubs.Models.Journals_Audit>
+@using System.Globalization
 
 @{
     var currentUserSurname = TempData["currentUserSurname"];
@@ -1379,7 +1380,7 @@
                                     <div class="row my-3">
                                         <input id="Evidence" type="file" accept=".pdf" name="files" multiple data /> @*class="form-control" accept=".pdf" multiple data*@
                                     </div>
-                                    //<button type="submit">Upload File</button>
+                                    //<button type="submit">Upload File</button>                                    
 
                                     <div class="form-group">
                                         <label for="file">Select FPL9.txt file:</label>
@@ -1496,7 +1497,7 @@
                             </a>                          
                          </td>*@
                         <td>
-                            <input type="checkbox" class="row-checkbox" data-amount="@item.Amount">
+                            <input type="checkbox" class="row-checkbox" data-amount="@(decimal.TryParse(item.Amount, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo("fr-FR"), out decimal amt) ? amt.ToString("F2", CultureInfo.InvariantCulture) : "0.00")">
                         </td>
                     </tr>
 
@@ -1583,7 +1584,7 @@
                         }
                     }
                 });
-                totalElement.textContent = total.toFixed(2);
+                totalElement.textContent = total.toFixed(2); // Ensure two decimal places
             }
 
             // Function to handle "Select All" checkbox
@@ -1610,7 +1611,7 @@
             filterBtn.addEventListener('click', filterRows);
             resetBtn.addEventListener('click', resetFilters);
         });
-    </script>    
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -1621,14 +1622,14 @@
     </script>
 
     <script>
-        document.getElementById('fileInput').addEventListener('change', function () {
+        document.getElementById('fileInput').addEventListener('change', function ()
+        {
             if (this.files.length > 0) {
                 // Submit the form automatically
                 document.getElementById('ViewTransactionForm').submit();
             }
         });
     </script>
-
 
         <script>
             document.getElementById('SubmitTask').addEventListener('click', function () {
@@ -1660,7 +1661,8 @@
                 </div>
             </div>
         </div>
-        </div><!-- Button trigger modal -->  
+        </div><!-- Button trigger modal -->
+           
 
     @*<script>
         function clearFields() {
