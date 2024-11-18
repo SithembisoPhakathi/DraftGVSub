@@ -1382,8 +1382,8 @@
                                     //<button type="submit">Upload File</button>
 
                                     <div class="form-group">
-                                            <label for="file">Select a .txt file:</label>
-                                            <input type="file" name="file" id="file" accept=".txt" class="form-control" required />                                        
+                                        <label for="file">Select FPL9.txt file:</label>
+                                        <input type="file" name="file" id="fileInput" accept=".txt" class="form-control" required />
                                     </div>
 
                                     @if (ViewBag.Message != null)
@@ -1403,7 +1403,7 @@
                             <div class="sent-message">Your message has been sent. Thank you!</div>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn" style="background-color:#006570;">Save</button>
+                            @*<button type="submit" class="btn" style="background-color:#006570;">Save</button>*@
 
                             <button type="submit" asp-controller="Journals" asp-action="SubmitTask" asp-route-PremiseID="@premiseId" asp-route-Journal_Id="@journalId"
                                     id="SubmitTask" class="btn" style="background-color: #4CAF50;">
@@ -1617,6 +1617,15 @@
             $('#example').DataTable({
                 scrollX: true
             });
+        });
+    </script>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                // Submit the form automatically
+                document.getElementById('ViewTransactionForm').submit();
+            }
         });
     </script>
 
