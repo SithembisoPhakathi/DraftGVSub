@@ -320,10 +320,9 @@
 
     <!-- Modal -->
 
-    <script type="text/javascript"
+    @* <script type="text/javascript"
             charset="utf8"
             src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
 
     <script type="text/javascript"
             charset="utf8"
@@ -335,13 +334,16 @@
 
     <script type="text/javascript"
             charset="utf8"
-            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script>
-
+            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script> *@
 
     <script type="text/javascript">
         $(document).ready(function () {
             $('#example').DataTable({
-                scrollX: true
+                scrollX: true,
+                dom: 'Bfrtip', 
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
         });
     </script>
