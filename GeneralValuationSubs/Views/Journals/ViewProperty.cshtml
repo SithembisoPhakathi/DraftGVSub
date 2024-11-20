@@ -1622,9 +1622,25 @@
     </script>
 
     <script>
-        document.getElementById('fileInput').addEventListener('change', function ()
-        {
+        document.getElementById('fileInput').addEventListener('change', function () {
             if (this.files.length > 0) {
+                // Display a "please wait" message
+                let waitMessage = document.createElement('div');
+                waitMessage.id = 'waitMessage';
+                waitMessage.style.position = 'fixed';
+                waitMessage.style.top = '50%';
+                waitMessage.style.left = '50%';
+                waitMessage.style.transform = 'translate(-50%, -50%)';
+                waitMessage.style.padding = '20px';
+                waitMessage.style.backgroundColor = '#f3f3f3';
+                waitMessage.style.border = '1px solid #ccc';
+                waitMessage.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+                waitMessage.style.fontSize = '16px';
+                waitMessage.style.textAlign = 'center';
+                waitMessage.innerHTML = 'Please wait while the file is being uploaded...';
+
+                document.body.appendChild(waitMessage);
+
                 // Submit the form automatically
                 document.getElementById('ViewTransactionForm').submit();
             }
