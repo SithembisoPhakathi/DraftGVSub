@@ -473,11 +473,27 @@
                                             }
                                         }
 
-                                        @if (@role != null)
+                                        @* @if (@role != null)
                                         {
                                             @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
                                             {
                                                 <li><a asp-controller="Journals" asp-action="PendingFinalized" class=" text-dark">Quality Check Finalized</a></li>
+                                            }
+                                        } *@
+
+                                        @if (@role != null)
+                                        {
+                                            @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
+                                            {
+                                                <li><a asp-controller="Journals" asp-action="QualityAssuranceCheck" class=" text-dark">Quality Assurance Check</a></li>
+                                            }
+                                        }
+
+                                        @if (@role != null)
+                                        {
+                                            @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
+                                            {
+                                                <li><a asp-controller="Journals" asp-action="DistributionQA" class=" text-dark">Distribution QA</a></li>
                                             }
                                         }
 
