@@ -986,6 +986,127 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);//journals
         }
 
+        public IActionResult CapturingJournal() 
+        {
+            var currentUserSurname = TempData["currentUserSurname"];
+            TempData.Keep("currentUserSurname");
+
+            var currentUserFirstname = TempData["currentUserFirstname"];
+            TempData.Keep("currentUserFirstname");
+
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name FROM [Journals].[dbo].[Journals_Audit] WHERE Distribution_Allocated_Name = '" + currentUserFirstname + ' ' + currentUserSurname + "' GROUP BY [Premise ID], File_Name, Status, [Journal_Id],  Distribution_Allocated_Name";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["Distribution_Allocated_Name"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"]
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View(journals);//journals
+        }
+
+        public IActionResult ViewTransactionsApproved(string? PremiseID, int? JournalID)
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' AND [Journal_Id] = '" + JournalID + "' order by Activity_Date";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        Account_Number = dr["Account Number"].ToString(),
+                        Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //BillingFrom = dr["BillingFrom"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingFrom"],
+                        //BillingTo = dr["BillingTo"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingTo"],
+                        //BillingDays = dr["BillingDays"].ToString(),
+                        //Threshold = dr["Threshold"].ToString(),
+                        //RatableValue = dr["RatableValue"].ToString(),
+                        //RatesTariff = dr["RatesTariff"].ToString(),
+                        //RebateType = dr["RebateType"].ToString(),
+                        //calculatedRate = dr["calculatedRate"].ToString(),
+                        //RebateAmount = dr["RebateAmount"].ToString(),
+                        //UserName = dr["UserName"].ToString(),
+                        //ToBeCharged = dr["ToBeCharged"].ToString(),
+                        //ActualBilling = dr["ActualBilling"].ToString(),
+                        //NetAdjustment = dr["NetAdjustment"].ToString(),
+                        Transaction_ID = (int)dr["Transaction_ID"],
+                        Status = dr["Status"].ToString(),
+                        DocDate = dr["DocDate"].ToString(),
+                        Type = dr["Type"].ToString(),
+                        DocNo = dr["DocNo"].ToString(),
+                        Div = dr["Div"].ToString(),
+                        Description = dr["Description"].ToString(),
+                        Amount = dr["Amount"].ToString(),
+                        Comment = dr["Comment"].ToString(),
+                        ApproverComment = dr["ApproverComment"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"]
+                    });
+                }
+                con.Close();
+
+                ViewBag.PremiseID = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View(journals);//journals
+        }
 
         public IActionResult ViewTransactions(string? PremiseID, int? JournalID)
         {
@@ -1054,7 +1175,7 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);//journals
         }
 
-        public IActionResult ViewTransactionsApproved(string? PremiseID, int? JournalID)
+        public IActionResult ViewTransactionsQA(string? PremiseID, int? JournalID)
         {
             var userSector = TempData["currentUserSector"];
             TempData.Keep("currentUserSector");

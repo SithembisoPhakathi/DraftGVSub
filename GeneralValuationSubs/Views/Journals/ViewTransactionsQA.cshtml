@@ -1,0 +1,449 @@
+﻿@*@model IEnumerable<GeneralValuationSubs.Models.Draft>*@
+@using System.Globalization
+@{
+    ViewData["Title"] = "Index";
+
+    var premiseId = string.Empty;
+    int journalId = 0;
+}
+
+<head>
+    <link href=https://fonts.googleapis.com/icon?family =Material+Icons rel="stylesheet">
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/1.13.3/css/dataTables.jqueryui.min.css" />
+
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/rowgroup/1.3.0/css/rowGroup.jqueryui.min.css" />
+</head>
+
+<link rel="stylesheet" href="~/css/datatable_1.12_min.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/datatable_2.2.3_min.css" asp-append-version="true" />
+
+<script src="~/js/jquery-3.5.1.js" asp-append-version="true"></script>
+<script src="~/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+<script src="~/js/dataTables.buttons.min.js" asp-append-version="true"></script>
+<script src="~/js/jszip.min.js" asp-append-version="true"></script>
+<script src="~/js/pdfmake.min.js" asp-append-version="true"></script>
+<script src="~/js/vfs_fonts.js" asp-append-version="true"></script>
+<script src="~/js/buttons.html5.min.js" asp-append-version="true"></script>
+
+<body class="bg-light text-dark">
+    <style>
+        #preloader {
+            background: white no-repeat center center;
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            z-index: 100;
+        }
+    </style>
+
+    @*<div style="overflow-x:auto;"> </div>*@
+    <table id="example" class="table table-hover table-bordered dt-responsive bg-light text-dark display" style="width:100%; border: 2px solid black;" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Premise Id
+                </th>
+                <th>
+                    Doc Date
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Doc No
+                </th>
+                <th>
+                    Div
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    <input type="checkbox" id="select-all"> Select All
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PremiseID != null)
+            {
+                @foreach (var item in ViewBag.PremiseID)
+                {
+                    journalId = item.Journal_ID;
+
+                    <tr>
+                        <td>
+                            @item.Premise_ID
+
+                            @{
+                                premiseId = item.Premise_ID;
+                            }
+
+                        </td>
+                        <td>
+                            @(DateTime.TryParse(item.DocDate, out DateTime parsedDate) ? parsedDate.ToString("yyyy-MM-dd") : "")
+
+                        </td>
+                        <td>
+                            @item.Type
+                        </td>
+
+                        <td>
+                            @item.DocNo
+                        </td>
+
+                        <td>
+                            @item.Div
+                        </td>
+
+                        <td>
+                            @item.Description
+                        </td>
+
+                        <td>
+                            @item.Amount
+                        </td>
+
+                        <td>
+                            <input type="checkbox" class="row-checkbox" data-amount="@(decimal.TryParse(item.Amount, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo("fr-FR"), out decimal amt) ? amt.ToString("F2", CultureInfo.InvariantCulture) : "0.00")">
+                        </td>
+                        
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" style="text-align:left; font-weight: bold;">Total:</td>
+                <td id="total" style="text-align:center; font-weight: bold;"></td> <!-- Total under Amount -->
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    @* <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    Premise Id
+                </th>
+                <th>
+                    Account Number
+                </th>
+                <th>
+                    Market Value
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Billing From
+                </th>
+                <th>
+                    Billing To
+                </th>
+                <th>
+                    Billing Days
+                </th>
+                <th>
+                    Threshold
+                </th>
+
+                <th>
+                    Ratable Value
+                </th>
+
+                <th>
+                    Rates Tariff
+                </th>
+
+                <th>
+                    Rebate Type
+                </th>
+                <th>
+                    Rebate Amount
+                </th>
+                <th>
+                    Calculated Rate
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.PremiseID != null)
+            {
+
+                @foreach (var item in ViewBag.PremiseID)
+                {
+                    journalId = item.Journal_ID;
+
+                    <tr>
+                        <td>
+                            @item.Premise_ID
+
+                            @{
+                                premiseId = item.Premise_ID;
+                            }
+
+                        </td>
+                        <td>
+                            @item.Account_Number
+                        </td>
+                        <td>
+                            @item.Market_Value
+                        </td>
+                        <td>
+                            @item.Category
+                        </td>
+
+                        <td>
+                            @item.BillingFrom.ToString("yyyy-MM-dd")
+                        </td>
+                        <td>
+                            @item.BillingTo.ToString("yyyy-MM-dd")
+                        </td>
+
+                        <td>
+                            @item.BillingDays
+                        </td>
+
+                        <td>
+                            @item.Threshold
+                        </td>
+
+                        <td>
+                            @item.RatableValue
+                        </td>
+
+                        <td>
+                            @item.RatesTariff
+                        </td>
+
+                        <td>
+                            @item.RebateType
+                        </td>
+
+                        <td>
+                            @item.RebateAmount
+                        </td>
+
+                        <td>
+                            @item.calculatedRate
+                        </td>
+                    </tr>
+
+                }
+            }
+
+        </tbody>
+    </table> *@
+
+    <div class="container">
+        <label for="Comment"> Approver Comment </label>
+        <textarea class="form-control" maxlength="250" id="QACApproverComment" name="QACApproverComment" placeholder="Quality Assurance Check Approver Comment"> </textarea>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
+        <a class="btn btn-primary mx-2" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId" asp-route-JournalID="@journalId">Download File</a>
+
+        <a class="btn mx-2" style="width:111px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
+
+        <a class="btn mx-2" style="width:102px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: red; color: white;" data-bs-target="#rejectModal" data-bs-toggle="modal">Reject</a>
+    </div>
+
+    <br />
+    <br />
+
+    <!-- Approve Modal -->
+    <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="QACTransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="Quality Assurance Approve" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Confirm Rejection</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to reject this task? 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="QACTransactionApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="Quality Assurance Reject" />
+                        <!-- Hidden input for reject modal -->
+                        <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addCommentToForm(form) {
+            // Get the value from the textarea
+            var commentValue = document.getElementById('QACApproverComment').value;
+
+            // Set the value to the hidden input inside the specific form being submitted
+            form.querySelector('.HiddenApproverComment').value = commentValue;
+        }
+    </script>    
+
+    <!-- Modal -->
+
+    @* <script type="text/javascript"
+            charset="utf8"
+            src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.13.3/js/dataTables.jqueryui.min.js"></script>
+
+    <script type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script> *@
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterBtn = document.getElementById('filterBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const rows = document.querySelectorAll('#example tbody tr');
+            const selectAllCheckbox = document.getElementById('select-all');
+            const totalElement = document.getElementById('total');
+
+            // Function to filter rows based on date range
+            function filterRows() {
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(endDateInput.value);
+
+                rows.forEach(row => {
+                    const dateCell = row.querySelector('.doc-date');
+                    const docDate = new Date(dateCell.textContent.trim());
+
+                    if (
+                        (!isNaN(startDate) && docDate < startDate) ||
+                        (!isNaN(endDate) && docDate > endDate)
+                    ) {
+                        row.style.display = 'none';
+                        row.querySelector('.row-checkbox').checked = false; // Uncheck hidden rows
+                    } else {
+                        row.style.display = '';
+                    }
+                });
+
+                calculateTotal(); // Recalculate total after filtering
+            }
+
+            // Function to reset filters
+            function resetFilters() {
+                startDateInput.value = '';
+                endDateInput.value = '';
+                rows.forEach(row => {
+                    row.style.display = '';
+                });
+
+                calculateTotal(); // Recalculate total after resetting filters
+            }
+
+            // Function to calculate the total for visible rows
+            function calculateTotal() {
+                let total = 0;
+                rows.forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const checkbox = row.querySelector('.row-checkbox');
+                        if (checkbox.checked) {
+                            total += parseFloat(checkbox.dataset.amount) || 0;
+                        }
+                    }
+                });
+                totalElement.textContent = total.toFixed(2); // Ensure two decimal places
+            }
+
+            // Function to handle "Select All" checkbox
+            selectAllCheckbox.addEventListener('change', function () {
+                const isChecked = selectAllCheckbox.checked;
+
+                rows.forEach(row => {
+                    if (row.style.display !== 'none') { // Only visible rows
+                        const checkbox = row.querySelector('.row-checkbox');
+                        checkbox.checked = isChecked;
+                    }
+                });
+
+                calculateTotal(); // Recalculate total when selecting all
+            });
+
+            // Add event listener for individual row checkboxes
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.row-checkbox');
+                checkbox.addEventListener('change', calculateTotal);
+            });
+
+            // Attach event listeners to filter and reset buttons
+            filterBtn.addEventListener('click', filterRows);
+            resetBtn.addEventListener('click', resetFilters);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#example').DataTable({
+                scrollX: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
+
+</body>

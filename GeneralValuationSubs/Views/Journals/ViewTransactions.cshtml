@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<GeneralValuationSubs.Models.Draft>*@
-
+@using System.Globalization
 @{
     ViewData["Title"] = "Index";
 
@@ -70,6 +70,9 @@
                 <th>
                     Amount
                 </th>
+                <th>
+                    <input type="checkbox" id="select-all"> Select All
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -111,6 +114,10 @@
                         <td>
                             @item.Amount
                         </td>
+
+                        <td>
+                            <input type="checkbox" class="row-checkbox" data-amount="@(decimal.TryParse(item.Amount, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.GetCultureInfo("fr-FR"), out decimal amt) ? amt.ToString("F2", CultureInfo.InvariantCulture) : "0.00")">
+                        </td>
                         
                     </tr>
 
@@ -118,6 +125,13 @@
             }
 
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" style="text-align:left; font-weight: bold;">Total:</td>
+                <td id="total" style="text-align:center; font-weight: bold;"></td> <!-- Total under Amount -->
+                <td></td>
+            </tr>
+        </tfoot>
     </table>
 
     @* <table id="example" class="table table-hover table-bordered dt-responsive nowrap bg-light text-dark display" style="width:100%" cellspacing="0">
@@ -335,6 +349,90 @@
     <script type="text/javascript"
             charset="utf8"
             src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.min.js"></script> *@
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterBtn = document.getElementById('filterBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const startDateInput = document.getElementById('startDate');
+            const endDateInput = document.getElementById('endDate');
+            const rows = document.querySelectorAll('#example tbody tr');
+            const selectAllCheckbox = document.getElementById('select-all');
+            const totalElement = document.getElementById('total');
+
+            // Function to filter rows based on date range
+            function filterRows() {
+                const startDate = new Date(startDateInput.value);
+                const endDate = new Date(endDateInput.value);
+
+                rows.forEach(row => {
+                    const dateCell = row.querySelector('.doc-date');
+                    const docDate = new Date(dateCell.textContent.trim());
+
+                    if (
+                        (!isNaN(startDate) && docDate < startDate) ||
+                        (!isNaN(endDate) && docDate > endDate)
+                    ) {
+                        row.style.display = 'none';
+                        row.querySelector('.row-checkbox').checked = false; // Uncheck hidden rows
+                    } else {
+                        row.style.display = '';
+                    }
+                });
+
+                calculateTotal(); // Recalculate total after filtering
+            }
+
+            // Function to reset filters
+            function resetFilters() {
+                startDateInput.value = '';
+                endDateInput.value = '';
+                rows.forEach(row => {
+                    row.style.display = '';
+                });
+
+                calculateTotal(); // Recalculate total after resetting filters
+            }
+
+            // Function to calculate the total for visible rows
+            function calculateTotal() {
+                let total = 0;
+                rows.forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const checkbox = row.querySelector('.row-checkbox');
+                        if (checkbox.checked) {
+                            total += parseFloat(checkbox.dataset.amount) || 0;
+                        }
+                    }
+                });
+                totalElement.textContent = total.toFixed(2); // Ensure two decimal places
+            }
+
+            // Function to handle "Select All" checkbox
+            selectAllCheckbox.addEventListener('change', function () {
+                const isChecked = selectAllCheckbox.checked;
+
+                rows.forEach(row => {
+                    if (row.style.display !== 'none') { // Only visible rows
+                        const checkbox = row.querySelector('.row-checkbox');
+                        checkbox.checked = isChecked;
+                    }
+                });
+
+                calculateTotal(); // Recalculate total when selecting all
+            });
+
+            // Add event listener for individual row checkboxes
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.row-checkbox');
+                checkbox.addEventListener('change', calculateTotal);
+            });
+
+            // Attach event listeners to filter and reset buttons
+            filterBtn.addEventListener('click', filterRows);
+            resetBtn.addEventListener('click', resetFilters);
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

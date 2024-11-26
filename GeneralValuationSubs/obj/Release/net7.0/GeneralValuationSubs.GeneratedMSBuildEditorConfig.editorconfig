@@ -202,6 +202,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfVXBkYXRlUmV2aXNlZFZhbHVlU3VjY2Vzcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/CapturingJournal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcQ2FwdHVyaW5nSm91cm5hbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/DistributionQA.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcRGlzdHJpYnV0aW9uUUEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/Edit_Transaction.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcRWRpdF9UcmFuc2FjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -220,6 +228,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/PropPerUserAllocate.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcUHJvcFBlclVzZXJBbGxvY2F0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/QualityAssuranceCheck.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcUXVhbGl0eUFzc3VyYW5jZUNoZWNrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/RefreshMessage.cshtml]
@@ -242,8 +254,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcVmlld1RyYW5zYWN0aW9ucy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/ViewTransactionsApproved.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcVmlld1RyYW5zYWN0aW9uc0FwcHJvdmVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/ViewTransactionsFinalized.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcVmlld1RyYW5zYWN0aW9uc0ZpbmFsaXplZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Journals/ViewTransactionsQA.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbHNcVmlld1RyYW5zYWN0aW9uc1FBLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/10107037/Desktop/09 April 2024/GeneralValuationSubs (2)/GeneralValuationSubs/GeneralValuationSubs/Views/Role/Create.cshtml]
