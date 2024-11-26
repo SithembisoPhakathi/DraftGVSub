@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B58F8B1F-1EF1-480D-83CB-D64DE7A83A21}|GeneralValuationSubs\\GeneralValuationSubs.csproj|c:\\users\\10107037\\documents\\github\\draftgvsub\\generalvaluationsubs\\views\\journals\\viewtransactionsqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{B58F8B1F-1EF1-480D-83CB-D64DE7A83A21}|GeneralValuationSubs\\GeneralValuationSubs.csproj|solutionrelative:generalvaluationsubs\\views\\journals\\viewtransactionsqa.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B58F8B1F-1EF1-480D-83CB-D64DE7A83A21}|GeneralValuationSubs\\GeneralValuationSubs.csproj|c:\\users\\10107037\\documents\\github\\draftgvsub\\generalvaluationsubs\\views\\shared\\_journalviewallocate.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{B58F8B1F-1EF1-480D-83CB-D64DE7A83A21}|GeneralValuationSubs\\GeneralValuationSubs.csproj|solutionrelative:generalvaluationsubs\\views\\shared\\_journalviewallocate.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -27,12 +31,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ViewTransactionsQA.cshtml",
+              "DocumentMoniker": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\Views\\Journals\\ViewTransactionsQA.cshtml",
+              "RelativeDocumentMoniker": "GeneralValuationSubs\\Views\\Journals\\ViewTransactionsQA.cshtml",
+              "ToolTip": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\Views\\Journals\\ViewTransactionsQA.cshtml",
+              "RelativeToolTip": "GeneralValuationSubs\\Views\\Journals\\ViewTransactionsQA.cshtml",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-26T13:38:10.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "_JournalViewAllocate.cshtml",
               "DocumentMoniker": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\Views\\Shared\\_JournalViewAllocate.cshtml",
               "RelativeDocumentMoniker": "GeneralValuationSubs\\Views\\Shared\\_JournalViewAllocate.cshtml",
               "ToolTip": "C:\\Users\\10107037\\Documents\\GitHub\\DraftGVSub\\GeneralValuationSubs\\Views\\Shared\\_JournalViewAllocate.cshtml",
               "RelativeToolTip": "GeneralValuationSubs\\Views\\Shared\\_JournalViewAllocate.cshtml",
-              "ViewState": "AQIAABcAAAAAAAAAAAAAACgAAAAcAAAA",
+              "ViewState": "AQIAAAQBAAAAAAAAAAAAACgAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-10-08T10:01:29.706Z",
               "EditorCaption": ""

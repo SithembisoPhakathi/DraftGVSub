@@ -469,7 +469,7 @@
                                         {
                                             @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
                                             {
-                                                <li><a asp-controller="Journals" asp-action="Pending" class=" text-dark">Quality Check</a></li>
+                                                <li><a asp-controller="Journals" asp-action="Pending" class=" text-dark">Journal Proccesing Check</a></li>
                                             }
                                         }
 
@@ -493,7 +493,7 @@
                                         {
                                             @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
                                             {
-                                                <li><a asp-controller="Journals" asp-action="DistributionQA" class=" text-dark">Distribution QA</a></li>
+                                                <li><a asp-controller="Journals" asp-action="DistributionQA" class=" text-dark">Distribution</a></li>
                                             }
                                         }
 
@@ -501,7 +501,7 @@
                                         {
                                             @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
                                             {
-                                                <li><a asp-controller="Journals" asp-action="CapturingJournal" class=" text-dark">Capturing Journal</a></li>
+                                                <li><a asp-controller="Journals" asp-action="CapturingJournal" class=" text-dark">Journal Capturing</a></li>
                                             }
                                         }
 
