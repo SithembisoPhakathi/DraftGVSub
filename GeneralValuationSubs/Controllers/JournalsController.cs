@@ -652,7 +652,7 @@ namespace GeneralValuationSubs.Controllers
         public async Task<IActionResult> SubmitTask(string? Journal_Id, string? PremiseId, string? Account_Number,
             string? Installation, string? billingFrom, string? billingTo, string? billingDays, string? Market_Value, decimal? thresholdValue,
             string? RatableValue, float? rateTariffValue, string? RebateType, string? RebateAmount, string? calculatedRate, string? TobeCharged, string? ActualBilling,
-            string? NetAdjustment, string? Comment, string? MarketValue1, string? MarketValue2, string? MarketValue3,
+            string? NetAdjustment, string? Comment, string? MarketValue1, string? MarketValue2, string? MarketValue3, string? Journal_Amount,
             string? CATDescription, string? CATDescription1, string? CATDescription2, string? CATDescription3, string? WEF_DATE, string? userName, List<IFormFile> files)
         {
             var userID = TempData["currentUser"];
@@ -742,7 +742,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
+                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "', Journal_Amount = '" + Journal_Amount + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
 
                 com.ExecuteNonQuery();
 
@@ -1242,6 +1242,73 @@ namespace GeneralValuationSubs.Controllers
             return View(journals);//journals
         }
 
+        public IActionResult Authorisation(string? PremiseID, int? JournalID)
+        { 
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' AND [Journal_Id] = '" + JournalID + "' order by Activity_Date";
+
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        Account_Number = dr["Account Number"].ToString(),
+                        Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //BillingFrom = dr["BillingFrom"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingFrom"],
+                        //BillingTo = dr["BillingTo"] == DBNull.Value ? (DateTime?)null : (DateTime)dr["BillingTo"],
+                        //BillingDays = dr["BillingDays"].ToString(),
+                        //Threshold = dr["Threshold"].ToString(),
+                        //RatableValue = dr["RatableValue"].ToString(),
+                        //RatesTariff = dr["RatesTariff"].ToString(),
+                        //RebateType = dr["RebateType"].ToString(),
+                        //calculatedRate = dr["calculatedRate"].ToString(),
+                        //RebateAmount = dr["RebateAmount"].ToString(),
+                        //UserName = dr["UserName"].ToString(),
+                        //ToBeCharged = dr["ToBeCharged"].ToString(),
+                        //ActualBilling = dr["ActualBilling"].ToString(),
+                        //NetAdjustment = dr["NetAdjustment"].ToString(),
+                        Transaction_ID = (int)dr["Transaction_ID"],
+                        Status = dr["Status"].ToString(),
+                        DocDate = dr["DocDate"].ToString(),
+                        Type = dr["Type"].ToString(),
+                        DocNo = dr["DocNo"].ToString(),
+                        Div = dr["Div"].ToString(),
+                        Description = dr["Description"].ToString(),
+                        Amount = dr["Amount"].ToString(),
+                        Comment = dr["Comment"].ToString(),
+                        ApproverComment = dr["ApproverComment"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"]
+                    });
+                }
+                con.Close();
+
+                ViewBag.PremiseID = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View(journals);//journals
+        }
+
         public IActionResult QADistributionAllocatingTask(List<int> selectedItems, string? JournalName)
         {
             var userSector = TempData["currentUserSector"]; //Assigning temp data with the user sector to get the sectors related to the user
@@ -1469,6 +1536,292 @@ namespace GeneralValuationSubs.Controllers
             }
 
             return RedirectToAction("QualityAssuranceCheck");
+        }
+
+        public IActionResult First_Level()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"],
+                        Journal_Amount = dr["Journal_Amount"].ToString()
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View("AuthoriseLevel", journals);//journals
+        }
+
+        public IActionResult Second_Level()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 100000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"],
+                        Journal_Amount = dr["Journal_Amount"].ToString()
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View("AuthoriseLevel", journals);//journals
+        }
+
+        public IActionResult Third_Level()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 500000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"],
+                        Journal_Amount = dr["Journal_Amount"].ToString()
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View("AuthoriseLevel", journals);//journals
+        }
+
+        public IActionResult Fourth_Level()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 1000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"],
+                        Journal_Amount = dr["Journal_Amount"].ToString()
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View("AuthoriseLevel", journals);//journals
+        }
+         
+        public IActionResult Fifth_Level()
+        {
+            var userSector = TempData["currentUserSector"];
+            TempData.Keep("currentUserSector");
+
+            if (journals.Count > 0)
+            {
+                journals.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                dr = com.ExecuteReader();
+                while (dr.Read())
+                {
+                    journals.Add(new Journals_Audit
+                    {
+                        Premise_ID = dr["Premise ID"].ToString(),
+                        //Account_Number = dr["Account Number"].ToString(),
+                        //Installation = dr["Installation"].ToString(),
+                        //Market_Value = dr["Market_Value"].ToString(),
+                        //Category = dr["Category"].ToString(),
+                        //Valuation_Date = dr["Valuation Date"].ToString(),
+                        //WEF = dr["WEF"].ToString(),
+                        //Net_Accrual = dr["Net Accrual"].ToString(),
+                        FileName = dr["File_Name"].ToString(),
+                        Status = dr["Status"].ToString(),
+                        Allocated_Name = dr["UserName"].ToString(),
+                        Journal_ID = (int)dr["Journal_Id"],
+                        Journal_Amount = dr["Journal_Amount"].ToString()
+                    });
+                }
+                con.Close();
+
+                ViewBag.UserDataList = journals.ToList();
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            TempData["UpdateRevisedValueSuccess"] = "Revised value(s) has been successfully updated";
+
+            return View("AuthoriseLevel", journals);//journals
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AuthorisationApproveReject(string PremiseId, int JournalId, string ActionType, string? ApproverComment)
+        {
+            var currentUserSurname = TempData["currentUserSurname"];
+            TempData.Keep("currentUserSurname");
+
+            var currentUserFirstname = TempData["currentUserFirstname"];
+            TempData.Keep("currentUserFirstname");
+
+            try
+            {
+                con.Open();
+                com.Connection = con;
+
+                if (ActionType == "Approve")
+                {
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), [100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
+                }
+                else if (ActionType == "Reject")
+                {
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), [100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                }
+
+                com.Parameters.AddWithValue("@PremiseId", PremiseId);
+                com.Parameters.AddWithValue("@JournalId", JournalId);
+                com.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return RedirectToAction("Pending");
         }
 
 

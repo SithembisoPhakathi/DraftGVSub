@@ -7,7 +7,7 @@ namespace GeneralValuationSubs.Models
         [Key]
         public int? Transaction_ID { get; set; }
         public string? Premise_ID { get; set; }
-        public string? Account_Number { get; set; } 
+        public string? Account_Number { get; set; }
         public string? Installation { get; set; }
         public string? Market_Value { get; set; }
         public string? Category { get; set; }
@@ -29,15 +29,15 @@ namespace GeneralValuationSubs.Models
         public string? RatesTariff { get; set; }
         public string? RebateType { get; set; }
         public string? RebateAmount { get; set; }
-        public string? calculatedRate { get; set; } 
+        public string? calculatedRate { get; set; }
         public string? UserName { get; set; }
         public DateTime? Activity_Date { get; set; }
         public string? ToBeCharged { get; set; }
         public string? ActualBilling { get; set; }
         public string? NetAdjustment { get; set; }
         public int? DateDiff { get; set; }
-        public string? FinancialYear { get; set; }         
-        public int? Journal_ID { get; set; } 
+        public string? FinancialYear { get; set; }
+        public int? Journal_ID { get; set; }
         public string? FileName { get; set; }
         public DateTime? End_Date { get; set; }
         public string? DocDate { get; set; }
@@ -46,5 +46,6 @@ namespace GeneralValuationSubs.Models
         public string? Div { get; set; }
         public string? Description { get; set; }
         public string? Amount { get; set; }
+        public string? Journal_Amount { get; set; }
     }
 }

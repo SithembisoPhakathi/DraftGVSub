@@ -505,6 +505,31 @@
                                             }
                                         }
 
+                                        @if (@role != null)
+                                        {
+                                            @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
+                                            {
+                                                <li class="dropdown">
+                                                    <a href="#"><span class=" text-dark">Authorise Journal</span> <i class="bi bi-chevron-down"></i></a>
+                                                    <ul>
+                                                        @if (@role != null)
+                                                        {
+                                                            @if (@role.ToString() == "MANAGER" || @role.ToString() == "OFFICER" || @role.ToString() == "CHECKER")
+                                                            {
+                                                                <li class="dropdown">
+                                                                <li><a asp-controller="Journals" asp-action="First_Level" class="text-dark">Default</a></li>
+                                                                <li><a asp-controller="Journals" asp-action="Second_Level" class="text-dark">100K</a></li>
+                                                                <li><a asp-controller="Journals" asp-action="Third_Level" class="text-dark">500K</a></li>
+                                                                <li><a asp-controller="Journals" asp-action="Fourth_Level" class="text-dark">1M</a></li>
+                                                                <li><a asp-controller="Journals" asp-action="Fifth_Level" class="text-dark">5M</a></li>
+                                                        </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        }
+
                                         @*<li><a href="#" class=" text-dark">All properties</a></li>*@
                                         @*<li class="dropdown"><a href="#">Bulk update<i class="bi bi-chevron-down"></i></a>
                                 <ul>
