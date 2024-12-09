@@ -5,6 +5,11 @@
 
     var premiseId = string.Empty;
     int journalId = 0;
+    float Journal_Amount = 0;
+    var Less100K = string.Empty;
+    var Less500K = string.Empty;
+    var Less1M = string.Empty;
+    var Less5M = string.Empty;
 }
 
 <head>
@@ -91,6 +96,11 @@
                 @foreach (var item in ViewBag.PremiseID)
                 {
                     journalId = item.Journal_ID;
+                    Journal_Amount = item.Journal_Amount_;
+                    Less100K = item.Less100K;
+                    Less500K = item.Less500K;
+                    Less1M = item.Less1M;
+                    Less5M = item.Less5M;
 
                     <tr>
                         <td>
@@ -268,7 +278,26 @@
     <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
         <a class="btn btn-primary mx-2" asp-controller="Journals" asp-action="DownloadFiles" asp-route-PremiseID="@premiseId" asp-route-JournalID="@journalId">Download File</a>
 
-        <a class="btn mx-2" style="width:111px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
+        @if (@Journal_Amount > 5000000 && !string.IsNullOrEmpty(@Less5M))
+        {
+            <a class="btn mx-2" style="width:160px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModalMore5M" data-bs-toggle="modal">Approve >5M</a>
+        }
+        else if (@Journal_Amount > 1000000 && !string.IsNullOrEmpty(@Less1M))
+        {
+            <a class="btn mx-2" style="width:160px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModalLess5M" data-bs-toggle="modal">Approve >1M</a>
+        }
+        else if (@Journal_Amount > 500000 && !string.IsNullOrEmpty(@Less500K))
+        {
+            <a class="btn mx-2" style="width:160px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModalLess1M" data-bs-toggle="modal">Approve >500K</a>
+        }
+        else if (@Journal_Amount > 100000 && !string.IsNullOrEmpty(@Less100K))
+        {
+            <a class="btn mx-2" style="width:160px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModalLess500" data-bs-toggle="modal">Approve >100K</a>
+        }
+        else if(string.IsNullOrEmpty(@Less100K))
+        {
+            <a class="btn mx-2" style="width:160px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: #025752; color: white;" data-bs-target="#approveModal" data-bs-toggle="modal">Approve</a>
+        }
 
         <a class="btn mx-2" style="width:132px;height:44px;border-radius: 50px;padding: 10px 24px; background-color: red; color: white;" data-bs-target="#rejectModal" data-bs-toggle="modal">JP Return</a>
     </div>
@@ -294,6 +323,114 @@
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Approve" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="approveModalLess500" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="ApproveLess500" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="approveModalLess1M" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="ApproveLess1M" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>   
+
+     <div class="modal fade" id="approveModalLess5M" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="ApproveLess5M" />
+                        <!-- Hidden input for approve modal -->
+                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+
+                        <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="modal fade" id="approveModalMore5M" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="approveModalLabel">Confirm Approval</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to approve this task?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                        <input type="hidden" name="PremiseId" value="@premiseId" />
+                        <input type="hidden" name="JournalId" value="@journalId" />
+                        <input type="hidden" name="ActionType" value="ApproveMore5M" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
 

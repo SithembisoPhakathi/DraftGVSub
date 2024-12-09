@@ -47,5 +47,10 @@ namespace GeneralValuationSubs.Models
         public string? Description { get; set; }
         public string? Amount { get; set; }
         public string? Journal_Amount { get; set; }
+        public float? Journal_Amount_ { get; set; }
+        public string? Less100K { get; set; }
+        public string? Less500K { get; set; }
+        public string? Less1M { get; set; }
+        public string? Less5M { get; set; }
     }
 }
