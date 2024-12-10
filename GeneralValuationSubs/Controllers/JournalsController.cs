@@ -1005,7 +1005,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name FROM [Journals].[dbo].[Journals_Audit] WHERE Distribution_Allocated_Name = '" + currentUserFirstname + ' ' + currentUserSurname + "' GROUP BY [Premise ID], File_Name, Status, [Journal_Id],  Distribution_Allocated_Name";
+                com.CommandText = "SELECT [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name FROM [Journals].[dbo].[Journals_Audit] WHERE Distribution_Allocated_Name = '" + currentUserFirstname + ' ' + currentUserSurname + "' AND Status = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = 10) GROUP BY [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1519,7 +1519,7 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Quality Assurance Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '8') WHERE Journal_Id = '" + JournalId + "'  UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '8'), QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "'  UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Quality Assurance Reject")
@@ -1557,7 +1557,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (11)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1606,7 +1606,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (10)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 100000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 100000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1655,7 +1655,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (11)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 500000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 500000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1704,7 +1704,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 1000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 1000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1753,7 +1753,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1805,7 +1805,7 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (10)), [<100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [<100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)), [<100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [<100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Reject")
@@ -1815,17 +1815,17 @@ namespace GeneralValuationSubs.Controllers
                 }
                 else if (ActionType == "ApproveLess500")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (11)), [>100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)), [>100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
                 else if (ActionType == "ApproveLess1M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)), [>500K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>500K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)), [>500K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>500K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
                 else if (ActionType == "ApproveLess5M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)), [>1M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>1M_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)), [>1M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>1M_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
                 else if (ActionType == "ApproveMore5M")
