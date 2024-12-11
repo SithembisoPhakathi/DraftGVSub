@@ -293,7 +293,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date, dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] = 'Rejected' OR J.[Status] = 'Quality Assurance Reject' OR J.[Status] NOT IN ('Transaction Finalized', 'Approved', 'Quality Assurance Approve')) GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date";
+                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date, dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] = 'Rejected' OR J.[Status] = 'Quality Assurance Rejected' OR J.[Status] NOT IN ('Transaction Finalized', 'Approved', 'Quality Assurance Approved', 'Distributed','Journal Captured','Under Level 2 Review','Under Level 3 Review', 'Under Level 4 Review', 'Under Level 5 Review')) GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1510,7 +1510,7 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> QACTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? QACApproverComment)
+        public async Task<IActionResult> QACTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? QACApproverComment, string? RequestNumber)
         {
             try
             {
@@ -1519,12 +1519,12 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Quality Assurance Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "'  UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Quality Assurance Reject")
                 {
-                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '9') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '9'), QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '9') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '9'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
@@ -1541,7 +1541,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
             }
 
-            return RedirectToAction("QualityAssuranceCheck");
+            return RedirectToAction("CapturingJournal");
         }
 
         public IActionResult First_Level()

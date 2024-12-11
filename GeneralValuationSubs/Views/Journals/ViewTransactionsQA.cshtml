@@ -251,6 +251,13 @@
     </table> *@
 
     <div class="container">
+        <div class="col-md-3 form-group">
+            <label for="RequestNumber">Request Number</label>
+            <input class="form-control" id="RequestNumber" name="RequestNumber" />
+        </div>        
+    </div>
+
+    <div class="container">
         <label for="Comment"> Approver Comment </label>
         <textarea class="form-control" maxlength="250" id="QACApproverComment" name="QACApproverComment" placeholder="Quality Assurance Check Approver Comment"> </textarea>
     </div>
@@ -286,6 +293,7 @@
                         <input type="hidden" name="ActionType" value="Quality Assurance Approve" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="RequestNumber" class="RequestNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -314,6 +322,7 @@
                         <input type="hidden" name="ActionType" value="Quality Assurance Reject" />
                         <!-- Hidden input for reject modal -->
                         <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="RequestNumber" class="RequestNumber" />
 
                         <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
                     </form>
@@ -326,9 +335,11 @@
         function addCommentToForm(form) {
             // Get the value from the textarea
             var commentValue = document.getElementById('QACApproverComment').value;
+            var requestNumber = document.getElementById('RequestNumber').value;
 
             // Set the value to the hidden input inside the specific form being submitted
             form.querySelector('.HiddenApproverComment').value = commentValue;
+            form.querySelector('.RequestNumber').value = requestNumber;
         }
     </script>    
 
