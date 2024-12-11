@@ -1753,7 +1753,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1790,13 +1790,14 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AuthorisationApproveReject(string PremiseId, int JournalId, string ActionType, string? ApproverComment)
+        public async Task<IActionResult> AuthorisationApproveReject(string PremiseId, int JournalId, string ActionType, string? ApproverComment, string? DocumentNumber)
         {
             var currentUserSurname = TempData["currentUserSurname"];
             TempData.Keep("currentUserSurname");
 
             var currentUserFirstname = TempData["currentUserFirstname"];
             TempData.Keep("currentUserFirstname");
+            var m = "";
 
             try
             {
@@ -1805,8 +1806,10 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)), [<100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [<100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)), [<100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [<100K_Comment] = '" + ApproverComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
+
+                     m = "First_Level";
                 }
                 else if (ActionType == "Reject")
                 {
@@ -1815,23 +1818,31 @@ namespace GeneralValuationSubs.Controllers
                 }
                 else if (ActionType == "ApproveLess500")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)), [>100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>100K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
-                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)), [>100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>100K_Comment] = '" + ApproverComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    TempData["SuccessMessage"] = $"Transaction successfully Approved!";
+
+                     m = "Second_Level";
                 }
                 else if (ActionType == "ApproveLess1M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)), [>500K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>500K_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
-                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)), [>500K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>500K_Comment] = '" + ApproverComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    TempData["SuccessMessage"] = $"Transaction successfully Approved!";
+
+                    m = "Third_Level";
                 }
                 else if (ActionType == "ApproveLess5M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)), [>1M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>1M_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
-                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)), [>1M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>1M_Comment] = '" + ApproverComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    TempData["SuccessMessage"] = $"Transaction successfully Approved!";
+
+                    m = "Fourth_Level";
                 }
                 else if (ActionType == "ApproveMore5M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET [>5M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>5M_Comment] = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
-                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (16)), [>5M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>5M_Comment] = '" + ApproverComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    TempData["SuccessMessage"] = $"Transaction successfully Approved!";
+
+                    m = "Fifth_Level";
                 }
 
                 com.Parameters.AddWithValue("@PremiseId", PremiseId);
@@ -1847,9 +1858,8 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
             }
 
-            return RedirectToAction("First_Level");
+            return RedirectToAction(m);
         }
-
 
         public IActionResult Edit_Transaction(string? id)
         {

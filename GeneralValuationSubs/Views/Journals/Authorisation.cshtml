@@ -10,6 +10,7 @@
     var Less500K = string.Empty;
     var Less1M = string.Empty;
     var Less5M = string.Empty;
+    var status = string.Empty;
 }
 
 <head>
@@ -101,6 +102,7 @@
                     Less500K = item.Less500K;
                     Less1M = item.Less1M;
                     Less5M = item.Less5M;
+                    status = item.Status;
 
                     <tr>
                         <td>
@@ -270,6 +272,56 @@
         </tbody>
     </table> *@
 
+    @if (Journal_Amount > 5000000 && (@status != "Journal Captured" && @status != "Under Level 2 Review" && @status != "Under Level 3 Review" && @status != "Under Level 4 Review"))
+    {
+        <div class="container">
+            <div class="col-md-3 form-group">
+                <label for="DocumentNumber">Document Number</label>
+                <input class="form-control" id="DocumentNumber" name="DocumentNumber" />
+            </div>        
+        </div>
+    }
+    else if((@Journal_Amount > 1000000 && @Journal_Amount <= 5000000) && @status == "Under Level 4 Review")
+    {
+        <div class="container">
+            <div class="col-md-3 form-group">
+                <label for="DocumentNumber">Document Number</label>
+                <input class="form-control" id="DocumentNumber" name="DocumentNumber" />
+            </div>        
+        </div>
+    }
+    else if((@Journal_Amount > 500000 && @Journal_Amount <= 1000000) && @status == "Under Level 3 Review")
+    {
+        <div class="container">
+            <div class="col-md-3 form-group">
+                <label for="DocumentNumber">Document Number</label>
+                <input class="form-control" id="DocumentNumber" name="DocumentNumber" />
+            </div>        
+        </div>
+    }
+    else if((@Journal_Amount > 100000 && @Journal_Amount <= 500000) && @status == "Under Level 2 Review")
+    {
+        <div class="container">
+            <div class="col-md-3 form-group">
+                <label for="DocumentNumber">Document Number</label>
+                <input class="form-control" id="DocumentNumber" name="DocumentNumber" />
+            </div>        
+        </div>
+    }
+    else if(@Journal_Amount <= 100000 && @status == "Journal Captured")
+    {
+        <div class="container">
+            <div class="col-md-3 form-group">
+                <label for="DocumentNumber">Document Number</label>
+                <input class="form-control" id="DocumentNumber" name="DocumentNumber" />
+            </div>        
+        </div>
+    }
+    else
+    {
+        
+    }
+
     <div class="container">
         <label for="Comment"> Authoriser Comment </label>
         <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" placeholder="Approver Comment"> </textarea>
@@ -325,6 +377,7 @@
                         <input type="hidden" name="ActionType" value="Approve" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -352,6 +405,7 @@
                         <input type="hidden" name="ActionType" value="ApproveLess500" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -379,6 +433,7 @@
                         <input type="hidden" name="ActionType" value="ApproveLess1M" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -406,6 +461,7 @@
                         <input type="hidden" name="ActionType" value="ApproveLess5M" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -433,6 +489,7 @@
                         <input type="hidden" name="ActionType" value="ApproveMore5M" />
                         <!-- Hidden input for approve modal -->
                         <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -473,9 +530,11 @@
         function addCommentToForm(form) {
             // Get the value from the textarea
             var commentValue = document.getElementById('ApproverComment').value;
+            var documentNumber = document.getElementById('DocumentNumber').value;
 
             // Set the value to the hidden input inside the specific form being submitted
             form.querySelector('.HiddenApproverComment').value = commentValue;
+            form.querySelector('.DocumentNumber').value = documentNumber;
         }
     </script>    
 
