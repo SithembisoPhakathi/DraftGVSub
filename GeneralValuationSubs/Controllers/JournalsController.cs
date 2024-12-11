@@ -1510,6 +1510,41 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> JCTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? JCApproverComment, string? RequestNumber)
+        {
+            try
+            {
+                con.Open();
+                com.Connection = con;
+
+                if (ActionType == "Quality Assurance Approve")
+                {
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), Request_Number = '" + RequestNumber + "', JCApproverComment = '" + JCApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
+                }
+                else if (ActionType == "Quality Assurance Reject")
+                {
+                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '9') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '9'), Request_Number = '" + RequestNumber + "', JCApproverComment = '" + JCApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
+                }
+
+                com.Parameters.AddWithValue("@PremiseId", PremiseId);
+                com.Parameters.AddWithValue("@JournalId", JournalId);
+                com.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return RedirectToAction("CapturingJournal");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> QACTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? QACApproverComment, string? RequestNumber)
         {
             try
@@ -1519,7 +1554,7 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Quality Assurance Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '8') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '8'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Quality Assurance Reject")
@@ -1541,7 +1576,7 @@ namespace GeneralValuationSubs.Controllers
                 con.Close();
             }
 
-            return RedirectToAction("CapturingJournal");
+            return RedirectToAction("QualityAssuranceCheck");
         }
 
         public IActionResult First_Level()

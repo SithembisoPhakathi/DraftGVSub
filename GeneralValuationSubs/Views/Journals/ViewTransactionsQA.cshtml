@@ -259,7 +259,7 @@
 
     <div class="container">
         <label for="Comment"> Approver Comment </label>
-        <textarea class="form-control" maxlength="250" id="QACApproverComment" name="QACApproverComment" placeholder="Quality Assurance Check Approver Comment"> </textarea>
+        <textarea class="form-control" maxlength="250" id="JCApproverComment" name="JCApproverComment" placeholder="Journal Capturing Approver Comment"> </textarea>
     </div>
 
     <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
@@ -287,12 +287,12 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="QACTransactionApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="JCTransactionApproveReject" onsubmit="addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Quality Assurance Approve" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="JCApproverComment" class="HiddenApproverComment" />
                         <input type="hidden" name="RequestNumber" class="RequestNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
@@ -316,12 +316,12 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="QACTransactionApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="JCTransactionApproveReject" onsubmit="addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Quality Assurance Reject" />
                         <!-- Hidden input for reject modal -->
-                        <input type="hidden" name="QACApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="JCApproverComment" class="HiddenApproverComment" />
                         <input type="hidden" name="RequestNumber" class="RequestNumber" />
 
                         <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
@@ -331,7 +331,7 @@
         </div>
     </div>
 
-    <script>
+    @* <script>
         function addCommentToForm(form) {
             // Get the value from the textarea
             var commentValue = document.getElementById('QACApproverComment').value;
@@ -341,7 +341,59 @@
             form.querySelector('.HiddenApproverComment').value = commentValue;
             form.querySelector('.RequestNumber').value = requestNumber;
         }
-    </script>    
+    </script> *@   
+    
+    <script>
+        document.getElementById('RequestNumber').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Removes non-numeric characters
+        });
+    </script>
+
+    <script>
+        function addCommentToForm(form) {
+            // Get the value from the textarea
+            var commentValue = document.getElementById('JCApproverComment').value.trim();
+            var requestNumber = document.getElementById('RequestNumber').value.trim();
+
+            // Check if the comment is empty
+            if (!commentValue) {
+                alert('Approver Comment is required.');
+                return false; // Prevent form submission
+            }
+
+            if (!requestNumber) {
+                alert('Request Number is required.');
+                return false; // Prevent form submission
+            }
+
+            // Set the value to the hidden input inside the specific form being submitted
+            form.querySelector('.HiddenApproverComment').value = commentValue;
+            form.querySelector('.RequestNumber').value = requestNumber;
+
+            // Allow form submission
+            return true;
+        }
+
+        // Ensure validation when any button is clicked
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("button").forEach(function (button) {
+                button.addEventListener("click", function (event) {
+                    // Perform validation
+                    var commentValue = document.getElementById('JCApproverComment').value.trim();
+                    var requestNumber = document.getElementById('RequestNumber').value.trim();
+                    if (!commentValue) {
+                        alert('Approver Comment is required.');
+                        event.preventDefault(); // Prevent the button's default action
+                    }
+                    if (!requestNumber) {
+                        alert('Request Number is required.');
+                        event.preventDefault(); // Prevent the button's default action
+                    }
+                });
+            });
+        });
+    </script>
+
 
     <!-- Modal -->
 

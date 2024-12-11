@@ -331,7 +331,7 @@
         </div>
     </div>
 
-    <script>
+    @* <script>
         function addCommentToForm(form) {
             // Get the value from the textarea
             var commentValue = document.getElementById('QACApproverComment').value;
@@ -339,7 +339,40 @@
             // Set the value to the hidden input inside the specific form being submitted
             form.querySelector('.HiddenApproverComment').value = commentValue;
         }
-    </script>    
+    </script>  *@   
+
+     <script>
+        function addCommentToForm(form) {
+            // Get the value from the textarea
+            var commentValue = document.getElementById('QACApproverComment').value.trim();
+
+            // Check if the comment is empty
+            if (!commentValue) {
+                alert('Approver Comment is required.');
+                return false; // Prevent form submission
+            }
+
+            // Set the value to the hidden input inside the specific form being submitted
+            form.querySelector('.HiddenApproverComment').value = commentValue;
+
+            // Allow form submission
+            return true;
+        }
+
+        // Ensure validation when any button is clicked
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("button").forEach(function (button) {
+                button.addEventListener("click", function (event) {
+                    // Perform validation
+                    var commentValue = document.getElementById('QACApproverComment').value.trim();
+                    if (!commentValue) {
+                        alert('Approver Comment is required.');
+                        event.preventDefault(); // Prevent the button's default action
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- Modal -->
 

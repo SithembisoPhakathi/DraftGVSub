@@ -538,6 +538,12 @@
         }
     </script>    
 
+    <script>
+        document.getElementById('DocumentNumber').addEventListener('input', function (e) {
+            this.value = this.value.replace(/[^0-9]/g, ''); // Removes non-numeric characters
+        });
+    </script>
+
     <!-- Modal -->
 
     @* <script type="text/javascript"
