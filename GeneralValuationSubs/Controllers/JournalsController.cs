@@ -1489,7 +1489,7 @@ namespace GeneralValuationSubs.Controllers
                 }
                 else if (ActionType == "Reject")
                 {
-                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '7') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '7'), Allocated_Date = GETDATE(), End_Date = dbo.GetNextWorkday(GETDATE(), 2) WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
