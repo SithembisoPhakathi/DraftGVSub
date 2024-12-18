@@ -324,7 +324,7 @@
 
     <div class="container">
         <label for="Comment"> Authoriser Comment </label>
-        <textarea class="form-control" maxlength="250" id="ApproverComment" name="ApproverComment" placeholder="Approver Comment"> </textarea>
+        <textarea class="form-control" maxlength="250" id="AuthoriserComment" name="AuthoriserComment" placeholder="Authoriser Comment"> </textarea>
     </div>
 
     <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
@@ -376,8 +376,8 @@
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Approve" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
-                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="HiddenDocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -404,8 +404,7 @@
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="ApproveLess500" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
-                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -427,13 +426,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="return addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="ApproveLess1M" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
-                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="HiddenDocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -455,13 +454,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="return addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="ApproveLess5M" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
-                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="HiddenDocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -483,13 +482,13 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="return addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="ApproveMore5M" />
                         <!-- Hidden input for approve modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
-                        <input type="hidden" name="DocumentNumber" class="DocumentNumber" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="DocumentNumber" class="HiddenDocumentNumber" />
 
                         <button type="submit" id="confirmApprove" class="btn btn-primary">Yes, Approve</button>
                     </form>
@@ -512,12 +511,12 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
-                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="addCommentToForm(this)">
+                    <form method="post" asp-controller="Journals" asp-action="AuthorisationApproveReject" onsubmit="return addCommentToForm(this)">
                         <input type="hidden" name="PremiseId" value="@premiseId" />
                         <input type="hidden" name="JournalId" value="@journalId" />
                         <input type="hidden" name="ActionType" value="Reject" />
                         <!-- Hidden input for reject modal -->
-                        <input type="hidden" name="ApproverComment" class="HiddenApproverComment" />
+                        <input type="hidden" name="AuthoriserComment" class="HiddenApproverComment" />
 
                         <button type="submit" id="confirmReject" class="btn btn-danger">Yes, Reject</button>
                     </form>
@@ -527,22 +526,25 @@
     </div>
 
     <script>
-        function addCommentToForm(form) {
-            // Get the value from the textarea
-            var commentValue = document.getElementById('ApproverComment').value;
-            var documentNumber = document.getElementById('DocumentNumber').value;
-
-            // Set the value to the hidden input inside the specific form being submitted
-            form.querySelector('.HiddenApproverComment').value = commentValue;
-            form.querySelector('.DocumentNumber').value = documentNumber;
-        }
-    </script>    
-
-    <script>
         document.getElementById('DocumentNumber').addEventListener('input', function (e) {
             this.value = this.value.replace(/[^0-9]/g, ''); // Removes non-numeric characters
         });
     </script>
+
+    <script>
+        function addCommentToForm(form)
+        {
+            var commentElement = document.getElementById('AuthoriserComment').value.trim();
+            var documentElement = document.getElementById('DocumentNumber');
+
+            if (documentElement && documentElement.offsetParent !== null) { // Check if visible
+                var documentValue = documentElement.value.trim();
+                form.querySelector('.HiddenDocumentNumber').value = documentValue;
+            }
+            
+            form.querySelector('.HiddenApproverComment').value = commentElement;            
+        }
+    </script>        
 
     <!-- Modal -->
 
