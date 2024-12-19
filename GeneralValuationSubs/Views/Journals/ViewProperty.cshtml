@@ -1378,7 +1378,8 @@
                                     <div class="row my-3">
                                         <div class="form-group mt-3">
                                             <label for="Comment">Comment</label>
-                                            <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment"></textarea>
+                                            <textarea class="form-control" maxlength="250" id="Comment" onchange="myFunction(this.value)" name="Comment" Value="@item.Comment" placeholder="Comment" onkeypress="preventEnter(event)"></textarea>
+                                            <small id="enterError" class="text-danger" style="display:none;">Pressing "Enter" is not allowed.</small>
                                         </div>
                                     </div>
 
@@ -1663,6 +1664,18 @@
             document.getElementById('Comment').setAttribute('required', 'required');
             document.getElementById('Journal_Amount').setAttribute('required', 'required');
         });
+    </script>
+
+    <script>
+        function preventEnter(event) {
+            const errorElement = document.getElementById("enterError");
+            if (event.key === "Enter") {
+                errorElement.style.display = "block"; // Show error message
+                event.preventDefault(); // Prevent the default action (line break)
+            } else {
+                errorElement.style.display = "none"; // Hide error message for other keys
+            }
+        }
     </script>
 
     <!-- Update Modal -->

@@ -54,7 +54,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT DISTINCT [File Name] FROM [Journals].[dbo].[Details] WHERE [File Name] IS NOT NULL";
+                com.CommandText = "EXEC GetFileNames";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -95,7 +95,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT DISTINCT [File Name] FROM [Journals].[dbo].[Details] WHERE [File Name] IS NOT NULL";
+                com.CommandText = "EXEC GetFileNames";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -123,7 +123,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff, * FROM [Journals].[dbo].[Details] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (1, 2, 3, 5, 6, 7)) and [File Name] = '" + FileName + "'";
+                com.CommandText = "EXEC GetDateDifference @FileName = '" + FileName + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -293,8 +293,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value] ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date, dbo.GetBusinessDaysDifference(GETDATE(), ISNULL(End_Date, GETDATE())) AS Date_Diff FROM [Journals].[dbo].[Details] D LEFT JOIN [Journals].[dbo].[Journals_Audit] J ON D.[Premise ID] = J.[Premise ID] WHERE D.[Allocated Name] = '" + userName + "' AND (J.[Status] IS NULL OR J.[Status] = 'Transaction Processed' OR J.[Status] = 'Rejected' OR J.[Status] = 'Quality Assurance Rejected' OR J.[Status] NOT IN ('Transaction Finalized', 'Approved', 'Quality Assurance Approved', 'Distributed','Journal Captured','Under Level 2 Review','Under Level 3 Review', 'Under Level 4 Review', 'Under Level 5 Review')) GROUP BY D.[Premise ID] ,D.[Account Number] ,D.[Installation] ,D.[Market Value]  ,D.[Category] ,D.[Valuation Date] ,D.[WEF] ,D.[Net Accrual] ,D.[File Name] ,D.[Journal_Id] ,D.[Status] ,D.[Allocated Name], D.End_Date";
-
+                com.CommandText = "EXEC PropPerUser @userName = '" + userName + "'";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -430,7 +429,8 @@ namespace GeneralValuationSubs.Controllers
                 com.Connection = con;
 
                 // First query to get the Premise ID from the Details table
-                com.CommandText = "SELECT [Premise ID], [Account Number], [Installation], [Market Value], [Category], [Valuation Date], [WEF], [Net Accrual], [File Name], [Status], [Allocated Name], [Journal_Id], [File Name], [Valuation Date] FROM [Journals].[dbo].[Details] WHERE Journal_Id = @JournalId";
+                com.CommandText = "EXEC FirstQueryDetails @JournalId = '" + id + "'";
+                
                 com.Parameters.AddWithValue("@JournalId", id);
 
                 string premiseId = null;
@@ -471,7 +471,7 @@ namespace GeneralValuationSubs.Controllers
                     journals.Clear();
 
                     // Second query to get the journal details using the Premise ID
-                    com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = @PremiseID AND [Journal_Id] = @Journal_ID ORDER BY Activity_Date";
+                    com.CommandText = "EXEC SecondQueryDetails @PremiseId = '" + premiseId + "', @JournalId = '" + id + "'";
                     com.Parameters.AddWithValue("@PremiseID", premiseId);
                     com.Parameters.AddWithValue("@Journal_ID", id);
 
@@ -742,7 +742,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5'), Comment = '" + Comment + "', Journal_Amount = '" + Journal_Amount + "' WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID = '5') WHERE [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "' COMMIT TRANSACTION;";
+                com.CommandText = "EXEC SubmitTask @Comment = '" + Comment + "', @Journal_Amount = '" + Journal_Amount + "', @Premise_Id = '" + PremiseId + "', @Journal_Id = '" + Journal_Id + "'";
 
                 com.ExecuteNonQuery();
 
@@ -771,7 +771,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name] FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (5)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name";
+                com.CommandText = "EXEC Pending";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -869,7 +869,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name] FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (6)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name";
+                com.CommandText = "EXEC QualityAssuranceCheck";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -923,7 +923,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name] FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (8)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name";
+                com.CommandText = "EXEC DistributionQA";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1005,7 +1005,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name FROM [Journals].[dbo].[Journals_Audit] WHERE Distribution_Allocated_Name = '" + currentUserFirstname + ' ' + currentUserSurname + "' AND Status = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = 10) GROUP BY [Premise ID], File_Name, Status, [Journal_Id], Distribution_Allocated_Name";
+                com.CommandText = "EXEC CapturingJournalView @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1054,7 +1054,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' AND [Journal_Id] = '" + JournalID + "' order by Activity_Date";
+                com.CommandText = "EXEC ViewTransactionsApproved @Premise_Id = '" + PremiseID + "', @Journal_Id = '" + JournalID + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1121,7 +1121,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' AND [Journal_Id] = '" + JournalID + "' order by Activity_Date";
+                com.CommandText = "EXEC ViewTransactions @Premise_Id = '" + PremiseID + "', @Journal_Id = '" + JournalID + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1188,7 +1188,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM [Journals].[dbo].[Journals_Audit] WHERE [Premise ID] = '" + PremiseID + "' AND [Journal_Id] = '" + JournalID + "' order by Activity_Date";
+                com.CommandText = "EXEC ViewTransactionsQA @Premise_Id = '" + PremiseID + "', @Journal_Id ='" + JournalID + "'";
 
                 dr = com.ExecuteReader();
                 while (dr.Read())
@@ -1484,17 +1484,18 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '6') WHERE Journal_Id = '" + JournalId + "'  UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '6'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC ApproveViewTransactions @JournalId = '" + JournalId + "', @ApproverComment = '" + ApproverComment + "', @PremiseId = '" + PremiseId + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Reject")
                 {
-                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '7'), Allocated_Date = GETDATE(), End_Date = dbo.GetNextWorkday(GETDATE(), 2) WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '7'), ApproverComment = '" + ApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC RejectViewTransactions @JournalId = '" + JournalId + "', @ApproverComment = '" + ApproverComment + "', @PremiseId = '" + PremiseId + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
                 com.Parameters.AddWithValue("@PremiseId", PremiseId);
                 com.Parameters.AddWithValue("@JournalId", JournalId);
+                com.Parameters.AddWithValue("@ApproverComment", ApproverComment);
                 com.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -1519,12 +1520,12 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Quality Assurance Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '11') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '11'), Request_Number = '" + RequestNumber + "', JCApproverComment = '" + JCApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC JCTransactionApprove @JournalId = '" + JournalId + "', @PremiseId = '" + PremiseId + "', @RequestNumber = '" + RequestNumber + "', @JCApproverComment = '" + JCApproverComment + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Quality Assurance Reject")
                 {
-                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '9') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '9'), Request_Number = '" + RequestNumber + "', JCApproverComment = '" + JCApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC JCTransactionReject @JournalId = '" + JournalId + "', @PremiseId = '" + PremiseId + "', @RequestNumber = '" + RequestNumber + "', @JCApproverComment = '" + JCApproverComment + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
@@ -1545,7 +1546,7 @@ namespace GeneralValuationSubs.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> QACTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? QACApproverComment, string? RequestNumber)
+        public async Task<IActionResult> QACTransactionApproveReject(string PremiseId, int JournalId, string ActionType, string? QACApproverComment)
         {
             try
             {
@@ -1554,12 +1555,12 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Quality Assurance Approve")
                 {
-                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '8') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '8'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC QACTransactionApprove @JournalId = '" + JournalId + "', @QACApproverComment = '" + QACApproverComment + "', @PremiseId = '" + PremiseId + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
                 }
                 else if (ActionType == "Quality Assurance Reject")
                 {
-                    com.CommandText = "BEGIN TRANSACTION;  UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '9') WHERE Journal_Id = '" + JournalId + "' UPDATE [Journals].[dbo].[Journals_Audit] SET STATUS = (SELECT Status_Description FROM [Journals].[dbo].[Status] WHERE Status_ID = '9'), Request_Number = '"+ RequestNumber + "', QACApproverComment = '" + QACApproverComment + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId COMMIT TRANSACTION;";
+                    com.CommandText = "EXEC QACTransactionReject @JournalId = '" + JournalId + "', @QACApproverComment = '" + QACApproverComment + "', @PremiseId = '" + PremiseId + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}ed!";
                 }
 
@@ -1592,7 +1593,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (11)) GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "EXEC First_Level_View";
+
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1641,7 +1643,7 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 100000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "EXEC Second_Level_View";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1690,7 +1692,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 500000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "EXEC Third_Level_View";
+
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1739,7 +1742,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 1000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "EXEC Fourth_Level_View";
+                
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1788,7 +1792,8 @@ namespace GeneralValuationSubs.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT [Premise ID], Status, UserName, Journal_Id, [File_Name], Journal_Amount FROM [Journals].[dbo].[Journals_Audit] WHERE Status IN (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)) AND CAST(REPLACE(REPLACE(Journal_Amount, 'R ', ''), ',', '') AS FLOAT) > 5000000 GROUP BY [Premise ID], Status, UserName, Journal_Id, File_Name, Journal_Amount";
+                com.CommandText = "EXEC Fifth_Level_View";
+                
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
@@ -1841,7 +1846,7 @@ namespace GeneralValuationSubs.Controllers
 
                 if (ActionType == "Approve")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (12)), [<100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [<100K_Comment] = '" + AuthoriserComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "EXEC AuthorisationApprove @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + JournalId + "', @AuthoriserComment = '" + AuthoriserComment + "', @DocumentNumber = '" + DocumentNumber + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully {ActionType.ToLower()}d!";
 
                      m = "First_Level";
@@ -1853,28 +1858,28 @@ namespace GeneralValuationSubs.Controllers
                 }
                 else if (ActionType == "ApproveLess500")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (13)), [>100K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>100K_Comment] = '" + AuthoriserComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "EXEC AuthorisationApproveLess500 @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + JournalId + "', @AuthoriserComment = '" + AuthoriserComment + "', @DocumentNumber = '" + DocumentNumber + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully Approved!";
 
                      m = "Second_Level";
                 }
                 else if (ActionType == "ApproveLess1M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (14)), [>500K_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>500K_Comment] = '" + AuthoriserComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "EXEC AuthorisationApproveLess1M @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + JournalId + "', @AuthoriserComment = '" + AuthoriserComment + "', @DocumentNumber = '" + DocumentNumber + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully Approved!";
 
                     m = "Third_Level";
                 }
                 else if (ActionType == "ApproveLess5M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (15)), [>1M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>1M_Comment] = '" + AuthoriserComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "EXEC AuthorisationApproveLess5M @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + JournalId + "', @AuthoriserComment = '" + AuthoriserComment + "', @DocumentNumber = '" + DocumentNumber + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully Approved!";
 
                     m = "Fourth_Level";
                 }
                 else if (ActionType == "ApproveMore5M")
                 {
-                    com.CommandText = "UPDATE [Journals].[dbo].[Journals_Audit] SET Status = (SELECT [Status_Description] FROM [Journals].[dbo].[Status] WHERE Status_ID IN (16)), [>5M_Approver] = '" + currentUserFirstname + ' ' + currentUserSurname + "', [>5M_Comment] = '" + AuthoriserComment + "', [Document_Number] = '" + DocumentNumber + "' WHERE [Premise ID] = @PremiseId AND [Journal_Id] = @JournalId";
+                    com.CommandText = "EXEC AuthorisationApproveMore5M @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + JournalId + "', @AuthoriserComment = '" + AuthoriserComment + "', @DocumentNumber = '" + DocumentNumber + "'";
                     TempData["SuccessMessage"] = $"Transaction successfully Approved!";
 
                     m = "Fifth_Level";
@@ -2216,7 +2221,7 @@ namespace GeneralValuationSubs.Controllers
                                         // Open connection once
                                         con.Open();
                                         com.Connection = con;
-                                        com.CommandText = "BEGIN TRANSACTION; DELETE FROM [Journals].[dbo].[Journals_Audit] where [Premise ID] = '" + PremiseId + "' AND [Journal_Id] = '" + Journal_Id + "'; COMMIT TRANSACTION;";
+                                        com.CommandText = "EXEC DeleteJournals @PremiseId = '" + PremiseId + "', @JournalId = '" + Journal_Id + "'";
                                         //{
                                         //    JournalHistories.Add(new JournalHistory
                                         //    {
@@ -2239,8 +2244,9 @@ namespace GeneralValuationSubs.Controllers
                                     // Open connection once
                                     con.Open();
                                     com.Connection = con;
-                                    com.CommandText = "BEGIN TRANSACTION; UPDATE [Journals].[dbo].[Details] SET [Status] = (SELECT [Status_Description] FROM [dbo].[Status] WHERE Status_ID = '4') WHERE Journal_Id = '" + Journal_Id + "' INSERT INTO [Journals].[dbo].[Journals_Audit] ([UserName], [UserID], [Premise ID], [Account Number], [Installation], [File_Name], [Status], [DocDate], [Type], [DocNo], [Div], [Description], [Amount],[Activity_Date], [Journal_Id]) " +
-                                                      "VALUES('" + currentUserFirstname + ' ' + currentUserSurname + "', '" + userID + "', '" + PremiseId + "','" + Account_Number + "', '" + Installation + "', '" + FileName + "' , 'Transaction Processed' ,'" + Docdate + "', '" + type + "', '" + docNum + "', '" + divNum + "', '" + description + "' , '" + amount + "', '" + DateTime.Now + "', '" + Journal_Id + "') COMMIT TRANSACTION;";
+                                    com.CommandText = "EXEC InsertJournals @currentUserFirstname = '" + currentUserFirstname + "', @currentUserSurname = '" + currentUserSurname + "', @userID = '" + userID + "', @AccountNumber = '" + Account_Number + "', @Installation = '" + Installation + "', " +
+                                        "@FileName = '" + FileName + "', @Docdate = '" + Docdate + "', @Type = '" + type + "', @docNum = '" + docNum + "', @divNum = '" + divNum + "', @description = '" + description + "', @amount = '" + amount + "', @PremiseId = '" + PremiseId + "', @JournalId = '" + Journal_Id + "'";
+                                    
                                     //while (dr.Read())
                                     //{
                                     //    JournalHistories.Add(new JournalHistory

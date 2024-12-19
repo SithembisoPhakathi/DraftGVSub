@@ -259,7 +259,8 @@
 
     <div class="container">
         <label for="Comment"> Approver Comment </label>
-        <textarea class="form-control" maxlength="250" id="JCApproverComment" name="JCApproverComment" placeholder="Journal Capturing Approver Comment"> </textarea>
+        <textarea class="form-control" maxlength="250" id="JCApproverComment" name="JCApproverComment" placeholder="Journal Capturing Approver Comment" onkeypress="preventEnter(event)"></textarea>
+        <small id="enterError" class="text-danger" style="display:none;">Pressing "Enter" is not allowed.</small>
     </div>
 
     <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
@@ -342,6 +343,18 @@
             form.querySelector('.RequestNumber').value = requestNumber;
         }
     </script> *@   
+
+    <script>
+        function preventEnter(event) {
+            const errorElement = document.getElementById("enterError");
+            if (event.key === "Enter") {
+                errorElement.style.display = "block"; // Show error message
+                event.preventDefault(); // Prevent the default action (line break)
+            } else {
+                errorElement.style.display = "none"; // Hide error message for other keys
+            }
+        }
+    </script>
     
     <script>
         document.getElementById('RequestNumber').addEventListener('input', function (e) {
